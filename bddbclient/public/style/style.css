@@ -1,0 +1,54 @@
+.fill {
+	width: 100%;
+	min-width: 100%;
+	color: white;
+
+}
+
+.bg {
+	width: 100%;
+	min-width: 100%;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	background: url("../Assets/mol1.png"), url("../Assets/mol2.png");
+	background-attachment: fixed;
+	background-color: #2D3A68;
+	overflow-x: hidden;
+	background-repeat: no-repeat;
+}
+
+
+/* --------- FLASH MESSAGE -------------*/
+
+.flash {
+	margin-top: 3%;
+}
+
+
+
+/* ------------ NAVIGATION ---------------*/
+.navbar {
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	width: 100;
+}
+
+.nav-r {
+	margin-right: 4%;
+}
+
+
+
+
+.general {
+	margin-top: 12%;
+}
+
+
+
+
+
+
+
