@@ -1,0 +1,28 @@
+.wrapper{
+	width: 100%;
+}
+
+.details {
+	width: 40%;
+	float: left;
+	border-right: 2px solid white;
+	height:80vh;
+	overflow: hidden;
+
+}
+
+.eventLayout{
+	width: 60%;
+	float: left;
+}
+
+
+.layout{
+	margin-top: 0px;
+	margin-left: 10%;
+	padding-top: 9.25%;
+	padding-bottom: 12%;
+	height: auto;
+	width: 88%;
+	background: rgba(255,255,255,0.3);
+}

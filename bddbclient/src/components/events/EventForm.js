@@ -1,16 +1,18 @@
 import React from 'react';
-import TextFieldGroup from '../common/TextFieldGroup';
+//import TextFieldGroup from '../common/TextFieldGroup';
 import { connect } from 'react-redux';
-import { createEvent } from '../../actions/eventActions';
-
+import { uploadFiles } from '../../actions/eventActions';
+import './Event.css';
+//import Dropzone from 'react-dropzone';
 
 class EventForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			title: '',
-			errors: {},
-			isLoading: false
+			//title: '',
+			//errors: {},
+			//isLoading: false,
+			files: []
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -23,19 +25,23 @@ class EventForm extends React.Component {
 
 	onSubmit(e) {
 		e.preventDefault();
-		this.props.createEvent(this.state);
+		this.props.uploadFiles(this.state);
+	}
+
+	onDrop(files){
+		this.setState({
+			files: files
+		});
+		console.log(files)
 	}
 
 	render(){
-		const { title, errors, isLoading } = this.state;
+		//const { title, errors, isLoading } = this.state;
 		return(
-			<form onSubmit={this.onSubmit}>
-				<h1> Upload a new Project </h1>
-				<div class="col-md-6 col-sm-1 col-lg-12">
-					<TextFieldGroup name="title" label="Event Title" field="title" value={title} onChange={this.onChange} error={errors.title} />
-					<button type="submit" disabled={isLoading} className="btn btn-primary"> Create </button>
-				</div>
-
+			<form action="file-upload" method="post" className="dropzone layout col-md-6" id="my-awesome-dropzone">
+				
+				<i className="fa fa-upload fa-3x" ></i>
+				<h4>Drag and Drop the file you would like to upload </h4>
 			</form>
 
 		);
@@ -43,8 +49,8 @@ class EventForm extends React.Component {
 }
 
 EventForm.propTypes = {
-	createEvent: React.PropTypes.func.isRequired
+	uploadFiles: React.PropTypes.func.isRequired
 }
 
 
-export default connect(null, {createEvent})(EventForm); //connecting to the store to check the authentication
+export default connect(null, {uploadFiles})(EventForm); //connecting to the store to check the authentication

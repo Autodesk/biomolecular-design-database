@@ -38,7 +38,7 @@ function validateInput(data) {
 class SignupForm extends React.Component {
 	//construct and initialize the state 
 
-	//Need to do i.e. this.onChange.bind(this) to pass "'this' state" to the function 
+	//Need to do i.e. this.onChange.bind(this) to pass 'this' state" to the function 
 	//otherwise, onChange(e) function refers 'this' to the passed event and not the state of the whole object 
 	constructor(props) {
 		super(props);
@@ -72,13 +72,13 @@ class SignupForm extends React.Component {
 		if(this.isValid()){ //only make a request to the server if there are no errors 
 			this.setState({ errors: {}, isLoading: true }); //set to empty initially. Get's repopulated later 
 			this.props.userSignupRequest(this.state).then(
-				() => {
+				() => { //if everything goes well, (event handler)
 					this.props.addFlashMessage({
 						type: 'success',
 						text: 'You signed up successfully.'
 					});
 					this.context.router.push('/');
-				}, //if everything goes well, (event handler)
+				}, 
 				(err) => this.setState({ errors: err.response.data, isLoading: false })// if something goes bad
 			); 			//pass in the parameter (User object / this.state) to userSignupRequest function 
 					  //in actions/signupaction
