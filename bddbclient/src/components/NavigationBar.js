@@ -16,17 +16,20 @@ class NavigationBar extends React.Component{
 
 		const userLinks = (
 			<ul className="nav navbar-nav navbar-right">
-				<li><Link to="/new-event"> <font size="3">New Project</font> </Link></li>
-				<li><a href="#" onClick={this.logout.bind(this)} > <font size="3">Logout</font></a></li>
+				<li><Link to="/"> Browse All </Link></li>
+				<li><Link to="/"> My Projects</Link></li>
+				<li><Link to="/new-event"> Upload New </Link></li>
+				<li><a href="#" onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i>  Logout</a></li>
+			</ul>
+		);
+ 
+		const guestLinks = (
+			<ul className="nav nav-r navbar-nav navbar-right">
+				<li><Link to="/signup"> <i className="fa fa-user-plus" aria-hidden="true"></i>  Sign Up</Link> </li>
+				<li><Link to="/login"> <i className="fa fa-sign-in" aria-hidden="true"></i>  Login</Link></li>
 			</ul>
 		);
 
-		const guestLinks = (
-			<ul className="nav nav-r navbar-nav navbar-right">
-				<li><Link to="/signup"> <font size="3">Sign Up</font></Link> </li>
-				<li><Link to="/login"> <font size="3">Login</font></Link></li>
-			</ul>
-		);
 		return(
 			<nav className="navbar navbar-fixed-top navbar navbar-default">
 				<div className="container-fluid">

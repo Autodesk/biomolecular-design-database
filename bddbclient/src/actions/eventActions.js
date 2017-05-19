@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export function createEvent(event) {
+export function uploadFiles(files) {
 	return dispatch => {
-		return axios.post('/api/events', event);
+		return axios.post('/api/file-uploads', files);
 	};
 }

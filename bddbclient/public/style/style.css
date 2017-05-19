@@ -5,6 +5,10 @@
 
 }
 
+body {
+	height: 100%;
+	min-height: 100%;
+}
 .bg {
 	width: 100%;
 	min-width: 100%;
@@ -43,7 +47,7 @@
 
 
 .general {
-	margin-top: 12%;
+	margin-top: 8%;
 }
 
 
