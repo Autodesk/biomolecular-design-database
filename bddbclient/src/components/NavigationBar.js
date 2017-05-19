@@ -8,9 +8,9 @@ class NavigationBar extends React.Component{
 	
 	logout(e){
 		e.preventDefault();
-		this.props.logout(); //props.logout === logout action importes
+		this.props.logout(); //props.logout (logout action which is imported)
 	}
-
+ 
 	render (){
 		const { isAuthenticated } = this.props.auth;
 
