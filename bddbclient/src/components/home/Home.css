@@ -1,0 +1,25 @@
+.general {
+	margin-top: 8%;
+	margin-bottom: 4%;
+}
+.button {
+    background-color: #2fe695;
+    border-radius: 29px;
+    color: white;
+    padding: 13px 45px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 16px;
+    margin: 35px 2px;
+    
+}
+button:focus {
+    outline:none !important;
+}
+.home-title{
+	text-align: center;
+	font-family: ArtifaktElement;
+	font-weight: 100;
+	color: #343950;
+}
