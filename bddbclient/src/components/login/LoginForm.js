@@ -23,7 +23,6 @@ function validateInput(data) {
 }
 
 class LoginForm extends React.Component {
-	
 	constructor(props){
 			super(props);
 			this.state = {
@@ -32,7 +31,6 @@ class LoginForm extends React.Component {
 				errors: {},
 				isLoading: false
 			};
-
 			this.onSubmit = this.onSubmit.bind(this);
 			this.onChange = this.onChange.bind(this);
 	}

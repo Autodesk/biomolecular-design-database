@@ -1,13 +1,15 @@
+/*   BODY. */
 .fill {
 	width: 100%;
 	min-width: 100%;
-	color: white;
+	color: black;
 
 }
 
 body {
 	height: 100%;
 	min-height: 100%;
+	color: black;
 }
 .bg {
 	width: 100%;
@@ -15,43 +17,83 @@ body {
 	height: 100%;
 	width: 100%;
 	text-align: center;
-	background: url("../Assets/mol1.png"), url("../Assets/mol2.png");
 	background-attachment: fixed;
-	background-color: #2D3A68;
+	background-color: #fff;
 	overflow-x: hidden;
 	background-repeat: no-repeat;
+	color: black;
 }
 
-
-/* --------- FLASH MESSAGE -------------*/
-
-.flash {
-	margin-top: 3%;
-}
-
-
-
-/* ------------ NAVIGATION ---------------*/
+/*  NAVIGATION */
 .navbar {
 	overflow: hidden;
 	position: fixed;
 	top: 0;
 	width: 100;
+	height: auto;
+}
+.logo{
+	margin-top: 15%;
+	margin-left: 45px;
+	color: #2fe695;
+	opacity: 0.89;
+	font-weight: 500;
+	text-align: left;
+	font-family: ArtifaktElement;
+	font-size: 25px;
+}
+.navbar-layout .nav li {
+	color: black;
+
+
+}
+
+.nav-links{
+	margin-left: 150px;
 }
 
 .nav-r {
 	margin-right: 4%;
 }
-
-
-
-
-.general {
-	margin-top: 8%;
+input[type=text] {
+    font-size: 16px;
+    background-color: white;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
 }
 
+input[type=text]:focus {
+    width: 30%;
+}
+input:focus {
+    outline:none !important;
+}
+.searchBar-layout{
+	width: 20%;
+	float: right;
+	border-radius: 12px;
+    border: 2px solid #2fe695;
+    text-align: center;
+    margin-top: 9px;
+    margin-right: 10%;
+    background-color: rgba(0,0,0,.5);
+}
 
+hr {
+    border: none;
+    height: 1px;
+    display: block;
+    /* Set the hr color */
+    color: #000; /* old IE */
+    background-color: #000; /* Modern Browsers */
 
+}
+
+/*  FLASH MESSAGE */
+
+.flash {
+	margin-top: 3%;
+}
 
 
 

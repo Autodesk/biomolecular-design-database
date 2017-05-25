@@ -9,7 +9,7 @@ export function setCurrentUser(user) {
 		user
 	};
 }
-
+ 
 export function logout() { //remove jwttoken from local storage and setAuthorization(NULL) sets authenticated to false
 	return dispatch => {
 		localStorage.removeItem('jwtToken');
@@ -30,4 +30,4 @@ export function login(data) {
 	}
 }
 
-//object is decoded with jwt.decode(token))
+//object is decoded with jwt.decode(token)) 

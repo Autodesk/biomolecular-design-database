@@ -2,45 +2,51 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
-import logo from "../../public/Assets/logo.svg";
 
 class NavigationBar extends React.Component{
-	
+	 
 	logout(e){
-		e.preventDefault();
-		this.props.logout(); //props.logout (logout action which is imported)
-	}
- 
+		e.preventDefault(); 
+		this.props.logout(); //props.logout  (logout action which is imported)
+	} 
+  
 	render (){
 		const { isAuthenticated } = this.props.auth;
-
+ 
 		const userLinks = (
-			<ul className="nav navbar-nav navbar-right">
-				<li><Link to="/"> Browse All </Link></li>
-				<li><Link to="/"> My Projects</Link></li>
+			<ul className="nav navbar-nav">  
+				<li><Link to="/" >Browse All </Link></li>
+				<li><Link to="/"> My Projects </Link></li>
 				<li><Link to="/new-event"> Upload New </Link></li>
-				<li><a href="#" onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i>  Logout</a></li>
+				<li color="black"><a href="# " onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
 			</ul>
 		);
  
 		const guestLinks = (
-			<ul className="nav nav-r navbar-nav navbar-right">
-				<li><Link to="/signup"> <i className="fa fa-user-plus" aria-hidden="true"></i>  Sign Up</Link> </li>
-				<li><Link to="/login"> <i className="fa fa-sign-in" aria-hidden="true"></i>  Login</Link></li>
+			<ul className="nav navbar-nav">
+				<li><Link to="/signup"> <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
+				<li><Link to="/login"> <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
 			</ul>
 		);
 
 		return(
-			<nav className="navbar navbar-fixed-top navbar navbar-default">
-				<div className="container-fluid">
-					<div className="navbar-header page-scroll">
-						< Link to="/" className="navbar-brand"> <img src={logo} alt="Autodesk Life Science"/> </Link>
+      
+			<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout ">
+ 
+					<div className=" page-scroll">
+						< Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
 					</div>
 
-					<div className="collapse navbar-collapse">
+					<div className=" nav-links">
 						{ isAuthenticated ? userLinks : guestLinks }
 					</div>
-				</div>
+ 
+					<form>
+	  					<input type="text" className="searchBar-layout" name="search" text-align="center" placeholder="Search...  " />
+					</form>				
+
+				<hr width="95%"/>  
+
 			</nav> 
 		);
 	}
