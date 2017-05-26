@@ -13,19 +13,19 @@ class NavigationBar extends React.Component{
 	render (){
 		const { isAuthenticated } = this.props.auth;
  
-		const userLinks = (
+		const userLinks = ( 
 			<ul className="nav navbar-nav">  
-				<li><Link to="/" style={{color: '#212a43'}} >Browse All </Link></li>
-				<li><Link to="/" style={{color: '#212a43'}}> My Projects </Link></li>
-				<li><Link to="/new-event" style={{color: '#212a43'}}> Upload New </Link></li>
-				<li color="black"><a href="#  " style={{color: '#212a43'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
+				<li><Link to="/" style={{color: '#343950'}} >Browse All </Link></li>
+				<li><Link to="/" style={{color: '#343950'}}> My Projects </Link></li>
+				<li><Link to="/new-event" style={{color: '#343950'}}> Upload New </Link></li>
+				<li color="black"><a href="#  " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
 			</ul>
 		);
  
 		const guestLinks = (
 			<ul className="nav navbar-nav">
-				<li><Link to="/signup" style={{color: '#212a43'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
-				<li><Link to="/login" style={{color: '#212a43'}} > <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
+				<li><Link to="/signup" style={{color: '#343950'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
+				<li><Link to="/login" style={{color: '#343950'}} > <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
 			</ul>
 		);
 

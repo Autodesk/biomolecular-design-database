@@ -1,3 +1,13 @@
+/* FONT */
+@font-face {
+	font-family: ArtifaktElement;
+	src: url(fonts/ArtifaktElementLight.ttf);
+}
+@font-face {
+	font-family: ArtifaktElementBook;
+	src: url(fonts/ArtifaktElementBook.ttf);
+}
+
 /*   BODY. */
 .fill {
 	width: 100%;
@@ -5,11 +15,11 @@
 	color: black;
 
 }
-
 body {
 	height: 100%;
 	min-height: 100%;
 	color: black;
+	font-family: ArtifaktElement;
 }
 .bg {
 	width: 100%;
@@ -60,11 +70,12 @@ input[type=text] {
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
+
 input:focus {
     outline:none !important;
 }
 .searchBar-layout:focus {
-	width: 30%;
+	width: 25%;
 }
 .searchBar-layout{
 	width: 20%;
@@ -74,14 +85,36 @@ input:focus {
     text-align: center;
     margin-top: 9px;
     margin-right: 10%;
-    background-color: rgba(0,0,0,0.5);
+    background-color : #d1d1d1;
+    font-family: ArtifaktElement;
 }
-
- hr { 
+hr { 
  	margin-top: 10px; 
  	margin-bottom: 10px;
  	opacity: 1;
  }
+.button-signup{
+    background-color: #2fe695;
+    border-radius: 29px;
+    color: white;
+    padding: 11px 45px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 16px;
+    margin: 35px 2px; 
+}
+.button-style{
+    background-color: #2fe695;
+    border-radius: 29px;
+    color: white;
+    padding: 7px 15px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 15px;
+    margin: 25px 2px; 
+}
 
 /*  FLASH MESSAGE */
 

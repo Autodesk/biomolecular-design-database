@@ -8,6 +8,7 @@ import EventItem from './EventItem';
 import shortid from 'shortid';
 
 class EventForm extends React.Component {
+	
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -35,37 +36,31 @@ class EventForm extends React.Component {
 		//console.log('received files: ', this.state.files);
 	}
 
-
-
 	onDrop(file){
 		var newFilesArr = this.state.files.slice();
 		
 		newFilesArr.push(file);
 		this.setState({
-			files: newFilesArr
+			files: newFilesArr 
 		});
 		console.log('received files: ', this.state.files);
 	}
+	
 	handleFiles(files) {
 		console.log(files);
 	}
+	
 	render(){
 		//const { title, errors, isLoading } = this.state;
-
 		const fileItems = this.state.files.map((file) => {
 			return <EventItem key={shortid.generate()} file={file} />  
 		});
 	
 		return( 
-			
-			<div>
-			   
-			  
-
+			<div>			   
 				<ul >
             		{fileItems}
             	</ul>
-
 
                 <Dropzone className="layout	" onDrop={this.onDrop}>
                     <i className="fa fa-upload fa-3x" ></i>
@@ -78,12 +73,11 @@ class EventForm extends React.Component {
                 </div> : null}
 
                 <hr/>
+
                 <div className="row">
-                	<button type="button" className="btn btn-primary pull-left">Delete project</button>
-            		<button type="button" onClick={this.onSubmit} className="btn btn-primary pull-right">Save and Preview</button>
+                	<button type="button" className="button-style pull-left">Delete project</button>
+            		<button type="button" onClick={this.onSubmit} className="button-style pull-right">Save and Preview</button>
             	</div>
-
-
             </div>		
 		);
 	}
