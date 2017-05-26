@@ -6,7 +6,7 @@
     background-color: #2fe695;
     border-radius: 29px;
     color: white;
-    padding: 13px 45px;
+    padding: 11px 45px;
     text-align: center;
     text-decoration: none;
     border: none;
@@ -19,6 +19,12 @@ button:focus {
 }
 .home-title{
 	text-align: center;
+	font-family: ArtifaktElement;
+	font-weight: 100;
+	color: #343950;
+}
+.welcomeStyle{
+	margin: 35px 2px;
 	font-family: ArtifaktElement;
 	font-weight: 100;
 	color: #343950;

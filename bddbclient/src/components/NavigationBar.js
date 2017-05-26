@@ -15,24 +15,24 @@ class NavigationBar extends React.Component{
  
 		const userLinks = (
 			<ul className="nav navbar-nav">  
-				<li><Link to="/" >Browse All </Link></li>
-				<li><Link to="/"> My Projects </Link></li>
-				<li><Link to="/new-event"> Upload New </Link></li>
-				<li color="black"><a href="# " onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
+				<li><Link to="/" style={{color: '#212a43'}} >Browse All </Link></li>
+				<li><Link to="/" style={{color: '#212a43'}}> My Projects </Link></li>
+				<li><Link to="/new-event" style={{color: '#212a43'}}> Upload New </Link></li>
+				<li color="black"><a href="#  " style={{color: '#212a43'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
 			</ul>
 		);
  
 		const guestLinks = (
 			<ul className="nav navbar-nav">
-				<li><Link to="/signup"> <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
-				<li><Link to="/login"> <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
+				<li><Link to="/signup" style={{color: '#212a43'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
+				<li><Link to="/login" style={{color: '#212a43'}} > <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
 			</ul>
 		);
 
 		return(
       
 			<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout ">
- 
+ 				<div className="container-fluid">
 					<div className=" page-scroll">
 						< Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
 					</div>
@@ -42,11 +42,11 @@ class NavigationBar extends React.Component{
 					</div>
  
 					<form>
-	  					<input type="text" className="searchBar-layout" name="search" text-align="center" placeholder="Search...  " />
+	  					<input type="text" className="searchBar-layout" name="search"  placeholder="Search...  " />
 					</form>				
 
-				<hr width="95%"/>  
-
+					<hr width="95%" />  
+				</div>
 			</nav> 
 		);
 	}
@@ -60,6 +60,7 @@ NavigationBar.propTypes = {
 
 
 //specify map state to prop function
+//slice off the auth component from the whhole application state (connected to redux store)
 function mapStateToProps(state) {
 	return{
 		auth: state.auth
