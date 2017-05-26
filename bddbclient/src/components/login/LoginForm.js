@@ -66,7 +66,7 @@ class LoginForm extends React.Component {
 				{ errors.form && <div className="alert alert-danger"> { errors.form} </div> }
 				<TextFieldGroup error={errors.username} label="Username" onChange={this.onChange} value={username} field="username" />
 				<TextFieldGroup error={errors.password} label="Password" onChange={this.onChange} type="password" value={password} field="password" />
-				<div className="form-group"> < button className="btn btn-primary btn-lg"  disabled={isLoading}>Login</button></div>
+				<div className="form-group"> < button className="button-signup"  disabled={isLoading}>Login</button></div>
 			
 			</form>
 		);
