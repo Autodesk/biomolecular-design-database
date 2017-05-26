@@ -42,12 +42,11 @@ body {
 	font-family: ArtifaktElement;
 	font-size: 25px;
 }
-.navbar-layout .nav li {
+.navbar-layout {
 	color: black;
-
+	background-color: #ffffff;
 
 }
-
 .nav-links{
 	margin-left: 150px;
 }
@@ -61,12 +60,11 @@ input[type=text] {
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
-
-input[type=text]:focus {
-    width: 30%;
-}
 input:focus {
     outline:none !important;
+}
+.searchBar-layout:focus {
+	width: 30%;
 }
 .searchBar-layout{
 	width: 20%;
@@ -76,18 +74,14 @@ input:focus {
     text-align: center;
     margin-top: 9px;
     margin-right: 10%;
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(0,0,0,0.5);
 }
 
-hr {
-    border: none;
-    height: 1px;
-    display: block;
-    /* Set the hr color */
-    color: #000; /* old IE */
-    background-color: #000; /* Modern Browsers */
-
-}
+ hr { 
+ 	margin-top: 10px; 
+ 	margin-bottom: 10px;
+ 	opacity: 1;
+ }
 
 /*  FLASH MESSAGE */
 
