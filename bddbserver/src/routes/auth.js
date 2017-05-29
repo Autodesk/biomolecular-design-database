@@ -3,12 +3,19 @@ import User from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../config';
+import Projects from '../models/projects';
 
 let router = express.Router();
 
 router.post('/', (req, res) => {
 	const { username, password } =req.body;
-
+	
+	Projects.fetchAll().then(resData=> {
+		console.log(resData.models);
+	})
+	//User.fetchAll().then(resData=> {
+//		console.log(resData.models);
+//	})
 	User.query({
 		where: { username: username }
 	}).fetch().then(user => {

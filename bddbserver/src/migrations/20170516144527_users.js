@@ -6,7 +6,8 @@ exports.up = function(knex, Promise) {
   		table.string('email').notNullable().unique();
   		table.string('password_digest').notNullable();
   		table.timestamps();
-  });
+  	});
+
 };
 
 exports.down = function(knex, Promise) {

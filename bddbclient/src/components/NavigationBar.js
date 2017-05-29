@@ -21,7 +21,7 @@ class NavigationBar extends React.Component{
 				<li color="black"><a href="#  " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
 			</ul>
 		);
- 
+
 		const guestLinks = (
 			<ul className="nav navbar-nav">
 				<li><Link to="/signup" style={{color: '#343950'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
