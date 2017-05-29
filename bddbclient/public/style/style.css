@@ -4,22 +4,26 @@
 	src: url(fonts/ArtifaktElementLight.ttf);
 }
 @font-face {
-	font-family: ArtifaktElementBook;
+	font-family: ArtifaktElement-Book;
 	src: url(fonts/ArtifaktElementBook.ttf);
 }
 
-/*   BODY. */
-.fill {
-	width: 100%;
-	min-width: 100%;
-	color: black;
-
+html{
+	font-family: ArtifaktElement;
 }
+/*   BODY. */
 body {
 	height: 100%;
 	min-height: 100%;
 	color: black;
 	font-family: ArtifaktElement;
+	padding: 70px;
+
+}
+.fill {
+	width: 100%;
+	min-width: 100%;
+	color: black;
 }
 .bg {
 	width: 100%;
@@ -33,14 +37,22 @@ body {
 	background-repeat: no-repeat;
 	color: black;
 }
+.box-style{
+	border-radius: 25px;
+	border: 1.5px solid #2fe695;
+	padding-left: 3%;
+	padding-right: 3%;
+}
 
 /*  NAVIGATION */
+
 .navbar {
 	overflow: hidden;
 	position: fixed;
 	top: 0;
 	width: 100;
 	height: auto;
+	margin-bottom: 0px !important;
 }
 .logo{
 	margin-top: 15%;
@@ -117,9 +129,9 @@ hr {
 }
 
 /*  FLASH MESSAGE */
-
 .flash {
 	margin-top: 3%;
+
 }
 
 

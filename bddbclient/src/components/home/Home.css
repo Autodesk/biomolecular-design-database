@@ -6,6 +6,12 @@
 button:focus {
     outline:none !important;
 }
+.homepage-title{
+    background-image: url('../../../public/Assets/hero.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .home-title{
 	text-align: center;
 	font-family: ArtifaktElement;
@@ -36,12 +42,17 @@ button:focus {
     padding-left: 9px;
     padding-right: 9px;
 }
+.gallery-container{
+    width: 80%;
+    margin-left: 10%;
+    margin-bottom: 10%;
+}
 /* SHOW ALL DESIGNS */
 .showcase-layout {
 	width: 80%;
 }
 .showcase-item-layout {
-	margin: 5% 4%;
+	margin: 3% 4% 0% 4%;
 }
 
 /* DROPDOWN STYLE */
@@ -78,5 +89,18 @@ button:focus {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+/**** GALLERY */
+.project-item-title{
+  font-family: ArtifaktElement-Book;
+  text-align: left;
+  color: #212a43;
+}
+.authors-styling{
+   opacity: 0.59;
+  font-family: ArtifaktElement-Book;
+  text-align: left;
+  color: #212a43;
 }
 

@@ -11,7 +11,7 @@ let router = express.Router();
 
 function validateInput(data, otherValidations) {
 	let { errors } = otherValidations(data);
-
+	
 	return Promise.all([
 		User.where({ email: data.email }).fetch().then(user => { //fetch user where email === data.email 
 			if(user) { errors.email = 'There is a user with such email';}

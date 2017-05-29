@@ -26,7 +26,6 @@ function validateInput(data) {
 		errors.username = 'Username is required';
 	}
 
-
 	return {
 		errors,
 		isValid: isEmpty(errors)
