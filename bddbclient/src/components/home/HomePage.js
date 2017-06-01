@@ -55,7 +55,7 @@ class HomePage extends React.Component {
 		e.preventDefault();
 	}
 	
-	updateSorts(e){
+	handleSort(e){
 		var selectedTarget = e.target.name;
 		var newOptionsArr = this.state.sortByOptions;
 		var newLabelsArr = this.state.sortByLabels;
@@ -73,15 +73,10 @@ class HomePage extends React.Component {
 			sortBy: newLabelsArr[0],
 			sortByOptions: newOptionsArr,
 			sortByLabels: newLabelsArr
-		})
+		}, this.loadProjects);
 		
 	}
 
-	handleSort(e){
-		this.updateSorts(e);
-		setTimeout(this.loadProjects, 500);
-		//console.log(updateProjects)
-	}
 
 	handleFilters(e) {
 		e.preventDefault();

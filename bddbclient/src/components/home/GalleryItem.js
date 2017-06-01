@@ -33,8 +33,8 @@ const GalleryItem = ({project}) => {
 	        </div>
 	  
     	    <div className="stats"> 
-	  	       	<i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{project.views}
-	           	<i className="fa fa-eye" aria-hidden="true"> </i>{project.likes}
+	  	       	<i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{project.likes}
+	           	<i className="fa fa-eye" aria-hidden="true"> </i>{project.views}
             </div>
 	    </div>
 	  
