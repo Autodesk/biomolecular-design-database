@@ -24,15 +24,15 @@ function validateInput(data) {
 
 class LoginForm extends React.Component {
 	constructor(props){
-			super(props);
-			this.state = {
-				username: '',
-				password: '',
-				errors: {},
-				isLoading: false
-			};
-			this.onSubmit = this.onSubmit.bind(this);
-			this.onChange = this.onChange.bind(this);
+		super(props);
+		this.state = {
+			username: '',
+			password: '',
+			errors: {},
+			isLoading: false
+		};
+		this.onSubmit = this.onSubmit.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
 
 	isValid() {
@@ -48,7 +48,7 @@ class LoginForm extends React.Component {
 		if(this.isValid()){
 			this.setState({ errors: {}, isLoading: true });
 			this.props.login(this.state).then(
-				(res) => this.context.router.push('/'),
+				(res) => { this.context.router.push('/')},
 				(err) => this.setState({ errors: err.response.data.errors, isLoading: false}) //if errors are returned from the server, change state
 			);
 		}

@@ -9,10 +9,12 @@ exports.up = function(knex, Promise) {
  		table.integer('views');
  		table.integer('likes');
  		table.integer('quality_of_documentation');
- 		table.string('header-image-link'); //link to s3 image 
+ 		table.string('header_image_link'); //link to s3 image 
+ 		table.string('user_rights');
+ 		table.timestamps();
   	});
 };
 
-exports.down = function(knex, Promise) {
+exports.down = function(knex, Promise){
   	return knex.schema.dropTable('projects');
 };
