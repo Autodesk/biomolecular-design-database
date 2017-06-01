@@ -8,11 +8,37 @@ import Projects from '../models/projects';
 let router = express.Router();
 
 router.post('/', (req, res) => {
+	/*const user_id= 4;
+		const		name= 'Flat 2D Origami of Autodesk A Logo';
+		const		authors= 'Joseph Schaeffer, Aaron Berliner';
+		const		keywords= 'Autodesk, 2D Origami, DNA, AFM';
+		const		views= 0;
+		const		likes= 0;
+		const		quality_of_documentation= 0;
+		const		header_image_link='linkToAwss3/bucket/file';
+		const		user_rights= ' to be updated';
+	Projects.forge({
+				user_id,
+				name,
+				authors,
+				keywords,
+				views,
+				likes,
+				quality_of_documentation,
+				header_image_link,
+				user_rights
+
+			}, { hasTimestamps: true }).save() //save returns 'promise' so we can use then/catch
+			.then(project =>  console.log(project)) //All GOOD
+			.catch(err => console.log(err));
+*/
+
 	const { username, password } =req.body;
-	
-	Projects.fetchAll().then(resData=> {
-		console.log(resData.models);
-	})
+	var projectArr;
+	//Projects.fetchAll().then(resData=> {
+	//	console.log(resData.models);
+	//})
+	//console.log(projectArr);
 	//User.fetchAll().then(resData=> {
 //		console.log(resData.models);
 //	})
@@ -26,7 +52,6 @@ router.post('/', (req, res) => {
 					id: user.get('id'),
 					username: user.get('username')
 				}, config.jwtSecret);
-
 				res.json({ token });
 			} 
 			else{
