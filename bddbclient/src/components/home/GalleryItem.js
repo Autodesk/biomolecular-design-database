@@ -1,6 +1,5 @@
 import React from 'react';
 import './Home.css';
-import i1 from '../../../public/Assets/BDDSampleFiles/AutodeskALogo_V2.png';
 
 
 const GalleryItem = ({project}) => {
@@ -26,7 +25,7 @@ const GalleryItem = ({project}) => {
 	return (
 		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout">
 	        
-	      	<img className="img-responsive project-image" src={i1} alt=""/>
+	      	<img className="img-responsive project-image" src={project.header_image_link} alt=""/>
 	        <h4 className="project-item-title">{project.name}</h4>
 	        <p className="authors-styling">{authors}</p>
 	        <hr/>
