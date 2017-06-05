@@ -3,21 +3,21 @@ import User from '../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../config';
-import Projects from '../models/projects';
+import projects from '../models/projects';
 
 let router = express.Router();
 
 router.post('/', (req, res) => {
-	/*const user_id= 4;
-		const		name= 'Flat 2D Origami of Autodesk A Logo';
-		const		authors= 'Joseph Schaeffer, Aaron Berliner';
-		const		keywords= 'Autodesk, 2D Origami, DNA, AFM';
-		const		views= 0;
-		const		likes= 0;
-		const		quality_of_documentation= 0;
+	/*const user_id= 1;
+		const		name= 'Square Nut Design, Wyss Institute, Melting Temperatures';
+		const		authors= JSON.stringify([ 'Shawn M. Douglas', 'Hendrik Dietz', 'Tim Liedl', 'Björn Högberg', 'Franziska Graf', 'William M. Shih']);
+		const		keywords= JSON.stringify({"keywords": [ 'Wyss Institute', '3D Origami', 'Material: DNA', 'Data: TEM', 'Lattice: Honeycomb', 'Scaffold: p7560']});
+		const		views= 21;
+		const		likes= 1;
+		const		quality_of_documentation= 4;
 		const		header_image_link='linkToAwss3/bucket/file';
 		const		user_rights= ' to be updated';
-	Projects.forge({
+	projects.forge({
 				user_id,
 				name,
 				authors,
