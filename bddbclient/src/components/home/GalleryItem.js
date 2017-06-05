@@ -1,11 +1,18 @@
 import React from 'react';
 import './Home.css';
-
 import i1 from '../../../public/Assets/BDDSampleFiles/AutodeskALogo_V2.png';
 
 
 const GalleryItem = ({project}) => {
+
 	const qod = project.quality_of_documentation;
+	var counter = 0;
+	const authors = project.authors.map((author) => {
+		counter++;
+		if(counter === 1){ return author; }
+		return ', '+author;
+	})
+
 	var ticks = [];
 	for(var i = 0; i < 5; i++){
 		if( i < qod){
@@ -21,7 +28,7 @@ const GalleryItem = ({project}) => {
 	        
 	      	<img className="img-responsive project-image" src={i1} alt=""/>
 	        <h4 className="project-item-title">{project.name}</h4>
-	        <p className="authors-styling">{project.authors}</p>
+	        <p className="authors-styling">{authors}</p>
 	        <hr/>
 
 	        <div className="tick">

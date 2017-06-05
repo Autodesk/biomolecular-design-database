@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import './Home.css';
 import Gallery from './Gallery';
 import SortOption from './SortOption';
-import { getProjects } from '../../actions/homePageActions';
-
-
+import { reloadProjects } from '../../actions/homePageActions';
 
 class HomePage extends React.Component {
 	constructor(props){
@@ -17,22 +15,24 @@ class HomePage extends React.Component {
 			sortByLabels: ['Newest', 'Most Viewed', 'Most Appreciations', 'Quality of Documentation'],
 			filters: [],		  //array of filters selected by the user
 			projects: [], //projects to display 
+			getFrom: 0,
+			getTo: 6, //projcts to get from-to from the database
 			hasMore: true
-
 		};
 		this.onChange = this.onChange.bind(this);
 		this.handleFilters = this.handleFilters.bind(this);
 		this.loadProjects = this.loadProjects.bind(this);
 		this.handleSort = this.handleSort.bind(this);
+		this.generateMoreProjects = this.generateMoreProjects.bind(this);
 	}
 
 	componentWillMount() {
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
-		this.props.getProjects(queryString).then(
+		queryString += '&from='+0+'&to='+6; //only get first 6 projects initially
+		this.props.reloadProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
-				this.setState( { projects: response.data } ); //change the current state. this will render 
-				console.log(this.state);
+				this.setState( { projects: response.data} ); //change the current state. this will render 
 			},
 			(err) => { this.context.router.push('/notfound')}
 		);
@@ -40,15 +40,43 @@ class HomePage extends React.Component {
 
 	loadProjects(e){
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
-		this.props.getProjects(queryString).then(
+		var filterLen = this.state.filters.length;
+		for(var i=0; i < filterLen; i++){ queryString += '&filter='+this.state.filters[i]; }
+		queryString += '&filtersLen='+filterLen;
+		queryString += '&from='+0+'&to='+6; //only called when the filter or sort is updated, (only get the initial projets)
+
+		this.props.reloadProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
-				this.setState( { projects: response.data } ); //change the current state. this will render 
-				console.log(this.state);
-			},
-			(err) => { this.context.router.push('/notfound')}
+				var newProjectArr = response.data;
+				this.setState( { projects: newProjectArr, getFrom: 0, getTo: 6 } );  
+			}, (err) => { 
+					this.context.router.push('/notfound')
+			}
 		);
-		
+	}
+
+	generateMoreProjects(e){
+		var queryString = 'sortby='+this.state.sortBy;
+		var filterLen = this.state.filters.length;
+		var currFrom = this.state.getFrom+6;
+		var currTo = this.state.getTo+6;
+		for(var i=0; i < filterLen; i++){ queryString += '&filter='+this.state.filters[i]; }
+		queryString += '&filtersLen='+filterLen;
+		queryString += '&from='+currFrom+'&to='+currTo; //only called when the filter or sort is updated, (only get the initial projets)
+
+		this.props.reloadProjects(queryString).then(
+			(res) => {
+				var response = JSON.parse(res.request.response);
+				var newProjectArr = this.state.projects;
+				newProjectArr = newProjectArr.concat(response.data);
+				var _getFrom = this.state.getFrom+6;
+				var _getTo = this.state.getTo+6;
+				this.setState( { projects: newProjectArr, getFrom: _getFrom, getTo: _getTo } );  
+			}, (err) => { 
+					this.context.router.push('/notfound')
+			}
+		);	
 	}
 
 	onChange(e){
@@ -68,7 +96,6 @@ class HomePage extends React.Component {
 		var temp1 = newLabelsArr[0];
 		newLabelsArr[0] = newLabelsArr[indexOfSelectedTarget];
 		newLabelsArr[indexOfSelectedTarget] = temp1;
-
 		this.setState( {
 			sortBy: newLabelsArr[0],
 			sortByOptions: newOptionsArr,
@@ -76,7 +103,6 @@ class HomePage extends React.Component {
 		}, this.loadProjects);
 		
 	}
-
 
 	handleFilters(e) {
 		e.preventDefault();
@@ -89,32 +115,29 @@ class HomePage extends React.Component {
 				var beforeIndex = this.state.filters.slice(0, index);
 				var afterIndex = this.state.filters.slice(index+1, this.state.filters.length);
 				newFilesArr = beforeIndex.concat(afterIndex);
-				this.setState({
+		      	this.setState({
 					filters: newFilesArr 
-				});
+				}, this.loadProjects);
 				filterToggled = true;
 			}
 			return null;
 		});
 		if(!filterToggled){
-				//filter was not present in this.state.filters. Append the filter
-				newFilesArr = this.state.filters.slice();
-				newFilesArr.push(filterName);
-				this.setState({
-					filters: newFilesArr 
-				});
-			}
-		//console.log(this.state.filters);
+			//filter was not present in this.state.filters. Append the filter
+			newFilesArr = this.state.filters.slice();
+			newFilesArr.push(filterName);
+		    this.setState({	
+				filters: newFilesArr 
+			}, this.loadProjects);
+		}
 	}
-//<button name="d"  onClick={this.loadProjects} >loadProjects </button>
-	render (){
 
+	render (){
 		const { isAuthenticated } = this.props.auth; //use the isAuthenticated field from this.props.auth
 		const { user } = this.props.auth;  			 //use the user object from this.props.auth
 		const signUp = (
 			<Link to="/signup" style={{color: '#343950'}}><button className="button-signup">Sign up  </button></Link>
 		);
-
 		return(
 			<div>
 				<div className="container-fluid general">
@@ -127,9 +150,11 @@ class HomePage extends React.Component {
 						<div className="pull-left">
 							<p> FILTER BY KEYWORDS </p>
 							<div className="btn-group">
-								<button name="drug"  onClick={this.handleFilters} className="filterBtn">Drug </button>
-								<button name="tile" onClick={this.handleFilters} className="filterBtn">Tile </button>
-								<button name="stable" onClick={this.handleFilters} className="filterBtn">Stable </button>
+								<button name="Lattice: Honeycomb" onClick={this.handleFilters} className={this.state.filters.indexOf("Lattice: Honeycomb") >= 0 ? "greenBtn" : "filterBtn" }>Lattice: Honeycomb</button>
+								<button name="Material: RNA" onClick={this.handleFilters} className={this.state.filters.indexOf("Material: RNA") >= 0 ? "greenBtn" : "filterBtn" }>Material: RNA</button>
+								<button name="3D" onClick={this.handleFilters} className={this.state.filters.indexOf("3D") >= 0 ? "greenBtn" : "filterBtn" }>3D</button>
+								<button name="2D" onClick={this.handleFilters} className={this.state.filters.indexOf("2D") >= 0 ? "greenBtn" : "filterBtn" }>2D</button>
+								<button name="Scaffold: M13mp18" onClick={this.handleFilters} className={this.state.filters.indexOf("Scaffold: M13mp18") >= 0 ? "greenBtn" : "filterBtn" }>Scaffold: M13mp18</button>
 							</div>
 						</div>
 						<div className="dropdown pull-right">	
@@ -145,22 +170,25 @@ class HomePage extends React.Component {
 						</div>
 					</div>
 					<div className="container-fluid gallery-container">
-						<Gallery projects={this.state.projects}/>
+						<Gallery projects={this.state.projects} generateMoreProjects={this.generateMoreProjects} />
 					</div>
 				</div>
 			</div>
 		);
 	}
 }
-//<span className="glyphicon glyphicon-remove-circle"> to add remove icon in keyword filter
 
 HomePage.propTypes = {
 	auth: React.PropTypes.object.isRequired,
-	getProjects: React.PropTypes.func.isRequired
+	reloadProjects: React.PropTypes.func.isRequired
+}
+
+HomePage.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 function mapStateToProps(state){
-	//console.log(state);
 	return { auth: state.auth };
 }
-export default connect(mapStateToProps, {getProjects})(HomePage);
+
+export default connect(mapStateToProps, { reloadProjects })(HomePage);

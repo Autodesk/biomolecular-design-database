@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "array-sort": "^0.1.2",
+    "aws-sdk": "^2.62.0",
     "axios": "^0.16.1",
     "classnames": "^2.2.5",
     "dropzone": "^4.3.0",
@@ -22,6 +24,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "shortid": "^2.2.8",
+    "sort-object": "^3.0.2",
     "validator": "5.4.0"
   },
   "devDependencies": {
