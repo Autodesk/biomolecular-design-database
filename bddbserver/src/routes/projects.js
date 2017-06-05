@@ -2,14 +2,21 @@ import express from 'express';
 import Projects from '../models/projects';
 import AWS from 'aws-sdk';
 
-/*
-var params = {Bucket: 'bucket', Key: ''};
-
-s3.getSignedUrl('putObject', params, function (err, url) {
-  console.log('The URL is', url);
-});*/
-
+var s3 = new AWS.S3();
 let router = express.Router();
+var bucketName = 'bionano-bdd-app';
+
+function getSignedUrl(projects){
+	const signed = projects.map((project) => {
+		var keyName = project.header_image_link;
+		var params = {Bucket: bucketName, Key: keyName, Expires: 86400}
+		s3.getSignedUrl('getObject', params, (err, url) => {
+			project.header_image_link = url;
+		});
+		return project;
+	});
+	return signed;
+}
 
 function applyFilters(reqQuery, projects){
 	var resData = [];
@@ -39,13 +46,11 @@ function applyFilters(reqQuery, projects){
 	return projects;
 }
 
-
 router.get('/', (req, res) => { //get all projects 
 	const sortby = req.query.sortby;   
 	const from = req.query.from;
 	var to = req.query.to;
 	console.log(req.query);
-
 	Projects.fetchAll()
 	.then(resData => {
 		if(resData.toJSON().length < to){ to = resData.toJSON().length }
@@ -57,38 +62,35 @@ router.get('/', (req, res) => { //get all projects
 		Projects.forge().orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: resProjects.slice(from, to)});
+			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}
-
 	else if( sortby === 'Quality of Documentation') {
 		Projects.forge().orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: resProjects.slice(from, to)});
+			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}
-
 	else if(sortby === 'Most Appreciations'){
 		Projects.forge().orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: resProjects.slice(from, to)});
+			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}
-
 	else{ //return Newest
 		Projects.forge().orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
 			//console.log(resData.models);
 			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: resProjects.slice(from, to)});
+			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
