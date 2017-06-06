@@ -20,6 +20,13 @@ body {
 	padding: 70px;
 
 }
+input{
+	padding: 5px;
+}
+.not-found-layout {
+	margin-top: 20%;
+	margin-bottom: 10%;
+}
 .fill {
 	width: 100%;
 	min-width: 100%;
@@ -86,10 +93,9 @@ input[type=text] {
 input:focus {
     outline:none !important;
 }
-.searchBar-layout:focus {
-	width: 25%;
-}
+
 .searchBar-layout{
+	padding-left: 5px;
 	width: 20%;
 	float: right;
 	border-radius: 12px;
