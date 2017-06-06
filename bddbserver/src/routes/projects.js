@@ -18,6 +18,57 @@ function getSignedUrl(projects){
 	return signed;
 }
 
+function nameSearch(project, search){
+	console.log('name searchentered');
+	if(project.name.toLowerCase().indexOf(search) !== -1){
+
+		console.log('true');
+		return true;
+	}
+	console.log('false');
+	return false;
+}
+
+function keywordsSearch(project, search){
+	console.log('kw search entered');
+	if(project.keywords.toString().toLowerCase().indexOf(search) !== -1){
+		console.log('true');
+		return true;
+	}
+	console.log('false');
+	return false;
+}
+
+function authorsSearch(project, search){
+	console.log('author search entered');
+	if(project.authors.toString().toLowerCase().indexOf(search) !== -1){
+		console.log('true');
+		return true;
+	}
+	console.log('false');
+	return false;
+}
+
+function applySearch(projects, search){
+	var resData = [];
+	var projectLen = projects.length;
+	console.log('search entered');
+	if(search){
+		search = search.toLowerCase();
+		console.log(search);
+		for(var j = 0; j < projectLen; j++){
+			console.log(j);
+			if(nameSearch(projects[j], search) || keywordsSearch(projects[j], search) || authorsSearch(projects[j], search)) { 
+				console.log('adding projec');
+				resData.push(projects[j]);
+			}
+		}
+		console.log(resData.length);
+		return resData;
+	}
+	return projects;
+}
+
 function applyFilters(reqQuery, projects){
 	var resData = [];
 	var projectLen = projects.length;
@@ -33,11 +84,15 @@ function applyFilters(reqQuery, projects){
 		} 
 		else{ //list of filters in reqQuery.filter[] 
 			for(var j = 0; j < projectLen; j++){
+				var toAdd = true;
 				for(var k = 0; k < filtersLen; k++){ 
-					if(projects[j].keywords.toString().toLowerCase().indexOf(reqQuery.filter[k].toLowerCase()) !== -1){
-						resData.push(projects[j]);
+					if(projects[j].keywords.toString().toLowerCase().indexOf(reqQuery.filter[k].toLowerCase()) === -1){
+						toAdd = false;
 						break;
 					}
+				}
+				if(toAdd){
+					resData.push(projects[j]);
 				}
 			}
 		}	
@@ -47,6 +102,7 @@ function applyFilters(reqQuery, projects){
 }
 
 router.get('/', (req, res) => { //get all projects 
+	const search = req.query.search;
 	const sortby = req.query.sortby;   
 	const from = req.query.from;
 	var to = req.query.to;
@@ -61,8 +117,8 @@ router.get('/', (req, res) => { //get all projects
 	if(sortby === 'Most Viewed'){ 
 		Projects.forge().orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
@@ -70,8 +126,8 @@ router.get('/', (req, res) => { //get all projects
 	else if( sortby === 'Quality of Documentation') {
 		Projects.forge().orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
@@ -79,8 +135,8 @@ router.get('/', (req, res) => { //get all projects
 	else if(sortby === 'Most Appreciations'){
 		Projects.forge().orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
@@ -89,8 +145,9 @@ router.get('/', (req, res) => { //get all projects
 		Projects.forge().orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
 			//console.log(resData.models);
-			var resProjects = applyFilters(req.query, resData.toJSON());
-			res.status(200).json({error: false, data: getSignedUrl(resProjects.slice(from, to))});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
+			console.log(resProjects.length);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});

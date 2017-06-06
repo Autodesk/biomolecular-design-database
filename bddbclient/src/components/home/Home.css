@@ -40,8 +40,12 @@ button:focus {
     margin-right: 9px;
     font-family: ArtifaktElement;
     color: white;
-    padding-left: 11px;
-    padding-right: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.nothing-found{
+  margin-top: 12%;
+  margin-bottom: 15%;
 }
 .filterBtn {
     border-radius: 21px;
@@ -89,6 +93,7 @@ button:focus {
     margin-top: 0px;
     float: right;
 }
+
 .green-tick{
     color: #2fe695;
 }

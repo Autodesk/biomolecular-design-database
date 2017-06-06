@@ -8,10 +8,9 @@ AWS.config.apiVersions = {
 
 var s3 = new AWS.S3();
 
-var params = { 
+var params = {
   Bucket: 'bionano-bdd-app',
-  Key: 'allFiles/1/SquareNut_Temperature.png',
-  Expires: 86400 
+  Key: 'allFiles/1/SquareNut_Temperatures.png'
 };
 
 

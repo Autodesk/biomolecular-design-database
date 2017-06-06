@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
 
 class NavigationBar extends React.Component{
-	 
+
 	logout(e){
 		e.preventDefault(); 
 		this.props.logout(); //props.logout  (logout action which is imported)
@@ -30,21 +30,17 @@ class NavigationBar extends React.Component{
 		);
 
 		return(
-      
 			<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout ">
  				<div className="container-fluid">
 					<div className=" page-scroll">
 						< Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
 					</div>
-
 					<div className=" nav-links">
 						{ isAuthenticated ? userLinks : guestLinks }
 					</div>
- 
-					<form>
-	  					<input type="text" className="searchBar-layout" name="search"  placeholder="Search...  " />
+					<form onSubmit={this.props.searchSubmnit}>
+	  					<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder=" Search...  " />
 					</form>				
-
 					<hr width="95%" />  
 				</div>
 			</nav> 
@@ -54,10 +50,11 @@ class NavigationBar extends React.Component{
 
 
 NavigationBar.propTypes = {
+	searchValUpdate: React.PropTypes.func.isRequired,
+	searchSubmit: React.PropTypes.func.isRequired,
 	auth: React.PropTypes.object.isRequired,
 	logout: React.PropTypes.func.isRequired
 }
-
 
 //specify map state to prop function
 //slice off the auth component from the whhole application state (connected to redux store)
@@ -68,4 +65,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { logout })(NavigationBar); //connect to the redux store to check idAuthenticated
-

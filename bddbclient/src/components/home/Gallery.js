@@ -4,19 +4,6 @@ import GalleryItem from './GalleryItem';
 import './Home.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-//import InfiniteGrid from 'react-infinite-grid';
-//import { getProjects } from '../../actions/homePageActions';
-//import { connect } from 'react-redux';
-/*
-import i1 from '../../../public/Assets/BDDSampleFiles/AutodeskALogo_V2.png';
-import i2 from '../../../public/Assets/BDDSampleFiles/AutodeskALogo.png';
-import i3 from '../../../public/Assets/BDDSampleFiles/Monolith_MeltingTemperature.png';
-import i4 from '../../../public/Assets/BDDSampleFiles/Monolith_Wireframe.png';
-import i5 from '../../../public/Assets/BDDSampleFiles/SquareNut_Temperatures.png';
-import i6 from '../../../public/Assets/BDDSampleFiles/SquareNut.png';
-*/
-
-
 class Gallery extends React.Component {
 	constructor(props){
 		super(props);
@@ -46,12 +33,11 @@ class Gallery extends React.Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
 		var projectItems = [];
 		var _hasMore = true;
 	    if(nextProps.projects.length%6 === 0){ projectItems = nextProps.projects;}
 	    else if(nextProps.projects.length%6 !== 0){projectItems = nextProps.projects; _hasMore = false;}
-	    
+
 	    const initialGalleryItems = projectItems.map((project) => {
 			return < GalleryItem key={project.id} project={project} /> 
 		});
@@ -66,18 +52,25 @@ class Gallery extends React.Component {
 		//on change if we want to render an object, place it here
 		//const projectsArr = props.projects;
 		
+		const itemsPresent = (
+			<div className="container-fluid">
+			    <InfiniteScroll
+		         	next={this.props.generateMoreProjects }
+		         	hasMore={this.state.hasMore}
+		          	loader={
+    					<h4>Loading...</h4>  
+					}>
+			        {this.getGridRow(this.state.divs)}
+	   	        </InfiniteScroll>
+		    </div>
+		);
+
+		const noItems = (
+			<h2 className="nothing-found header">No Projects Found... </h2>  
+		);
 		return(
 			<div>
-			 	<div className="container-fluid">
-			        <InfiniteScroll
-			          next={this.props.generateMoreProjects }
-			          hasMore={this.state.hasMore}
-			          loader={
-    							<h4>Loading...</h4>  
-							  }>
-			          {this.getGridRow(this.state.divs)}
-			        </InfiniteScroll>
-			    </div>
+			 	{ this.state.divs.length > 0 ? itemsPresent : noItems}
       		</div>
 		);
 	}
