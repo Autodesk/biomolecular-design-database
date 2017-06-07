@@ -1,0 +1,16 @@
+  db:
+    image: postgres
+    ports:
+      - "8432:5432"
+
+  myapp:
+    build: .
+    ports:
+      - "8010:8000"
+    environment:
+      PORT: "8000"
+      PGHOST: db
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "MSTPGMASTER"
+    links:
+      - db

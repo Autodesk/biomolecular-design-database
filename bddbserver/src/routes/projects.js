@@ -1,6 +1,11 @@
 import express from 'express';
 import Projects from '../models/projects';
 import AWS from 'aws-sdk';
+import knex from 'knex';
+import commaSplit from 'comma-split';
+var Bookshelf = require('bookshelf');
+import knexConfig from '../knexfile';
+
 
 var s3 = new AWS.S3();
 let router = express.Router();
@@ -19,51 +24,45 @@ function getSignedUrl(projects){
 }
 
 function nameSearch(project, search){
-	console.log('name searchentered');
 	if(project.name.toLowerCase().indexOf(search) !== -1){
-
-		console.log('true');
 		return true;
 	}
-	console.log('false');
 	return false;
 }
 
 function keywordsSearch(project, search){
-	console.log('kw search entered');
 	if(project.keywords.toString().toLowerCase().indexOf(search) !== -1){
-		console.log('true');
 		return true;
 	}
-	console.log('false');
 	return false;
 }
 
 function authorsSearch(project, search){
-	console.log('author search entered');
 	if(project.authors.toString().toLowerCase().indexOf(search) !== -1){
-		console.log('true');
 		return true;
 	}
-	console.log('false');
 	return false;
 }
 
 function applySearch(projects, search){
 	var resData = [];
 	var projectLen = projects.length;
-	console.log('search entered');
 	if(search){
 		search = search.toLowerCase();
-		console.log(search);
+		var wordsArr = commaSplit(search);
+		var wordsArrLen = wordsArr.length;
 		for(var j = 0; j < projectLen; j++){
-			console.log(j);
-			if(nameSearch(projects[j], search) || keywordsSearch(projects[j], search) || authorsSearch(projects[j], search)) { 
-				console.log('adding projec');
+			var toAppend = true;
+			for(var k = 0; k < wordsArrLen; k++){
+				if(!nameSearch(projects[j], wordsArr[k]) && !keywordsSearch(projects[j], wordsArr[k]) && !authorsSearch(projects[j], wordsArr[k])) { 
+					toAppend = false;
+					break;
+				}
+			}
+			if(toAppend){
 				resData.push(projects[j]);
 			}
 		}
-		console.log(resData.length);
 		return resData;
 	}
 	return projects;
@@ -106,7 +105,7 @@ router.get('/', (req, res) => { //get all projects
 	const sortby = req.query.sortby;   
 	const from = req.query.from;
 	var to = req.query.to;
-	console.log(req.query);
+
 	Projects.fetchAll()
 	.then(resData => {
 		if(resData.toJSON().length < to){ to = resData.toJSON().length }
@@ -140,13 +139,11 @@ router.get('/', (req, res) => { //get all projects
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
-	}
+	}	
 	else{ //return Newest
 		Projects.forge().orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
-			//console.log(resData.models);
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
-			console.log(resProjects.length);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
