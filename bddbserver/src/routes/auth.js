@@ -50,6 +50,8 @@ router.post('/', (req, res) => {
 				//Valid credentials
 				const token = jwt.sign({ //create a jwt web token. 
 					id: user.get('id'),
+					firstName: user.get('firstName'),
+					lastName: user.get('lastName'),
 					username: user.get('username')
 				}, config.jwtSecret);
 				res.json({ token });

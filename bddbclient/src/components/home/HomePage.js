@@ -144,14 +144,15 @@ class HomePage extends React.Component {
 	render (){
 		const { isAuthenticated } = this.props.auth; //use the isAuthenticated field from this.props.auth
 		const { user } = this.props.auth;  			 //use the user object from this.props.auth
+
 		const signUp = (
-			<Link to="/signup" style={{color: '#343950'}}><button className="button-signup">Sign up  </button></Link>
+			<Link to="/signup" style={{color: '#343950'}}><button className="button-signup"> Sign up  </button></Link>
 		);
 		return(
 			<div>
 				<div className="container-fluid general">
 					<h1 className="home-title"> Showcase & Discovery DNA Constructs </h1>
-					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome  {user.username}!  </h3> : signUp}
+					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome  {user.firstName}!  </h3> : signUp}
 				</div>
 				<hr width="80%"/>
 				<div className="container-fluid showcase-layout">

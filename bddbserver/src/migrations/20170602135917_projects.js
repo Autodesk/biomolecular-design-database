@@ -3,8 +3,8 @@ exports.up = function(knex, Promise) {
   		table.increments(); 		//id
   		table.integer('user_id'); 	//user id of the owner
   		table.string('name'); 		//Project title
-  		table.json('authors'); 
-  		table.json('keywords'); 	//keywords seperated by '/'
+  		table.jsonb('authors'); 
+  		table.jsonb('keywords'); 	//keywords seperated by '/'
  		table.integer('views');
  		table.integer('likes');
  		table.integer('quality_of_documentation');
