@@ -2,44 +2,46 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
-import logo from "../../public/Assets/logo.svg";
 
 class NavigationBar extends React.Component{
-	
+
 	logout(e){
-		e.preventDefault();
-		this.props.logout(); //props.logout (logout action which is imported)
-	}
- 
+		e.preventDefault(); 
+		this.props.logout(); //props.logout  (logout action which is imported)
+	} 
+  
 	render (){
 		const { isAuthenticated } = this.props.auth;
-
-		const userLinks = (
-			<ul className="nav navbar-nav navbar-right">
-				<li><Link to="/"> Browse All </Link></li>
-				<li><Link to="/"> My Projects</Link></li>
-				<li><Link to="/new-event"> Upload New </Link></li>
-				<li><a href="#" onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i>  Logout</a></li>
+		const userLinks = ( 
+			<ul className="nav navbar-nav">  
+				<li><Link to="/" style={{color: '#343950'}} >Browse All </Link></li>
+				<li><Link to="/" style={{color: '#343950'}}> My Projects </Link></li>
+				<li><Link to="/new-event" style={{color: '#343950'}}> Upload New </Link></li>
+				<li color="black"><a href="#  " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
+				
 			</ul>
 		);
- 
+
 		const guestLinks = (
-			<ul className="nav nav-r navbar-nav navbar-right">
-				<li><Link to="/signup"> <i className="fa fa-user-plus" aria-hidden="true"></i>  Sign Up</Link> </li>
-				<li><Link to="/login"> <i className="fa fa-sign-in" aria-hidden="true"></i>  Login</Link></li>
+			<ul className="nav navbar-nav">
+				<li><Link to="/signup" style={{color: '#343950'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
+				<li><Link to="/login" style={{color: '#343950'}} > <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
 			</ul>
 		);
 
 		return(
-			<nav className="navbar navbar-fixed-top navbar navbar-default">
-				<div className="container-fluid">
-					<div className="navbar-header page-scroll">
-						< Link to="/" className="navbar-brand"> <img src={logo} alt="Autodesk Life Science"/> </Link>
+			<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout ">
+ 				<div className="container-fluid">
+					<div className=" page-scroll">
+						< Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
 					</div>
-
-					<div className="collapse navbar-collapse">
+					<div className=" nav-links">
 						{ isAuthenticated ? userLinks : guestLinks }
 					</div>
+					<form onSubmit={this.props.searchSubmnit}>
+	  					<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder=" Search...  " />
+					</form>				
+					<hr width="95%" />  
 				</div>
 			</nav> 
 		);
@@ -48,12 +50,14 @@ class NavigationBar extends React.Component{
 
 
 NavigationBar.propTypes = {
+	searchValUpdate: React.PropTypes.func.isRequired,
+	searchSubmit: React.PropTypes.func.isRequired,
 	auth: React.PropTypes.object.isRequired,
 	logout: React.PropTypes.func.isRequired
 }
 
-
 //specify map state to prop function
+//slice off the auth component from the whhole application state (connected to redux store)
 function mapStateToProps(state) {
 	return{
 		auth: state.auth
@@ -61,4 +65,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { logout })(NavigationBar); //connect to the redux store to check idAuthenticated
-

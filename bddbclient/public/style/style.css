@@ -1,13 +1,36 @@
-.fill {
-	width: 100%;
-	min-width: 100%;
-	color: white;
-
+/* FONT */
+@font-face {
+	font-family: ArtifaktElement;
+	src: url(fonts/ArtifaktElementLight.ttf);
+}
+@font-face {
+	font-family: ArtifaktElement-Book;
+	src: url(fonts/ArtifaktElementBook.ttf);
 }
 
+html{
+	font-family: ArtifaktElement;
+}
+/*   BODY. */
 body {
 	height: 100%;
 	min-height: 100%;
+	color: black;
+	font-family: ArtifaktElement;
+	padding: 70px;
+
+}
+input{
+	padding: 5px;
+}
+.not-found-layout {
+	margin-top: 20%;
+	margin-bottom: 10%;
+}
+.fill {
+	width: 100%;
+	min-width: 100%;
+	color: black;
 }
 .bg {
 	width: 100%;
@@ -15,43 +38,107 @@ body {
 	height: 100%;
 	width: 100%;
 	text-align: center;
-	background: url("../Assets/mol1.png"), url("../Assets/mol2.png");
 	background-attachment: fixed;
-	background-color: #2D3A68;
+	background-color: #fff;
 	overflow-x: hidden;
 	background-repeat: no-repeat;
+	color: black;
+}
+.box-style{
+	border-radius: 25px;
+	border: 1.5px solid #2fe695;
+	padding-left: 3%;
+	padding-right: 3%;
 }
 
+/*  NAVIGATION */
 
-/* --------- FLASH MESSAGE -------------*/
-
-.flash {
-	margin-top: 3%;
-}
-
-
-
-/* ------------ NAVIGATION ---------------*/
 .navbar {
 	overflow: hidden;
 	position: fixed;
 	top: 0;
 	width: 100;
+	height: auto;
+	margin-bottom: 0px !important;
+}
+.logo{
+	margin-top: 15%;
+	margin-left: 45px;
+	color: #2fe695;
+	opacity: 0.89;
+	font-weight: 500;
+	text-align: left;
+	font-family: ArtifaktElement;
+	font-size: 25px;
+}
+.navbar-layout {
+	color: black;
+	background-color: #ffffff;
+
+}
+.nav-links{
+	margin-left: 150px;
 }
 
 .nav-r {
 	margin-right: 4%;
 }
-
-
-
-
-.general {
-	margin-top: 8%;
+input[type=text] {
+    font-size: 16px;
+    background-color: white;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
 }
 
+input:focus {
+    outline:none !important;
+}
 
+.searchBar-layout{
+	padding-left: 4px;
+	width: 20%;
+	float: right;
+	border-radius: 22px;
+    border: 2px solid #2fe695;
+    text-align: left;
+    margin-top: 9px;
+    margin-right: 6%;
+    background-color : #d1d1d1;
+    font-family: ArtifaktElement;
+}
+hr { 
+ 	margin-top: 10px; 
+ 	margin-bottom: 10px;
+ 	opacity: 1;
+ }
+.button-signup{
+    background-color: #2fe695;
+    border-radius: 29px;
+    color: white;
+    padding: 11px 45px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 16px;
+    margin: 35px 2px; 
+}
+.button-style{
+    background-color: #2fe695;
+    border-radius: 29px;
+    color: white;
+    padding: 7px 15px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 15px;
+    margin: 25px 2px; 
+}
 
+/*  FLASH MESSAGE */
+.flash {
+	margin-top: 3%;
+
+}
 
 
 
