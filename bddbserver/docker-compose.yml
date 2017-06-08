@@ -1,7 +1,7 @@
 myapp:
   build: .
   ports:
-    - "8010:8000"
+    - "8000:8000"
   environment:
     PORT: "8000"
     PGHOST: db
