@@ -1,14 +1,16 @@
 // Update with your config settings.
 
+const PGHOST = process.env.PGHOST || '127.0.0.1';
+
 module.exports = {
 
   development: {
     client: 'postgresql',
     connection: {
-      host: '127.0.0.1',
-      database: 'bddbProject',
-      user:     't_pateru',
-      password: ''
+      host: PGHOST,
+      database: 'bdd',
+      user:     'bddapp',
+      password: 'storageBDD'
     },
     pool: {
       min: 2,
