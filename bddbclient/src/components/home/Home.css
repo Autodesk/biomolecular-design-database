@@ -1,0 +1,175 @@
+.general {
+	margin-top: 8%;
+	margin-bottom: 4%;
+}
+
+button:focus {
+    outline:none !important;
+}
+.homepage-title{
+    background-image: url('../../../public/Assets/hero.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.home-title{
+	text-align: center;
+	font-family: ArtifaktElement;
+	font-weight: 100;
+	color: #343950;
+}
+.welcomeStyle{
+	margin: 35px 2px;
+	font-family:  ArtifaktElement;
+	font-weight: 100;
+	color: #2fe695;
+}
+.sortByStyle {
+	margin-left: 80%;
+}
+.greenBtn {
+  background-color: #2fe695;
+    border-radius: 21px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-color: white !important;
+    font-size: 14px;
+    float: left;
+    margin-right: 9px;
+    font-family: ArtifaktElement;
+    color: white;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.nothing-found{
+  margin-top: 12%;
+  margin-bottom: 15%;
+}
+.filterBtn {
+    border-radius: 21px;
+    background-color: white;
+    color: black !important; 
+    text-align: center;
+    text-decoration: none;
+    border-color: black;
+    border-width: 1px;
+    font-size: 14px;
+    float: left;
+    margin-right: 9px;
+    font-family: ArtifaktElement;
+    color: white;
+    padding-left: 11px;
+    padding-right: 11px;
+}
+.gallery-container{
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-bottom: 5%;
+}
+.dropdown-menu{
+    width: 300px;
+    white-space: normal;
+}
+/* SHOW ALL DESIGNS */
+.showcase-layout {
+	width: 80%;
+    margin-left: 10%;
+}
+.showcase-item-layout {
+	margin: 4% 4% 0% 4%;
+    overflow: hidden;
+     z-index: -1000;
+}
+.project-image{
+    width: 100%;
+}
+.stats{
+    font-family: ArtifaktElement;
+    margin-right: 1%;
+    letter-spacing: 2px;
+    margin-top: 0px;
+    float: right;
+}
+
+.green-tick{
+    color: #2fe695;
+}
+.tick{
+    float: left;
+    margin-left: 1%;
+    letter-spacing: 3px;
+
+}
+.fa-thumbs-o-up{
+    opacity: 0.6;
+}
+.fa-eye{
+    opacity: 0.6;
+    padding-left: 8px;
+}
+/* DROPDOWN STYLE */
+.sub-menu-parent { 
+    float: right;
+    position: relative; 
+    width: 295px;
+    overflow: visible;
+}
+.sub-menu { 
+  border-radius: 5%;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  background-color: white;
+  padding: 3%;
+  font-size: 16px;
+  visibility: hidden; /* hides sub-menu */
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-2em);
+  z-index: -1;
+  overflow: visible;
+  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+}
+.sub-menu li:hover {
+    color: #2fe695;
+}
+.sub-menu-parent:hover .sub-menu {
+  width: 100%;
+  visibility: visible; /* shows sub-menu */
+  opacity: 1;
+  z-index: 1;
+  transform: translateY(0%);
+  transition-delay: 0s, 0s, 0.3s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+}
+
+.dropbtn {
+    color: #2fe695;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 17px;
+}
+
+.sort-button{
+    border: none;
+    background-color: rgba(0,0,0,0);
+}
+
+/**** GALLERY */
+.project-item-title{
+  font-family: ArtifaktElement-Book;
+  text-align: left;
+  color: #212a43;
+}
+.authors-styling{
+   opacity: 0.59;
+  font-family: ArtifaktElement-Book;
+  text-align: left;
+  color: #212a43;
+}
+

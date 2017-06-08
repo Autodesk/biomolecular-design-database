@@ -13,6 +13,12 @@ function validateInput(data) {
 	if(!Validator.isEmail(data.email)) {
 		errors.email = "Email is invalid";
 	}
+	if(Validator.isNull(data.firstName)){
+		errors.firstName = 'firstName is required';
+	}
+	if(Validator.isNull(data.lastName)){
+		errors.lastName = 'lastName is required';
+	}
 	if(Validator.isNull(data.password)){
 		errors.password = 'Password is required';
 	}
@@ -25,7 +31,6 @@ function validateInput(data) {
 	if(Validator.isNull(data.username)){
 		errors.username = 'Username is required';
 	}
-
 
 	return {
 		errors,
@@ -43,6 +48,8 @@ class SignupForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			firstName: '',
+			lastName: '',
 			username: '',
 			email: '',
 			password: '',
@@ -90,7 +97,8 @@ class SignupForm extends React.Component {
 		return (
 			<form onSubmit={this.onSubmit}>
 				<h1> Join our Community! </h1>
-
+				<TextFieldGroup error={errors.firstName} label="First name" onChange={this.onChange} value={this.state.firstName} field="firstName" />
+				<TextFieldGroup error={errors.lastName} label="Last name" onChange={this.onChange} value={this.state.lastName} field="lastName" />
 				<TextFieldGroup error={errors.username} label="Username" onChange={this.onChange} value={this.state.username} field="username" />
 				<TextFieldGroup error={errors.email} label="Email" onChange={this.onChange} value={this.state.email} field="email" />
 				<TextFieldGroup error={errors.password} label="Password" onChange={this.onChange} type="password" value={this.state.password} field="password" />
@@ -98,7 +106,7 @@ class SignupForm extends React.Component {
 
 
 				<div className="form-group">
-					<button disabled={this.state.isLoading} className="btn btn-primary btn-lg">
+					<button disabled={this.state.isLoading} className="button-signup">
 						Sign Up
 					</button>
 				</div>

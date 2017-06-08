@@ -23,18 +23,16 @@ function validateInput(data) {
 }
 
 class LoginForm extends React.Component {
-	
 	constructor(props){
-			super(props);
-			this.state = {
-				username: '',
-				password: '',
-				errors: {},
-				isLoading: false
-			};
-
-			this.onSubmit = this.onSubmit.bind(this);
-			this.onChange = this.onChange.bind(this);
+		super(props);
+		this.state = {
+			username: '',
+			password: '',
+			errors: {},
+			isLoading: false
+		};
+		this.onSubmit = this.onSubmit.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
 
 	isValid() {
@@ -50,7 +48,7 @@ class LoginForm extends React.Component {
 		if(this.isValid()){
 			this.setState({ errors: {}, isLoading: true });
 			this.props.login(this.state).then(
-				(res) => this.context.router.push('/'),
+				(res) => { this.context.router.push('/')},
 				(err) => this.setState({ errors: err.response.data.errors, isLoading: false}) //if errors are returned from the server, change state
 			);
 		}
@@ -68,7 +66,7 @@ class LoginForm extends React.Component {
 				{ errors.form && <div className="alert alert-danger"> { errors.form} </div> }
 				<TextFieldGroup error={errors.username} label="Username" onChange={this.onChange} value={username} field="username" />
 				<TextFieldGroup error={errors.password} label="Password" onChange={this.onChange} type="password" value={password} field="password" />
-				<div className="form-group"> < button className="btn btn-primary btn-lg"  disabled={isLoading}>Login</button></div>
+				<div className="form-group"> < button className="button-signup"  disabled={isLoading}>Login</button></div>
 			
 			</form>
 		);
