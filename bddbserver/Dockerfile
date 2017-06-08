@@ -10,4 +10,4 @@ RUN npm install
 
 COPY . $APP/
 
-CMD npm start
+CMD npm run server
