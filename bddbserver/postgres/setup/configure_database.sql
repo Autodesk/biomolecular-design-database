@@ -1,0 +1,7 @@
+DROP DATABASE IF EXISTS "bdd" ;
+ALTER USER bddapp WITH PASSWORD 'storageBDD' ;
+CREATE DATABASE "bdd" TEMPLATE=template1 ;
+GRANT ALL PRIVILEGES ON DATABASE "bdd" to bddapp ;
+\connect "bdd" ;
+GRANT SELECT ON ALL TABLES IN SCHEMA PUBLIC to bddapp ;
+
