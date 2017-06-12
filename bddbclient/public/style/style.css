@@ -93,9 +93,11 @@ input[type=text] {
 input:focus {
     outline:none !important;
 }
-
+input{
+	padding-left: 14px;
+}
 .searchBar-layout{
-	padding-left: 4px;
+	padding-left: 16px;
 	width: 20%;
 	float: right;
 	border-radius: 22px;
@@ -108,7 +110,7 @@ input:focus {
 }
 hr { 
  	margin-top: 10px; 
- 	margin-bottom: 10px;
+ 	margin-bottom: 0px !important;
  	opacity: 1;
  }
 .button-signup{

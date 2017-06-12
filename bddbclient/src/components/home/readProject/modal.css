@@ -1,0 +1,178 @@
+.modal-body div{
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+.ReactModal__Body--open {
+    overflow: hidden;
+}
+.modal-body{
+  padding: 0px;
+  overflow: hidden;
+  background: #fff;
+  width: 66vw;
+  min-height: 100vh;
+  margin-left: 14vw;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.5);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+.glyphicon.glyphicon-remove-circle {
+  font-size: 35px;
+}
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+.cross-icon{
+  float: right;
+  margin-top: 0px;
+  padding: 10px;
+}
+#files span:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+#details{
+  padding-top: 2%;
+  padding-left: 3%;
+  padding-right: 4%;
+  margin-right: 0;
+  background: #F5F5F5;
+  width: 19vw;
+  float: left;
+  min-height: 100vh;
+
+}
+#files{
+  padding: 0;
+  width: 46vw;
+  float: right;
+  min-height: 100vh;
+}
+
+/* SUB parts */
+#details .sub-part{
+  margin-top: 8%;
+}
+#details .sub-part-hr{
+  margin-top: 1%;
+}
+.sub-part-hr{
+  min-height: 100%;
+  min-width: 90%;
+}
+.sub-part{
+  min-height: 100%;
+  min-width: 90%;
+  font-family: ArtifaktElement-Book;
+}
+
+.sub-title h5{
+  opacity: 0.7;
+  text-align: left;
+}
+.sub-title .fa {
+  padding: 11px;
+  font-size: 13px;
+  margin-left: 3%;
+  border-radius: 50%;
+  float: left;
+  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
+  -moz-transition: all 0.5s ease; /* Firefox */
+  -ms-transition: all 0.5s ease; /* IE 9 */
+  -o-transition: all 0.5s ease; /* Opera */
+  transition: all 0.5s ease;
+}
+.sub-title hr{
+  color: #000000;
+  background-color: #000000;
+  border-width: 1px;
+  display: block;
+  border-top: 1px solid #ccc;
+}
+.sub-title .fa:hover {
+  box-shadow: 0px 0px 10px #000000;
+  cursor: pointer;
+  -webkit-transform:scale(1.3); /* Safari and Chrome */
+  -moz-transform:scale(1.3); /* Firefox */
+  -ms-transform:scale(1.3); /* IE 9 */
+  -o-transform:scale(1.3); /* Opera */
+  transform:scale(1.3);
+}
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+  border-radius: 100% !important;
+  font-size: 14px !important;
+}
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+.fa-envelope-o {
+  background-color: #939392;
+  color: white;
+}
+.fa-home {
+  background-color: #939392;
+  color:white;
+}
+.views-details{
+  float: left;
+  height: auto;
+  width: 30%;
+  opacity: 0.7;
+}
+.views-styling{
+  font-size: 15px;
+  text-align: left;
+  padding-left: 12%;
+}
+.likes-details {
+  float: right;
+  width: 60%;
+  opacity: 0.7;
+}
+.likes-styling{
+  font-size: 15px;
+  text-align: left;
+  padding-left: 12%;
+}
+.appreciate-btn{
+  border-radius: 0px;
+  background-color: #2acc84 !important;
+  width: 100%;
+  border: none;
+  padding: 5%;
+  font-size: 14px;
+  margin-bottom: 8%;
+  margin-top: 5%;
+}
+.appreciate-btn:hover{
+  background-color: #2acc84;
+  opacity: 0.7;
+}
+.sub-part a{
+  display: inline;
+  margin-bottom: 25%;
+  color: #212a43
+}
+.link-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.link-right{
+  text-align: right;
+}

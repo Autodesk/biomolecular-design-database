@@ -35,14 +35,14 @@ class Gallery extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		var projectItems = [];
 		var _hasMore = true;
-	    if(nextProps.projects.length%6 === 0){ projectItems = nextProps.projects;}
-	    else if(nextProps.projects.length%6 !== 0){projectItems = nextProps.projects; _hasMore = false;}
+	    if(nextProps.projects.length%9 === 0){ projectItems = nextProps.projects;}
+	    else if(nextProps.projects.length%9 !== 0){projectItems = nextProps.projects; _hasMore = false;}
 
 	    const initialGalleryItems = projectItems.map((project) => {
 			return < GalleryItem key={project.id} project={project} /> 
 		});
 		this.setState({
-			loadedProjects: 6,
+			loadedProjects: 9,
 			hasMore: _hasMore,
 			divs: initialGalleryItems
 		});

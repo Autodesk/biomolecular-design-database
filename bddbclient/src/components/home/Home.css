@@ -73,43 +73,6 @@ button:focus {
     width: 300px;
     white-space: normal;
 }
-/* SHOW ALL DESIGNS */
-.showcase-layout {
-	width: 80%;
-    margin-left: 10%;
-}
-.showcase-item-layout {
-	margin: 4% 4% 0% 4%;
-    overflow: hidden;
-     z-index: -1000;
-}
-.project-image{
-    width: 100%;
-}
-.stats{
-    font-family: ArtifaktElement;
-    margin-right: 1%;
-    letter-spacing: 2px;
-    margin-top: 0px;
-    float: right;
-}
-
-.green-tick{
-    color: #2fe695;
-}
-.tick{
-    float: left;
-    margin-left: 1%;
-    letter-spacing: 3px;
-
-}
-.fa-thumbs-o-up{
-    opacity: 0.6;
-}
-.fa-eye{
-    opacity: 0.6;
-    padding-left: 8px;
-}
 /* DROPDOWN STYLE */
 .sub-menu-parent { 
     float: right;
@@ -161,7 +124,54 @@ button:focus {
 }
 
 /**** GALLERY */
+/* SHOW ALL DESIGNS */
+.showcase-layout {
+  width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+}
+.showcase-item-layout {
+  margin: 4% 4% 0% 4%;
+
+}
+.showcase-item-layout h4:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+.project-image{
+    width: 100%;
+}
+.stats{
+    font-family: ArtifaktElement;
+    margin-right: 1%;
+    letter-spacing: 2px;
+    margin-top: 0px;
+    float: right;
+    font-size: 14px;
+}
+.tick-stat {
+  padding: 8px !important ;
+}
+.green-tick{
+    color: #2fe695;
+}
+.tick{
+  font-size: 15px;
+    float: left;
+    margin-left: 1%;
+    letter-spacing: 3px;
+
+}
+.fa-thumbs-o-up{
+    opacity: 0.6;
+}
+.fa-eye{
+    opacity: 0.6;
+    padding-left: 8px;
+}
 .project-item-title{
+  cursor: pointer;
+  cursor: hand;
   font-family: ArtifaktElement-Book;
   text-align: left;
   color: #212a43;

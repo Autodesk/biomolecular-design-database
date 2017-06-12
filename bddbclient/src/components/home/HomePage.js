@@ -16,7 +16,7 @@ class HomePage extends React.Component {
 			filters: [],		  //array of filters selected by the user
 			projects: [], //projects to display 
 			getFrom: 0,
-			getTo: 6, //projcts to get from-to from the database
+			getTo: 9, //projcts to get from-to from the database
 			hasMore: true,
 			search: ''
 		};
@@ -29,7 +29,7 @@ class HomePage extends React.Component {
 
 	componentWillMount() { //gets evoked before rendering the component
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
-		queryString += '&from='+0+'&to='+6; //only get first 6 projects initially
+		queryString += '&from='+0+'&to='+9; //only get first 9 projects initially
 		this.props.reloadProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
@@ -51,13 +51,13 @@ class HomePage extends React.Component {
 		var filterLen = this.state.filters.length;
 		for(var i=0; i < filterLen; i++){ queryString += '&filter='+this.state.filters[i]; }
 		queryString += '&filtersLen='+filterLen;
-		queryString += '&from='+0+'&to='+6; //only called when the filter or sort is updated, (only get the initial projets)
+		queryString += '&from='+0+'&to='+9; //only called when the filter or sort is updated, (only get the initial projets)
 		console.log(queryString);
 		this.props.reloadProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
 				var newProjectArr = response.data;
-				this.setState( { projects: newProjectArr, getFrom: 0, getTo: 6 } );  
+				this.setState( { projects: newProjectArr, getFrom: 0, getTo: 9 } );  
 			}, (err) => { 
 					this.context.router.push('/notfound')
 			}
@@ -68,8 +68,8 @@ class HomePage extends React.Component {
 		var queryString = 'sortby='+this.state.sortBy;
 		queryString += '&search='+this.props.searchValue;
 		var filterLen = this.state.filters.length;
-		var currFrom = this.state.getFrom+6;
-		var currTo = this.state.getTo+6;
+		var currFrom = this.state.getFrom+9;
+		var currTo = this.state.getTo+9;
 		for(var i=0; i < filterLen; i++){ queryString += '&filter='+this.state.filters[i]; }
 		queryString += '&filtersLen='+filterLen;
 		queryString += '&from='+currFrom+'&to='+currTo; //only called when the filter or sort is updated, (only get the initial projets)
@@ -79,8 +79,8 @@ class HomePage extends React.Component {
 				var response = JSON.parse(res.request.response);
 				var newProjectArr = this.state.projects;
 				newProjectArr = newProjectArr.concat(response.data);
-				var _getFrom = this.state.getFrom+6;
-				var _getTo = this.state.getTo+6;
+				var _getFrom = this.state.getFrom+9;
+				var _getTo = this.state.getTo+9;
 				this.setState( { projects: newProjectArr, getFrom: _getFrom, getTo: _getTo } );  
 			}, (err) => { 
 					this.context.router.push('/notfound')
@@ -151,8 +151,8 @@ class HomePage extends React.Component {
 		return(
 			<div>
 				<div className="container-fluid general">
-					<h1 className="home-title"> Showcase & Discovery DNA Constructs </h1>
-					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome  {user.firstName}!  </h3> : signUp}
+					<h1 className="home-title"> Showcase & Discover  </h1>
+					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome {user.firstName}!  </h3> : signUp}
 				</div>
 				<hr width="80%"/>
 				<div className="container-fluid showcase-layout">
@@ -179,7 +179,7 @@ class HomePage extends React.Component {
 						  	</div>
 						</div>
 					</div>
-					<div className="container-fluid gallery-container">
+					<div >
 						<Gallery projects={this.state.projects} generateMoreProjects={this.generateMoreProjects} />
 					</div>
 				</div>

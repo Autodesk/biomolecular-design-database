@@ -106,13 +106,6 @@ router.get('/', (req, res) => { //get all projects
 	const from = req.query.from;
 	var to = req.query.to;
 
-	Projects.fetchAll()
-	.then(resData => {
-		if(resData.toJSON().length < to){ to = resData.toJSON().length }
-	})
-	.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
-	});
-
 	if(sortby === 'Most Viewed'){ 
 		Projects.forge().orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
