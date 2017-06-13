@@ -34,27 +34,31 @@ class GalleryItem extends React.Component {
 		const customStyles = {
 		  overlay : {
 		    position          : 'fixed',
-		    top               : 20,
+		    top               : 0,
 		    left              : 0,
 		    right             : 0,
 		    bottom            : 0,
 		    backgroundColor   : 'rgba(0, 0, 0, 0.75)',
 		    padding			  : '0px',
-		    z_index : 1050
+		    zIndex : 1050
 		  },
 		  content : {
 		    position                   : 'absolute',
-		    top                        : '60px',
+		    top                        : '0px',
 		    left                       : '0px',
 		    right                      : '0px',
-		    bottom                     : '0px',
+		    paddingTop 					: '3%',
+		    paddingBottom 				: '3%',
+		    minHeight 					: '100%',
+		    marginLeft					: '12%',
+		    marginRight					: '12%',
+		    width						: '76%',
 		    border                     : 'none',
-		    background                 : 'rgba(0, 0, 0, 0.10)',
-		    overflow                   : 'auto',
+		    background                 : 'transparent',
 		    WebkitOverflowScrolling    : 'hidden',
 		    borderRadius               : '4px',
-		    outline                    : 'none'
-
+		    outline                    : 'none',
+		    overflow                   : 'auto',
 		  }
 		};
 
@@ -64,7 +68,7 @@ class GalleryItem extends React.Component {
 				onRequestClose={this.deactivateModal}
 				style={customStyles}
 				contentLabel="Modal Open">
-					<ReadProject project={this.props.project} deactivateModal={this.deactivateModal} />
+					<ReadProject project={this.props.project} increaseAp={this.props.increaseAp} deactivateModal={this.deactivateModal} />
 				</Modal>
 		const qod = this.props.project.quality_of_documentation;
 		var counter = 0;
@@ -110,7 +114,8 @@ class GalleryItem extends React.Component {
 }
 
 GalleryItem.propTypes = {
-	project: React.PropTypes.object.isRequired
+	project: React.PropTypes.object.isRequired,
+	increaseAp: React.PropTypes.func.isRequired
 }
 
 export default GalleryItem;

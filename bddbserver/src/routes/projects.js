@@ -1,11 +1,7 @@
 import express from 'express';
 import Projects from '../models/projects';
 import AWS from 'aws-sdk';
-import knex from 'knex';
 import commaSplit from 'comma-split';
-var Bookshelf = require('bookshelf');
-import knexConfig from '../knexfile';
-
 
 var s3 = new AWS.S3();
 let router = express.Router();
@@ -142,7 +138,7 @@ router.get('/', (req, res) => { //get all projects
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}
-})
+});
 
 
 export default router;

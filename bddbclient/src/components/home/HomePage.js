@@ -25,6 +25,7 @@ class HomePage extends React.Component {
 		this.loadProjects = this.loadProjects.bind(this);
 		this.handleSort = this.handleSort.bind(this);
 		this.generateMoreProjects = this.generateMoreProjects.bind(this);
+		this.increaseAp = this.increaseAp.bind(this);
 	}
 
 	componentWillMount() { //gets evoked before rendering the component
@@ -35,7 +36,7 @@ class HomePage extends React.Component {
 				var response = JSON.parse(res.request.response);
 				this.setState( { projects: response.data} ); //change the current state. this will render 
 			},
-			(err) => { this.context.router.push('/notfound')}
+			(err) => { this.context.router.push('/notfound');}
 		);
 	}
 
@@ -45,6 +46,19 @@ class HomePage extends React.Component {
 		);
 	}
 
+	increaseAp(pId, likes) {
+		var newProjects = this.state.projects.map((project) => {
+			if(project.id === pId){
+				project.likes = likes;
+				return project;
+			}
+			return project;
+		});
+		this.setState({
+			projects: newProjects
+		});
+	}
+
 	loadProjects(e){
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
 		queryString += '&search='+this.props.searchValue;
@@ -52,7 +66,6 @@ class HomePage extends React.Component {
 		for(var i=0; i < filterLen; i++){ queryString += '&filter='+this.state.filters[i]; }
 		queryString += '&filtersLen='+filterLen;
 		queryString += '&from='+0+'&to='+9; //only called when the filter or sort is updated, (only get the initial projets)
-		console.log(queryString);
 		this.props.reloadProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
@@ -180,7 +193,7 @@ class HomePage extends React.Component {
 						</div>
 					</div>
 					<div >
-						<Gallery projects={this.state.projects} generateMoreProjects={this.generateMoreProjects} />
+						<Gallery projects={this.state.projects} increaseAp={this.increaseAp} generateMoreProjects={this.generateMoreProjects} />
 					</div>
 				</div>
 			</div>

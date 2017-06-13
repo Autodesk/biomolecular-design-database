@@ -39,7 +39,7 @@ class Gallery extends React.Component {
 	    else if(nextProps.projects.length%9 !== 0){projectItems = nextProps.projects; _hasMore = false;}
 
 	    const initialGalleryItems = projectItems.map((project) => {
-			return < GalleryItem key={project.id} project={project} /> 
+			return < GalleryItem key={project.id} increaseAp={this.props.increaseAp} project={project} /> 
 		});
 		this.setState({
 			loadedProjects: 9,
@@ -51,12 +51,15 @@ class Gallery extends React.Component {
 	render() {
 		//on change if we want to render an object, place it here
 		//const projectsArr = props.projects;
-		
+		const styling = {
+			overflow: 'hidden'
+		}
 		const itemsPresent = (
 			<div className="container-fluid">
 			    <InfiniteScroll
 		         	next={this.props.generateMoreProjects }
 		         	hasMore={this.state.hasMore}
+		         	style={styling}
 		          	loader={
     					<h4>Loading...</h4>  
 					}>
@@ -79,7 +82,8 @@ class Gallery extends React.Component {
 
 Gallery.propTypes = {
 	projects: React.PropTypes.array.isRequired,
-	generateMoreProjects: React.PropTypes.func.isRequired
+	generateMoreProjects: React.PropTypes.func.isRequired,
+	increaseAp: React.PropTypes.func.isRequired
 }
 Gallery.contextTypes = {  //context 
 	router: React.PropTypes.object.isRequired
