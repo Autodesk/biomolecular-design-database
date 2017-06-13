@@ -1,25 +1,26 @@
+/*MODAL BODY */
+
 .modal-body div{
   padding: 0;
   margin: 0;
   height: 100%;
 }
 .ReactModal__Body--open {
-    overflow: hidden;
+  overflow: hidden;
 }
-
 ::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
+  width: 0px;  /* remove scrollbar space */
+  background: transparent;  /* optional: just make scrollbar invisible */
 }
 /* optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-    background: #FF0000;
+  background: #FF0000;
 }
 .modal-body{
   padding: 0px;
   overflow: hidden;
   background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0);
+  border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.5);
   -webkit-animation-name: animatetop;
@@ -28,27 +29,50 @@
   animation-duration: 0.4s
 }
 .glyphicon.glyphicon-remove-circle {
-  font-size: 35px;
+  font-size: 30px;
+  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
+  -moz-transition: all 0.5s ease; /* Firefox */
+  -ms-transition: all 0.5s ease; /* IE 9 */
+  -o-transition: all 0.5s ease; /* Opera */
+  transition: all 0.5s ease;
+}
+.glyphicon.glyphicon-remove-circle:hover {
+  -webkit-transform:scale(1.2); /* Safari and Chrome */
+  -moz-transform:scale(1.2); /* Firefox */
+  -ms-transform:scale(1.2); /* IE 9 */
+  -o-transform:scale(1.2); /* Opera */
+  transform:scale(1.2);
 }
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0} 
-    to {top:0; opacity:1}
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
 }
 
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/*CONTENT */
+#content{
+  width: 74%;
+  padding: 0;
+  float: right;
+  min-height: 100vh;
+   text-align: center;
 }
 .cross-icon{
   float: right;
   margin-top: 0px;
   padding: 10px;
 }
-#files span:hover{
+#content span:hover{
   cursor: pointer;
   cursor: hand;
 }
+
+/* SUB parts DETAILS */
 #details{
   padding-top: 2%;
   padding-left: 3%;
@@ -58,17 +82,7 @@
   width: 26%;
   float: left;
   min-height: 100vh;
-
 }
-#files{
-  width: 74%;
-  padding: 0;
-  float: right;
-  min-height: 100vh;
-   text-align: center;
-}
-
-/* SUB parts */
 #details .sub-part{
   margin-top: 8%;
 }
@@ -137,7 +151,7 @@
 .views-details{
   float: left;
   height: auto;
-  width: 30%;
+  width: 38%;
   opacity: 0.7;
 }
 .views-styling{
@@ -153,7 +167,7 @@
 .likes-styling{
   font-size: 15px;
   text-align: left;
-  padding-left: 12%;
+  padding-left: 8%;
 }
 .appreciate-btn{
   border-radius: 0px;

@@ -28,6 +28,7 @@ class ReadProject extends React.Component {
 
 			this.props.checkAppreciations(queryString).then(
 			(res) => {
+				//responds with null if the user has not appreciated the project or some object otherwise
 				var response = JSON.parse(res.request.response);
 				if(response.data !== null){ //user has already appreciated this project
 					this.setState({
@@ -49,12 +50,14 @@ class ReadProject extends React.Component {
 			(err) => { this.context.router.push('/notfound'); }
 			);
 		}
-		this.setState( {
-			userLoggedIn: _isAuthenticated,
-			userId: _userId,
-			appreciateButtonEnabled: _appreciateButtonEnabled,
-			likes: this.props.project.likes
-		});
+		else{
+			this.setState( {
+				userLoggedIn: _isAuthenticated,
+				userId: _userId,
+				appreciateButtonEnabled: _appreciateButtonEnabled,
+				likes: this.props.project.likes
+			});
+		}
 
 	}
 
@@ -176,11 +179,11 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="col-md-4 views-details">
-							<h5> VIEWS<i className="fa fa-eye" aria-hidden="true"> </i> </h5>
+							<h5>VIEWS<i className="fa fa-eye" aria-hidden="true"></i> </h5>
 							<p className="views-styling"> {this.props.project.views} </p>
 						</div>
 						<div className="col-md-4 likes-details">
-							<h5> APPRECIATIONS  <i className="fa fa-thumbs-o-up" aria-hidden="true"></i> </h5>
+							<h5> APPRECIATIONS <i className="fa fa-thumbs-o-up" aria-hidden="true"></i> </h5>
 							<p className="likes-styling"> {this.state.likes} </p>
 						</div>
 					</div>
@@ -199,9 +202,10 @@ class ReadProject extends React.Component {
 						<a href="" className="link-right">  Flag content</a>
 					</div>
 				</div>
-				<div id="files">
+				<div id="content">
 					<span className="glyphicon glyphicon-remove-circle cross-icon" onClick={this.props.deactivateModal} aria-hidden="true"></span>
     				<h2> {this.props.project.name}  </h2>
+
     			</div>
 			</div>
 		);
