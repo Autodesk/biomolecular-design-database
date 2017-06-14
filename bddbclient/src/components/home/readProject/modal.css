@@ -24,12 +24,30 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.5);
   -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
+  -webkit-animation-duration: 01.5s;
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 1.5s
+}
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from { opacity:0} 
+  to { opacity:1}
+}
+
+@keyframes animatetop {
+  from { opacity:0}
+  to { opacity:1}
+}
+
+/*CONTENT */
+#content{
+  width: 74%;
+  padding: 0;
+  float: right;
+  min-height: 100vh;
 }
 .glyphicon.glyphicon-remove-circle {
-  font-size: 30px;
+  font-size: 25px;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
   -ms-transition: all 0.5s ease; /* IE 9 */
@@ -43,35 +61,55 @@
   -o-transform:scale(1.2); /* Opera */
   transform:scale(1.2);
 }
-/* Add Animation */
-@-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
-}
-
-@keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
-}
-
-/*CONTENT */
-#content{
-  width: 74%;
-  padding: 0;
-  float: right;
-  min-height: 100vh;
-   text-align: center;
-}
 .cross-icon{
-  float: right;
+  border-radius: 50%;
+  position: absolute;
+  float: right !important;
+  align-self: right;
   margin-top: 0px;
+  margin-left: 33%;
   padding: 10px;
+  z-index: 1000;
 }
 #content span:hover{
   cursor: pointer;
   cursor: hand;
 }
-
+.hero-image {
+  height: auto;
+  width: 100%;
+}
+.hero-image img{
+  min-width: 100%;
+  height: 48vh;
+}
+.project-title{
+  min-width: 100%;
+  min-height: auto;
+}
+.project-title h1{
+  min-width: 100%;
+  float: left;
+  color: #212a43;
+  text-align: left;
+  margin-top: 4%;
+  padding-top: 3%;
+  padding-right: 3%;
+  padding-left: 3%;
+  padding-bottom: 1%;
+  font-family: ArtifaktElement;
+}
+.project-abstract p{
+  text-align: left;
+  color: #2c3247;
+  min-width: 100%;
+  font-family: ArtifaktElement;
+  font-size: 14px;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-bottom: 2%;
+  opacity: 0.6;
+}
 /* SUB parts DETAILS */
 #details{
   padding-top: 2%;
@@ -94,18 +132,19 @@
   min-width: 90%;
 }
 .sub-part{
+  font-size: 12px;
   min-height: 100%;
   min-width: 90%;
   font-family: ArtifaktElement-Book;
 }
-
 .sub-title h5{
+  font-size: 12px;
   opacity: 0.7;
   text-align: left;
 }
 .sub-title .fa {
   padding: 11px;
-  font-size: 13px;
+  font-size: 12px;
   margin-left: 3%;
   border-radius: 50%;
   float: left;
@@ -134,7 +173,7 @@
   background: #3B5998;
   color: white;
   border-radius: 100% !important;
-  font-size: 14px !important;
+  font-size: 12px !important;
 }
 .fa-linkedin {
   background: #007bb5;
@@ -149,25 +188,39 @@
   color:white;
 }
 .views-details{
+  font-size: 12px;
   float: left;
-  height: auto;
-  width: 38%;
+  margin-left: 0px !important;
+  width: 35%;
   opacity: 0.7;
+}
+.views-details h5 {
+  font-size: 12px;
+  float: left;
 }
 .views-styling{
-  font-size: 15px;
-  text-align: left;
-  padding-left: 12%;
-}
-.likes-details {
-  float: right;
-  width: 60%;
-  opacity: 0.7;
-}
-.likes-styling{
-  font-size: 15px;
+  font-size: 12px;
+  float: left;
+  width: 35%;
   text-align: left;
   padding-left: 8%;
+}
+.likes-details {
+  font-size: 12px;
+  float: right;
+  padding-right: 15%;
+  width: 65%;
+  opacity: 0.7;
+}
+.likes-details h5{
+  font-size: 12px;
+  float: left;
+}
+.likes-styling{
+  width: 65%;
+  font-size: 12px;
+  text-align: left;
+  padding-left: 5%;
 }
 .appreciate-btn{
   border-radius: 0px;

@@ -50,9 +50,9 @@ class GalleryItem extends React.Component {
 		    paddingTop 					: '3%',
 		    paddingBottom 				: '3%',
 		    minHeight 					: '100%',
-		    marginLeft					: '12%',
-		    marginRight					: '12%',
-		    width						: '76%',
+		    marginLeft					: '13%',
+		    marginRight					: '13%',
+		    width						: '74%',
 		    border                     : 'none',
 		    background                 : 'transparent',
 		    WebkitOverflowScrolling    : 'hidden',
@@ -88,9 +88,9 @@ class GalleryItem extends React.Component {
 		}
 
 	return (
-		<div className="col-lg-3 col-md-4 col-xs-12 showcase-item-layout">
+		<div className="col-lg-3 col-md-4 col-xs-12 showcase-item-layout" onClick={this.activateModal}>
 	      	<img className="img-responsive project-image" src={this.props.project.header_image_link} alt=""/>
-	        <h4 className="project-item-title" onClick={this.activateModal} >{this.props.project.name}</h4>
+	        <h4 className="project-item-title" >{this.props.project.name}</h4>
 	        <p className="authors-styling">{authors}</p>
 	        <hr/>
 	        <div className="tick-stat row">
@@ -103,8 +103,8 @@ class GalleryItem extends React.Component {
 	        </div>
 	  
     	    <div className="stats"> 
-	  	       	<i className="fa fa-thumbs-o-up" aria-hidden="true"></i>{this.props.project.likes}
-	           	<i className="fa fa-eye" aria-hidden="true"> </i>{this.props.project.views}
+	  	       	<i className="fa fa-thumbs-o-up" aria-hidden="true"></i><strong>{this.props.project.likes}</strong>
+	           	<i className="fa fa-eye" aria-hidden="true"> </i><strong>{this.props.project.views}</strong>
             </div>
             </div>
             {modal}

@@ -18,6 +18,7 @@ class ReadProject extends React.Component {
 	}	
 
 	componentWillMount() {
+		console.log(this.props.project);
 		const _isAuthenticated = this.props.auth.isAuthenticated;
 		var _userId = 0;
 		var _appreciateButtonEnabled = false;
@@ -127,12 +128,12 @@ class ReadProject extends React.Component {
 						<div className="sub-title">
 							<h5> VERSION </h5>
 						</div>
-						<p className="authors-styling"> 1.3 Published 5/23/2017 </p>
+						<p className="authors-styling"> {this.props.project.version ? this.props.project.version : "To be updated."} </p>
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
 							<h5> PUBLICATION </h5>
-						<p className="authors-styling"> To be updated. </p>
+						<p className="authors-styling"> {this.props.project.publication ? this.props.project.publication : "To be updated."}</p>
 						</div>
 					</div>
 					<div className="sub-part pull-left">
@@ -152,9 +153,9 @@ class ReadProject extends React.Component {
 							<h5> CONTACT</h5>
 							<div className="row">
 								<i className="fa fa-linkedin" aria-hidden="true"></i>
-								<i className="fa fa-envelope-o" aria-hidden="true"></i>
+								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '' }> <i className="fa fa-envelope-o" aria-hidden="true"></i></a>
 								<i className="fa fa-facebook" aria-hidden="true"></i>
-								<i className="fa fa-home" aria-hidden="true"></i>
+								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' }><i className="fa fa-home" aria-hidden="true"></i></a>
 							</div>
 						</div>
 					</div>
@@ -204,8 +205,14 @@ class ReadProject extends React.Component {
 				</div>
 				<div id="content">
 					<span className="glyphicon glyphicon-remove-circle cross-icon" onClick={this.props.deactivateModal} aria-hidden="true"></span>
-    				<h2> {this.props.project.name}  </h2>
-
+    				
+    				<div className="hero-image">
+    					<img className="img-responsive" src={this.props.project.hero_image ? this.props.project.hero_image : this.props.project.header_image_link} alt=""/>
+    				</div>
+    				<div className="project-title"> <h1> {this.props.project.name}</h1>  </div>
+    				<div className="project-abstract"> 
+    					<p> {this.props.project.project_abstract} </p>
+    				</div>
     			</div>
 			</div>
 		);

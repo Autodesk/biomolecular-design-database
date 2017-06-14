@@ -35,7 +35,7 @@ button:focus {
     text-decoration: none;
     border: none;
     border-color: white !important;
-    font-size: 14px;
+    font-size: 12px;
     float: left;
     margin-right: 9px;
     font-family: ArtifaktElement;
@@ -55,7 +55,7 @@ button:focus {
     text-decoration: none;
     border-color: black;
     border-width: 1px;
-    font-size: 14px;
+    font-size: 12px;
     float: left;
     margin-right: 9px;
     font-family: ArtifaktElement;
@@ -80,13 +80,16 @@ button:focus {
     width: 295px;
     overflow: visible;
 }
+.sub-menu-parent p1 {
+  font-size: 14px;
+}
 .sub-menu { 
   border-radius: 5%;
   min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   background-color: white;
   padding: 3%;
-  font-size: 16px;
+  font-size: 14px;
   visibility: hidden; /* hides sub-menu */
   opacity: 0;
   position: absolute;
@@ -132,6 +135,8 @@ button:focus {
 }
 .showcase-item-layout {
   margin: 4% 4% 0% 4%;
+  cursor: pointer;
+  cursor: hand;
 
 }
 .showcase-item-layout h4:hover{
@@ -147,7 +152,7 @@ button:focus {
     letter-spacing: 2px;
     margin-top: 0px;
     float: right;
-    font-size: 14px;
+    font-size: 12px;
 }
 .tick-stat {
   padding: 8px !important ;
@@ -156,7 +161,7 @@ button:focus {
     color: #2fe695;
 }
 .tick{
-  font-size: 15px;
+  font-size: 12px;
     float: left;
     margin-left: 1%;
     letter-spacing: 3px;
@@ -177,9 +182,10 @@ button:focus {
   color: #212a43;
 }
 .authors-styling{
+  font-size: 12px;
    opacity: 0.59;
   font-family: ArtifaktElement-Book;
   text-align: left;
-  color: #212a43;
+  color: #2c3247;
 }
 

@@ -61,7 +61,7 @@ class Gallery extends React.Component {
 		         	hasMore={this.state.hasMore}
 		         	style={styling}
 		          	loader={
-    					<h4>Loading...</h4>  
+    					<h4> Loading...</h4>  
 					}>
 			        {this.getGridRow(this.state.divs)}
 	   	        </InfiniteScroll>
@@ -69,7 +69,7 @@ class Gallery extends React.Component {
 		);
 
 		const noItems = (
-			<h2 className="nothing-found header">No Projects Found... </h2>  
+			<h2 className="nothing-found header">No Projects Found...  </h2>  
 		);
 		return(
 			<div>

@@ -9,11 +9,20 @@ var bucketName = 'bionano-bdd-app';
 
 function getSignedUrl(projects){
 	const signed = projects.map((project) => {
+
 		var keyName = project.header_image_link;
 		var params = {Bucket: bucketName, Key: keyName, Expires: 86400}
 		s3.getSignedUrl('getObject', params, (err, url) => {
 			project.header_image_link = url;
 		});
+		if(project.hero_image !== null){
+			var keyName1 = project.hero_image;
+			var params1 = {Bucket: bucketName, Key: keyName1, Expires: 86400}
+			s3.getSignedUrl('getObject', params1, (err, url) => {
+				console.log(url);
+				project.hero_image = url;
+			});
+		}
 		return project;
 	});
 	return signed;
@@ -105,8 +114,8 @@ router.get('/', (req, res) => { //get all projects
 	if(sortby === 'Most Viewed'){ 
 		Projects.forge().orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
-			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
@@ -114,8 +123,8 @@ router.get('/', (req, res) => { //get all projects
 	else if( sortby === 'Quality of Documentation') {
 		Projects.forge().orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
-			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
@@ -123,8 +132,8 @@ router.get('/', (req, res) => { //get all projects
 	else if(sortby === 'Most Appreciations'){
 		Projects.forge().orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
-			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
@@ -132,8 +141,8 @@ router.get('/', (req, res) => { //get all projects
 	else{ //return Newest
 		Projects.forge().orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search);
-			res.status(200).json({error: false, data: getSignedUrl(resProjects, search).slice(from, to)});
+			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});

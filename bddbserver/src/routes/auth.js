@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../config';
 import projects from '../models/projects';
-
+import Files from '../models/files';
 let router = express.Router();
 
 router.post('/', (req, res) => {

@@ -100,13 +100,14 @@ input{
 	padding-left: 16px;
 	width: 20%;
 	float: right;
-	border-radius: 22px;
+	border-radius: 20px;
     border: 2px solid #2fe695;
     text-align: left;
     margin-top: 9px;
     margin-right: 6%;
     background-color : #d1d1d1;
     font-family: ArtifaktElement;
+    font-size: 12px;
 }
 hr { 
  	margin-top: 10px; 
