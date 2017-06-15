@@ -30,16 +30,6 @@ router.post('/', (req, res) =>{
 	})
 	.catch(err => console.log(err));
 });
-/*
-	Appreciations.forge({
-		_userId,
-		_projectId
-	}, { hasTimestamps: true }).save()
-	.then(appreciation => {
 
-		res.status(200).json({error: false, success: true})
-	})
-	.catch(err => res.states(500).json({error: err}));
-	*/
 
 export default router;

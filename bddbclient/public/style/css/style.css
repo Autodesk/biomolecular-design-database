@@ -23,7 +23,10 @@ body {
   margin-bottom: 0;
   line-height: 40px;
 }
-
+hr{
+  margin-bottom: 0px !important;
+  margin-top: 4px !important;
+}
 /* Custom page footer */
 .footer {
   padding-top: 19px;

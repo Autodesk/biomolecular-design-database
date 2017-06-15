@@ -13,3 +13,10 @@ export function checkAppreciations(queryString) {
 		return axios.get(apiCall);	
 	}
 }
+
+export function getFilesObject(filesQuery){
+	const apiCallFiles = '/api/files?'+filesQuery;
+	return dispatch => {
+		return axios.get(apiCallFiles);
+	}
+}

@@ -23,6 +23,14 @@ body {
 input{
 	padding: 5px;
 }
+
+@media screen and (max-width: 768px) {
+	.aaaamobile-margin{
+		margin-top: 20% !important;
+	}
+}
+
+
 .not-found-layout {
 	margin-top: 20%;
 	margin-bottom: 10%;
@@ -52,6 +60,9 @@ input{
 }
 
 /*  NAVIGATION */
+.green-bar{
+	 background-color: #2fe695;
+}
 
 .navbar {
 	overflow: hidden;
@@ -76,42 +87,75 @@ input{
 	background-color: #ffffff;
 
 }
-.nav-links{
-	margin-left: 150px;
+
+@media screen and (min-width: 768px) {
+	.nav-links{
+		margin-left: 150px;
+	}
 }
+
 
 .nav-r {
 	margin-right: 4%;
 }
 input[type=text] {
     font-size: 16px;
+		text-align: center;
     background-color: white;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
 
-input:focus {
-    outline:none !important;
-}
+
 input{
 	padding-left: 14px;
 }
-.searchBar-layout{
-	padding-left: 16px;
-	width: 20%;
-	float: right;
-	border-radius: 20px;
-    border: 2px solid #2fe695;
-    text-align: left;
-    margin-top: 9px;
-    margin-right: 6%;
-    background-color : #d1d1d1;
-    font-family: ArtifaktElement;
-    font-size: 12px;
+
+@media screen and (min-width: 768px) {
+	input:focus {
+		width: 30%;
+	    outline:none !important;
+	}
 }
-hr { 
- 	margin-top: 10px; 
- 	margin-bottom: 0px !important;
+
+@media screen and (max-width: 768px) {
+	input:focus {
+		width: 80%;
+	    outline:none !important;
+	}
+}
+
+
+@media screen and (min-width: 768px) {
+	.searchBar-layout{
+		padding-left: 16px;
+		width: 20%;
+		float: right;
+		border-radius: 22px;
+	    border: 2px solid #2fe695;
+	    text-align: left;
+	    margin-top: 9px;
+	    margin-right: 6%;
+	    background-color : #d1d1d1;
+	    font-family: ArtifaktElement;
+	}
+}
+@media screen and (max-width: 768px) {
+	.searchBar-layout{
+		padding-left: 16px;
+		width: 60%;
+		border-radius: 22px;
+	    border: 2px solid #2fe695;
+	    text-align: left;
+	    margin-top: 9px;
+	    background-color : #d1d1d1;
+	    font-family: ArtifaktElement;
+	}
+}
+
+hr {
+ 	margin-top: 10px;
+ 	margin-bottom: 10px;
  	opacity: 1;
  }
 .button-signup{
@@ -123,7 +167,7 @@ hr {
     text-decoration: none;
     border: none;
     font-size: 16px;
-    margin: 35px 2px; 
+    margin: 35px 2px;
 }
 .button-style{
     background-color: #2fe695;
@@ -134,7 +178,7 @@ hr {
     text-decoration: none;
     border: none;
     font-size: 15px;
-    margin: 25px 2px; 
+    margin: 25px 2px;
 }
 
 /*  FLASH MESSAGE */
@@ -142,7 +186,3 @@ hr {
 	margin-top: 3%;
 
 }
-
-
-
-

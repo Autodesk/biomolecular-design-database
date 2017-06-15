@@ -163,12 +163,12 @@ class HomePage extends React.Component {
 		);
 		return(
 			<div>
-				<div className="container-fluid general">
+				<div className="container-fluid general aaaamobile-margin animated zoomInLeft">
 					<h1 className="home-title"> Showcase & Discover  </h1>
 					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome {user.firstName}!  </h3> : signUp}
 				</div>
 				<hr width="80%"/>
-				<div className="container-fluid showcase-layout">
+				<div className="container-fluid showcase-layout animated zoomInRight">
 					<div className="row">
 						<div className="pull-left">
 							<p> FILTER BY KEYWORDS </p>
@@ -180,14 +180,14 @@ class HomePage extends React.Component {
 								<button name="Scaffold: M13mp18" onClick={this.handleFilters} className={this.state.filters.indexOf("Scaffold: M13mp18") >= 0 ? "greenBtn" : "filterBtn" }>Scaffold: M13mp18</button>
 							</div>
 						</div>
-						<div className="dropdown pull-right">	
+						<div className="dropdown pull-right">
 						  	<div className="sub-menu-parent">
 							  	<p1> SORT BY: <p className="dropbtn btn  btn-mini" >{this.state.sortBy}<span className="caret"></span></p>
 								  	<ul className="sub-menu">
 								  		<li><p>< SortOption name={this.state.sortByOptions[1]} label={this.state.sortByLabels[1]} handleSort={this.handleSort}/></p></li>
 								    	<li><p>< SortOption name={this.state.sortByOptions[2]} label={this.state.sortByLabels[2]} handleSort={this.handleSort}/></p></li>
 								    	<li><p>< SortOption name={this.state.sortByOptions[3]} label={this.state.sortByLabels[3]} handleSort={this.handleSort}/></p></li>
-								  	</ul>	
+								  	</ul>
 								</p1>
 						  	</div>
 						</div>

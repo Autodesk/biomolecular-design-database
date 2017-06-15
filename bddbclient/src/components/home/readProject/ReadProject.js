@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { userAppreciated, checkAppreciations } from '../../../actions/detailsAction';
+import { userAppreciated, checkAppreciations, getFilesObject } from '../../../actions/detailsAction';
 import './modal.css';
 import '../Home.css';
+import EntriesGallery from './EntriesGallery';
 
 class ReadProject extends React.Component {
 	constructor(props){
@@ -11,17 +12,26 @@ class ReadProject extends React.Component {
 			userLoggedIn: false,
 			userId: 0,
 			appreciateButtonEnabled: false,
-			likes: 0
+			likes: 0,
+			files: []
 		}
 		this.onChange = this.onChange.bind(this);
 		this.appreciationClick = this.appreciationClick.bind(this);
 	}	
 
 	componentWillMount() {
-		console.log(this.props.project);
 		const _isAuthenticated = this.props.auth.isAuthenticated;
 		var _userId = 0;
 		var _appreciateButtonEnabled = false;
+		var filesQuery = 'projectId='+this.props.project.id;
+		this.props.getFilesObject(filesQuery).then(
+			(res) => {
+				var response = JSON.parse(res.request.response);
+				this.setState( { files: response.data} ); //change the current state. this will render 
+			},
+			(err) => { this.context.router.push('/notfound');}
+		);
+
 		if(_isAuthenticated){ 
 			_userId = this.props.auth.user.id; 
 			var queryString = 'userId='+_userId;//+'&filter=Drug&filter=rna';
@@ -59,7 +69,6 @@ class ReadProject extends React.Component {
 				likes: this.props.project.likes
 			});
 		}
-
 	}
 
 	onChange(e){
@@ -213,6 +222,7 @@ class ReadProject extends React.Component {
     				<div className="project-abstract"> 
     					<p> {this.props.project.project_abstract} </p>
     				</div>
+    				<div className="container-fluid"> <EntriesGallery files={this.state.files} /> </div> 
     			</div>
 			</div>
 		);
@@ -225,7 +235,8 @@ ReadProject.proptypes = {
 	deactivateModal: React.PropTypes.func.isRequired,
 	userAppreciated: React.PropTypes.func.isRequired,
 	checkAppreciations: React.PropTypes.func.isRequired,
-	increaseAp: React.PropTypes.func.isRequired
+	increaseAp: React.PropTypes.func.isRequired,
+	getFilesObject: React.PropTypes.func.isRequired
 }
 ReadProject.contextTypes = {
 	router: React.PropTypes.object.isRequired
@@ -233,4 +244,4 @@ ReadProject.contextTypes = {
 function mapStateToProps(state){
 	return { auth: state.auth };
 }
-export default connect(mapStateToProps, {checkAppreciations, userAppreciated})(ReadProject);
+export default connect(mapStateToProps, {checkAppreciations, userAppreciated, getFilesObject})(ReadProject);

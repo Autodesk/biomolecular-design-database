@@ -6,19 +6,19 @@ import { logout } from '../actions/authActions';
 class NavigationBar extends React.Component{
 
 	logout(e){
-		e.preventDefault(); 
+		e.preventDefault();
 		this.props.logout(); //props.logout  (logout action which is imported)
-	} 
-  
+	}
+
 	render (){
 		const { isAuthenticated } = this.props.auth;
-		const userLinks = ( 
-			<ul className="nav navbar-nav">  
+		const userLinks = (
+			<ul className="nav navbar-nav">
 				<li><Link to="/" style={{color: '#343950'}} >Browse All </Link></li>
 				<li><Link to="/" style={{color: '#343950'}}> My Projects </Link></li>
 				<li><Link to="/new-event" style={{color: '#343950'}}> Upload New </Link></li>
 				<li color="black"><a href="#  " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
-				
+
 			</ul>
 		);
 
@@ -30,20 +30,30 @@ class NavigationBar extends React.Component{
 		);
 
 		return(
-			<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout ">
- 				<div className="container-fluid">
-					<div className=" page-scroll">
-						< Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
-					</div>
-					<div className=" nav-links">
-						{ isAuthenticated ? userLinks : guestLinks }
-					</div>
-					<form onSubmit={this.props.searchSubmnit}>
-	  					<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
-					</form>				
-					<hr width="95%" />  
-				</div>
-			</nav> 
+			<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout animated bounceInDown">
+			 <div className="container-fluid">
+				 <div className="navbar-header">
+				 <button type="button" data-target="#navbarCollapse" data-toggle="collapse" className="navbar-toggle" style={{border: '1px solid #2fe695'}}>
+					 <span className="sr-only">Toggle navigation</span>
+					 <span className="green-bar icon-bar"></span>
+					 <span className="green-bar icon-bar"></span>
+					 <span className="green-bar icon-bar"></span>
+				 </button>
+				 <div className=" page-scroll">
+							 < Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
+						 </div>
+			 </div>
+				<div id="navbarCollapse" className="collapse navbar-collapse">
+				 <div className=" nav-links">
+					 { isAuthenticated ? userLinks : guestLinks }
+				 </div>
+				 <form onSubmit={this.props.searchSubmnit}>
+						 <input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
+				 </form>
+			</div>
+				 <hr width="95%" />
+			 </div>
+			</nav>
 		);
 	}
 }
