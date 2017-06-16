@@ -24,9 +24,9 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.5);
   -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 1.5s;
+  -webkit-animation-duration: 0.8s;
   animation-name: animatetop;
-  animation-duration: 1.5s
+  animation-duration: 0.8s;
 }
 /* Add Animation */
 @-webkit-keyframes animatetop {
@@ -71,7 +71,7 @@
   padding: 10px;
   z-index: 1000;
 }
-#content span:hover{
+#content .cross-icon:hover{
   cursor: pointer;
   cursor: hand;
 }
@@ -116,6 +116,7 @@
   align-items: left;
   margin-bottom: 3% !important;
 }
+
 /* FILE ITEMS */
 .file-item-title{
   margin-top: 3%;
@@ -140,11 +141,6 @@
 .file-image img:hover{
   cursor: zoom-in;
   cursor: zoom-in;
-  -webkit-transform:scale(1.1); /* Safari and Chrome */
-  -moz-transform:scale(1.1); /* Firefox */
-  -ms-transform:scale(1.1); /* IE 9 */
-  -o-transform:scale(1.1); /* Opera */
-  transform:scale(1.1);
 }
 .file-image span:hover{
   cursor: none;
@@ -181,11 +177,12 @@
   padding-right: 5% !important;
 }
 .modal-display{
-  max-height: 80vh;
-  margin-top: 10%;
+  max-height: 100%;
+  max-width: 100%;
   align-self: center;
-  max-width: 80%;
-  margin-left: 10%; 
+  position: relative;
+  overflow: hidden;
+  margin: 0;
 }
 .plain-background{
   opacity: 0.79;
@@ -197,6 +194,12 @@
   padding: 5%;
   margin-top: 2%;
   margin-bottom: 2%;
+  cursor: default;
+  z-index: 10
+}
+#content span:hover{
+  cursor: default;
+  z-index: 10;
 }
 .download{
   float: left;

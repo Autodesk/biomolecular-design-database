@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { userAppreciated, checkAppreciations, getFilesObject } from '../../../actions/detailsAction';
+import { userAppreciated, checkAppreciations, getFilesObject, getSignedUrl } from '../../../actions/detailsAction';
 import './modal.css';
 import '../Home.css';
 import EntriesGallery from './EntriesGallery';
@@ -222,7 +222,7 @@ class ReadProject extends React.Component {
     				<div className="project-abstract"> 
     					<p> {this.props.project.project_abstract} </p>
     				</div>
-    				<div className="container-fluid"> <EntriesGallery files={this.state.files} /> </div> 
+    				<div className="container-fluid"> <EntriesGallery getSignedUrl={this.props.getSignedUrl} files={this.state.files} /> </div> 
     			</div>
 			</div>
 		);
@@ -236,6 +236,7 @@ ReadProject.proptypes = {
 	userAppreciated: React.PropTypes.func.isRequired,
 	checkAppreciations: React.PropTypes.func.isRequired,
 	increaseAp: React.PropTypes.func.isRequired,
+	getSignedUrl: React.PropTypes.func.isRequired,
 	getFilesObject: React.PropTypes.func.isRequired
 }
 ReadProject.contextTypes = {
@@ -244,4 +245,4 @@ ReadProject.contextTypes = {
 function mapStateToProps(state){
 	return { auth: state.auth };
 }
-export default connect(mapStateToProps, {checkAppreciations, userAppreciated, getFilesObject})(ReadProject);
+export default connect(mapStateToProps, {checkAppreciations, userAppreciated, getFilesObject, getSignedUrl})(ReadProject);

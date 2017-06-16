@@ -11,13 +11,13 @@ function getSignedUrl(projects){
 	const signed = projects.map((project) => {
 
 		var keyName = project.header_image_link;
-		var params = {Bucket: bucketName, Key: keyName, Expires: 8640}
+		var params = {Bucket: bucketName, Key: keyName, Expires: 600}
 		s3.getSignedUrl('getObject', params, (err, url) => {
 			project.header_image_link = url;
 		});
 		if(project.hero_image !== null){
 			var keyName1 = project.hero_image;
-			var params1 = {Bucket: bucketName, Key: keyName1, Expires: 8640}
+			var params1 = {Bucket: bucketName, Key: keyName1, Expires: 600}
 			s3.getSignedUrl('getObject', params1, (err, url) => {
 				project.hero_image = url;
 			});

@@ -13,7 +13,7 @@ function getSignedUrl(files){
 		file.file_name = file.file_link;
 		const type = mime.lookup(file.file_link);
 		var keyName = file.file_link;
-		var params = {Bucket: bucketName, Key: keyName, Expires: 8640}
+		var params = {Bucket: bucketName, Key: keyName, Expires: 600}
 		s3.getSignedUrl('getObject', params, (err, url) => {
 			file.file_link = url;
 		});
@@ -21,6 +21,15 @@ function getSignedUrl(files){
 		return file;
 	});
 	return signed;
+}
+
+function getSignedUrlForSingleFile(file){
+	var keyName = file.file_link;
+	var params = {Bucket: bucketName, Key: keyName, Expires: 600}
+	s3.getSignedUrl('getObject', params, (err, url) => {
+		file.file_link = url;
+	});
+	return file.file_link;
 }
 
 router.get('/', (req, res) => {
@@ -31,6 +40,16 @@ router.get('/', (req, res) => {
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
+});
+
+router.get('/file/', (req, res) => {
+	const fileId = req.query.fileId;
+	Files.forge().where({id: fileId}).fetch()
+	.then(resData=> {
+		const signedUrl = getSignedUrlForSingleFile(resData.toJSON());
+		console.log(signedUrl);
+		res.status(200).json({error: false, url: signedUrl })
+	});
 });
 
 router.post('/', (req, res) =>{

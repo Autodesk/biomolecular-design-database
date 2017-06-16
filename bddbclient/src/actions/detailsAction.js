@@ -20,3 +20,10 @@ export function getFilesObject(filesQuery){
 		return axios.get(apiCallFiles);
 	}
 }
+
+export function getSignedUrl(fileId){
+	const getFileUrl = '/api/files/file?'+fileId;
+	return dispatch => {
+		return axios.get(getFileUrl);
+	}
+}
