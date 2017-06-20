@@ -7,7 +7,14 @@
 	font-family: ArtifaktElement-Book;
 	src: url(fonts/ArtifaktElementBook.ttf);
 }
-
+@font-face {
+	font-family: ArtifaktElement-Thin;
+	src: url(fonts/ArtifaktElementThin.ttf);
+}
+@font-face {
+	font-family: ArtifaktElement-Bold;
+	src: url(fonts/ArtifaktElementBold.ttf);
+}
 html{
 	font-family: ArtifaktElement;
 }

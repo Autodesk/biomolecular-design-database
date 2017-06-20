@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { Router, hashHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose }  from 'redux';
 import { Provider } from 'react-redux';
@@ -23,6 +23,6 @@ if(localStorage.jwtToken) { //has a 'bearer <token>'
 
 render(
 	<Provider store={store}>
-		<Router history={browserHistory} routes={routes} />
+		<Router history={hashHistory} routes={routes} />
 	</Provider>,  document.getElementById('app'));
 

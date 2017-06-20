@@ -16,6 +16,12 @@ class GalleryItem extends React.Component {
 		this.deactivateModal = this.deactivateModal.bind(this);
 	}
 
+	componentWillMount(){
+		if(this.props.modalActive){ //called directyly by the home page if the project id was queried
+			this.setState({modalActive: this.props.modalActive});
+		}
+	}
+
 	activateModal(){
 		this.setState({ modalActive: true });
 	};

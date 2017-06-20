@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import './Home.css';
 import Gallery from './Gallery';
 import SortOption from './SortOption';
-import { reloadProjects, getSingleProject } from '../../actions/homePageActions';
-import OpenProject from './OpenProject';
+import { reloadProjects } from '../../actions/homePageActions';
 
-class HomePage extends React.Component {
+class ProjectDetails extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
@@ -19,8 +18,7 @@ class HomePage extends React.Component {
 			getFrom: 0,
 			getTo: 9, //projcts to get from-to from the database
 			hasMore: true,
-			search: '',
-			projectId: null
+			search: ''
 		};
 		this.onChange = this.onChange.bind(this);
 		this.handleFilters = this.handleFilters.bind(this);
@@ -31,15 +29,15 @@ class HomePage extends React.Component {
 	}
 
 	componentWillMount() { //gets evoked before rendering the component
-		var _projectId = null;
+		console.log(this.props);
+		console.log('haha I am here');
+		console.log(this.props);
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
-		if(this.props.params.projectId){ _projectId = this.props.params.projectId }
 		queryString += '&from='+0+'&to='+9; //only get first 9 projects initially
 		this.props.reloadProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
-				this.setState( { projects: response.data, projectId: _projectId},
-				 ); //change the current state. this will render 
+				this.setState( { projects: response.data} ); //change the current state. this will render 
 			},
 			(err) => { this.context.router.push('/notfound');}
 		);
@@ -198,9 +196,6 @@ class HomePage extends React.Component {
 						  	</div>
 						</div>
 					</div>
-					<div className="hideit">
-						{this.state.projectId ? <OpenProject projectId={this.state.projectId} increaseAp={this.increaseAp} getSingleProject={this.props.getSingleProject} /> : ''}
-					</div>
 					<div >
 						<Gallery projects={this.state.projects} increaseAp={this.increaseAp} generateMoreProjects={this.generateMoreProjects} />
 					</div>
@@ -210,14 +205,13 @@ class HomePage extends React.Component {
 	}
 }
 
-HomePage.propTypes = {
+ProjectDetails.propTypes = {
 	searchValue: React.PropTypes.string.isRequired,
 	auth: React.PropTypes.object.isRequired,
-	reloadProjects: React.PropTypes.func.isRequired,
-	getSingleProject: React.PropTypes.func.isRequired
+	reloadProjects: React.PropTypes.func.isRequired
 }
 
-HomePage.contextTypes = {
+ProjectDetails.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
 
@@ -225,4 +219,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, { reloadProjects, getSingleProject })(HomePage);
+export default connect(mapStateToProps, { reloadProjects })(ProjectDetails);

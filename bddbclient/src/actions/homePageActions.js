@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+export function getSingleProject(queryString){
+	const apiCall = '/api/projects/project?'+queryString
+	return dispatch => {
+		return axios.get(apiCall);
+	}
+}
+
 export function reloadProjects(queryString){
 	const apiCall = '/api/projects?'+queryString;
 	return dispatch => {

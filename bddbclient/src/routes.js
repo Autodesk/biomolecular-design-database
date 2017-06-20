@@ -14,12 +14,14 @@ import NotFound from './components/NotFound';
 export default (
 	<Route path="/" component={App} >
 		<IndexRoute component={HomePage} />
+		<Route path="projects" component={HomePage}/>
+		<Route path="projects/:projectId" component={HomePage}/>
 		<Route path="signup" component={SignupPage} />
 		<Route path="login" component={LoginPage} />
 		<Route path="new-event" component={requireAuth(EventPage)} />
 		<Route path="notfound" component={NotFound} />
 	</Route>
-)
+);
 
 
 

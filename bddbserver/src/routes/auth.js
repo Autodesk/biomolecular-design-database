@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
 	const tags = "Simulation: CanDo";
 	const file_link = "allFiles/1/3/AutodeskALogo CanDo_Results.zip";
 	const description = "CanDo returned solid-body simulations with a final displacement range of between 1.6 and 6.2 nanometers. The simulation was illustrated by both figures and movies. In the first iterations of this design, the displacement range exceeded ~50 nanometers (recall that DNA helices are about 2 nanometers in diameter, and the entire design here is about 120nm tall and 60nm wide at the A's join). This was reduced greatly by iterating the placement of the crossovers, and our resulting CanDo simulations demonstrate that no single helix or small helical subunit displays large displacements. Qualitatively, a large global twist is placed on the structure, but following Rothemund's results, the experimental results are expected to remain flat on a mica surface on AFM.";
-	
+/*	
 	Files.forge({
 		user_id,
 		project_id,
@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
 	}, { hasTimestamps: true }).save()
 	.then(file => console.log(file))
 	.catch(err => console.log(err));
-	/*
+
 
 	const user_id= 1;
 		const		name= 'Square Nut Design, Wyss Institute, Melting Temperatures';

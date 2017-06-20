@@ -43,9 +43,8 @@ class FileItem extends React.Component{
    	 	const fileIdQuery = 'fileId='+this.props.file.id;
 		this.props.getSignedUrl(fileIdQuery).then(
 			(res) => {
-				const url = JSON.parse(res.request.response).url;
-				console.log();
-				download(url, function(err){
+				const link = JSON.parse(res.request.response);
+				download(link.url, function(err){
 					if(err) throw err
 					console.log('saved');
 				});
@@ -96,7 +95,7 @@ class FileItem extends React.Component{
 				<div className="file-details">
 					<p > {text} </p>
 				</div>
-				{this.state.downloadable ? <button className="download" onClick={this.getSignedUrlToDownload}>DOWNLOAD</button> : ''}
+				{this.state.downloadable ? <a href={this.props.file.file_link} className="download" download>DOWNLOAD</a> : ''}
 				{isOpen ? lightboxDisplay : ''}
 				<hr/>
 			</div>

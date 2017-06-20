@@ -27,6 +27,22 @@ function getSignedUrl(projects){
 	return signed;
 }
 
+function singleSignedUrl(project){
+	var keyName = project.header_image_link;
+	var params = {Bucket: bucketName, Key: keyName, Expires: 600}
+	s3.getSignedUrl('getObject', params, (err, url) => {
+		project.header_image_link = url;
+	});
+	if(project.hero_image !== null){
+		var keyName1 = project.hero_image;
+		var params1 = {Bucket: bucketName, Key: keyName1, Expires: 600}
+		s3.getSignedUrl('getObject', params1, (err, url) => {
+			project.hero_image = url;
+		});
+	}
+	return project;
+}
+
 function nameSearch(project, search){
 	if(project.name.toLowerCase().indexOf(search) !== -1){
 		return true;
@@ -148,5 +164,15 @@ router.get('/', (req, res) => { //get all projects
 	}
 });
 
+router.get('/project/', (req, res) => {
+	console.log(req.query);
+	Projects.where({id: req.query.projectId}).fetch()
+		.then(resData=> {
+			var resProject =  resData.toJSON();
+			res.status(200).json({error: false, data: singleSignedUrl(resProject)});
+		})
+		.catch(err => {res.status(500).json(err);
+		});
+});
 
 export default router;

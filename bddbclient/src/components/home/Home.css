@@ -27,6 +27,11 @@ button:focus {
 .sortByStyle {
 	margin-left: 80%;
 }
+.hideit{
+  max-height: 0px;
+  max-width: 0px;
+  display: none;
+}
 .greenBtn {
   background-color: #2fe695;
     border-radius: 21px;

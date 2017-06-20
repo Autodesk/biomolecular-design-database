@@ -136,8 +136,8 @@ class ReadProject extends React.Component {
 					<div className="sub-part pull-left">
 						<div className="sub-title">
 							<h5> VERSION </h5>
+							<p className="authors-styling"> {this.props.project.version ? this.props.project.version : "To be updated."} </p>
 						</div>
-						<p className="authors-styling"> {this.props.project.version ? this.props.project.version : "To be updated."} </p>
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
@@ -187,13 +187,13 @@ class ReadProject extends React.Component {
 							 </div>
 						</div>
 					</div>
-					<div className="sub-part pull-left">
-						<div className="col-md-4 views-details">
-							<h5>VIEWS<i className="fa fa-eye" aria-hidden="true"></i> </h5>
+					<div className="row sub-part pull-left">
+						<div className=" views-details">
+							<h5>VIEWS <i className="fa fa-eye" aria-hidden="true"></i> </h5><br/>
 							<p className="views-styling"> {this.props.project.views} </p>
 						</div>
-						<div className="col-md-4 likes-details">
-							<h5> APPRECIATIONS <i className="fa fa-thumbs-o-up" aria-hidden="true"></i> </h5>
+						<div className=" likes-details">
+							<h5> APPRECIATIONS <i className="fa fa-thumbs-o-up" aria-hidden="true"></i> </h5><br/>
 							<p className="likes-styling"> {this.state.likes} </p>
 						</div>
 					</div>
@@ -209,7 +209,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left row">
 						<a href="" className="link-left">Link to Project</a>
-						<a href="" className="link-right">  Flag content</a>
+						<a href="mailto:joseph.schaeffer@autodesk.com">  Flag content</a>
 					</div>
 				</div>
 				<div id="content">
@@ -224,6 +224,7 @@ class ReadProject extends React.Component {
     				</div>
     				<div className="container-fluid"> <EntriesGallery getSignedUrl={this.props.getSignedUrl} files={this.state.files} /> </div> 
     			</div>
+    			<hr/>
 			</div>
 		);
 	}
