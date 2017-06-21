@@ -77,8 +77,9 @@
   cursor: hand;
 }
 .hero-image {
-  max-width: 1400;
-  min-width: 768;
+  width: 110%;
+  max-width: 1120px;
+  min-width: 768px;
   height: auto;
 }
 .hero-image img{
@@ -136,12 +137,11 @@
 }
 .file-image{
   max-width: 992px;
-
   position: relative;
   white-space: nowrap;
   margin-bottom: 1% !important;
   height: auto;
-  float: left;
+  align-items: center;
   min-width: 100%;
   align-self: left;
 }
@@ -154,8 +154,6 @@
 }
 .file-image img {
   position: relative;
-  align-self: left;
-  float: left;
   max-width: 100%;
   height: auto;
   padding-bottom: 2%;
@@ -212,6 +210,101 @@
   float: left;
   font-family: ArtifaktElement;
   padding-left: 5%;
+}
+/*Comments section*/
+.comments-section{
+  margin-top: 5% !important;
+  font-family: ArtifaktElement;
+  margin-bottom: 5% !important;
+}
+.comments-section h3{
+  min-width: 80%;
+  color: #2fe695;
+  font-family: ArtifaktElement-regular;
+}
+.comment-title{
+  width: 100%;
+  float: left!important;
+}
+.comments-display{
+  min-width: 100%;
+}
+.single-comment{
+  display: inline-block;
+  margin-left: 4% !important;
+  margin-right: 4% !important;
+  margin-top: 4% !important;
+  margin-bottom: 1% !important;
+  box-shadow: rgba(0, 0, 0, 0.3) 4px 4px 4px;
+  border-radius: 5px;
+  border: 1px solid #F5F5F5;
+  text-align: left !important;
+  min-width:  80%;
+  padding-right: 10% !important;
+  padding-left: 7% !important;
+  padding-top: 3%;
+  -webkit-animation-name: animateside;
+  -webkit-animation-duration: 1s;
+  animation-name: animateside;
+  animation-duration: 1s;
+}
+.single-comment h5{
+  font-size: 14px;
+  font-family: ArtifaktElement-Bold;
+}
+.single-comment p{
+  padding-left: 5%;
+}
+.container-fluid h3{
+  text-align: left !important;
+  padding-left: 10%;
+}
+.comment-container{
+   margin-top: 4% !important;
+}
+.comment-container h4{
+  font-family: ArtifaktElement-regular;
+  color: #2fe695;
+  text-align: left !important;
+  padding-left: 10%;
+}
+.comment-input{
+  display: inline-block;
+  margin-left: 10% !important;
+  margin-right: 10% !important;
+  margin-bottom: 1% !important;
+  box-shadow: rgba(0, 0, 0, 0.3) 4px 4px 4px;
+  border-radius: 5px;
+  border: 1px solid #F5F5F5;
+  text-align: left !important;
+  min-width:  80%;
+}
+.post-btn{
+  width: auto;
+  background-color: #2acc84 !important;
+  height: auto;
+  border: none;
+  font-size: 14px;
+  margin-bottom: 8%;
+  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
+  -moz-transition: all 0.5s ease; /* Firefox */
+  -ms-transition: all 0.5s ease; /* IE 9 */
+  -o-transition: all 0.5s ease; /* Opera */
+  transition: all 0.5s ease;
+}
+textarea:focus{
+  outline: none;
+}
+
+/* Add Animation */
+@-webkit-keyframes animateside {
+  from { opacity: 0;} 
+  to { opacity: 1;}
+}
+
+@keyframes animateside {
+  from { opacity: 0;} 
+  to { opacity: 1;}
 }
 /*DETAILS */
 /* SUB parts DETAILS */

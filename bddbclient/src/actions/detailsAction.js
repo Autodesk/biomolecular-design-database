@@ -27,3 +27,16 @@ export function getSignedUrl(fileId){
 		return axios.get(getFileUrl);
 	}
 }
+
+export function getComments(query){
+	const apiCall = '/api/projects/comments?'+query;
+	return dispatch => {
+		return axios.get(apiCall);
+	}
+}
+
+export function saveComment(obj){
+	return dispatch => {
+		return axios.post('/api/projects/comments', obj);
+	}
+}

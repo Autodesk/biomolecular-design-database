@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { userAppreciated, checkAppreciations, getFilesObject, getSignedUrl } from '../../../actions/detailsAction';
+import { userAppreciated, getComments, saveComment, checkAppreciations, getFilesObject, getSignedUrl } from '../../../actions/detailsAction';
 import './modal.css';
 import '../Home.css';
 import EntriesGallery from './EntriesGallery';
+import CommentsDisplay from './CommentsDisplay';
 
 class ReadProject extends React.Component {
 	constructor(props){
@@ -13,10 +14,14 @@ class ReadProject extends React.Component {
 			userId: 0,
 			appreciateButtonEnabled: false,
 			likes: 0,
-			files: []
+			files: [],
+			comments: [],
+			commentInput: '',
+			postEnable: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.appreciationClick = this.appreciationClick.bind(this);
+		this.postComment = this.postComment.bind(this);
 	}	
 
 	componentWillMount() {
@@ -24,6 +29,7 @@ class ReadProject extends React.Component {
 		var _userId = 0;
 		var _appreciateButtonEnabled = false;
 		var filesQuery = 'projectId='+this.props.project.id;
+		var query = 'projectId='+this.props.project.id; 
 		this.props.getFilesObject(filesQuery).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
@@ -69,11 +75,33 @@ class ReadProject extends React.Component {
 				likes: this.props.project.likes
 			});
 		}
+
+		//Mount Comments
+		this.props.getComments(query).then(
+			(res) => {
+				var response = JSON.parse(res.request.response);
+				this.setState( { comments: response.commentsArr}); //change the current state. this will render 
+			},
+			(err) => { this.context.router.push('/notfound');}
+		);
+
+		setInterval(() => {
+			console.log('updated');
+			this.props.getFilesObject(filesQuery).then(
+				(res) => {
+					var response = JSON.parse(res.request.response);
+					this.setState( { files: response.data} ); //change the current state. this will render 
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);
+		}, 2400000); //2400 secs update the content, links will be re-generated
 	}
 
 	onChange(e){
 		e.preventDefault();
-		console.log(this.state);
+		var _postEnable = false;
+		if(e.target.value !== '') { _postEnable = true; } 
+		this.setState({ [e.target.name]: e.target.value, postEnable: _postEnable });
 	}
 
 	appreciationClick(e){
@@ -95,10 +123,38 @@ class ReadProject extends React.Component {
 		);	
 	}
 
+	postComment(e){
+		e.preventDefault();
+		var query = 'projectId='+this.props.project.id; 
+		var queryObj = {
+			user_id: this.state.userId,
+			project_id: this.props.project.id,
+			username: this.props.auth.user.username,
+			user_firstname: this.props.auth.user.firstName,
+			user_lastname: this.props.auth.user.lastName,
+			comment: this.state.commentInput
+		};
+		this.props.saveComment(queryObj).then(
+			(res) => { 
+				//Mount Comments
+				this.props.getComments(query).then(
+					(res) => {
+						var response = JSON.parse(res.request.response);
+						this.setState( { comments: response.commentsArr}); //change the current state. this will render 
+					},
+					(err) => { this.context.router.push('/notfound');}
+				);
+			}, 
+			(err) => { this.context.router.push('/notfound'); } 
+		);
+	}
+
 	render(){
 		var counter = 0;
 		var count = 0;
 		var ticks = [];
+		const projectLink = 'http://localhost:3000/#/projects/'+this.props.project.id;
+		var mailLink = "mailto:joseph.schaeffer@autodesk.com?subject=Flag Content: "+this.props.project.name+"&body=Project Title: "+this.props.project.name+"%0D%0AProject Link: "+projectLink+"%0D%0AVersion: "+this.props.project.version+"%0D%0A%0D%0AAdd Comments Below: ";
 		const qod = this.props.project.quality_of_documentation;
 		const authors = this.props.project.authors.map((author) => {
 			counter++;
@@ -110,6 +166,10 @@ class ReadProject extends React.Component {
 			if(count === 1){ return keyword; }
 			return ', '+keyword;
 		});
+		const allowComment = ( <button type="button" className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
+			);
+		const disableComment = ( <button type="button" disabled={true} className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
+			);
 		const allowAppreciation = (
 			<button className="btn btn-success appreciate-btn" onClick={this.appreciationClick}> Appreciate Project </button>
 		);
@@ -164,7 +224,7 @@ class ReadProject extends React.Component {
 								<i className="fa fa-linkedin" aria-hidden="true"></i>
 								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '' }> <i className="fa fa-envelope-o" aria-hidden="true"></i></a>
 								<i className="fa fa-facebook" aria-hidden="true"></i>
-								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' }><i className="fa fa-home" aria-hidden="true"></i></a>
+								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' } target="_blank"><i className="fa fa-home" aria-hidden="true"></i></a>
 							</div>
 						</div>
 					</div>
@@ -209,7 +269,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left row">
 						<a href="" className="link-left">Link to Project</a>
-						<a href="mailto:joseph.schaeffer@autodesk.com">  Flag content</a>
+						<a href={mailLink}>Flag content</a>
 					</div>
 				</div>
 				<div id="content">
@@ -223,6 +283,25 @@ class ReadProject extends React.Component {
     					<p> {this.props.project.project_abstract} </p>
     				</div>
     				<div className="container-fluid"> <EntriesGallery getSignedUrl={this.props.getSignedUrl} files={this.state.files} /> </div> 
+    				
+    				<div className="comments-section">
+	    				<div className="container-fluid">
+	    					<hr/>
+	    					<h3>Users Comments: </h3>
+	    				</div>
+	    				<div className="container-fluid comments-display">
+	    					<CommentsDisplay comments={this.state.comments} />
+	    				</div>
+
+	    				<div className="comment-container container">
+	    					<h4> Write a comment: </h4>
+		    				<div className="comment-input row">
+    	  						<textarea className="form-control" type="text" onChange={this.onChange} name="commentInput" placeholder="Write a comment here..." value={this.state.commentInput} id="comment"></textarea>
+    						</div>
+    						{this.props.auth.isAuthenticated && this.state.postEnable ? allowComment : disableComment}
+    					</div>
+
+	    			</div>
     			</div>
     			<hr/>
 			</div>
@@ -238,7 +317,8 @@ ReadProject.proptypes = {
 	checkAppreciations: React.PropTypes.func.isRequired,
 	increaseAp: React.PropTypes.func.isRequired,
 	getSignedUrl: React.PropTypes.func.isRequired,
-	getFilesObject: React.PropTypes.func.isRequired
+	getFilesObject: React.PropTypes.func.isRequired,
+	getComments: React.PropTypes.func.isRequired
 }
 ReadProject.contextTypes = {
 	router: React.PropTypes.object.isRequired
@@ -246,4 +326,4 @@ ReadProject.contextTypes = {
 function mapStateToProps(state){
 	return { auth: state.auth };
 }
-export default connect(mapStateToProps, {checkAppreciations, userAppreciated, getFilesObject, getSignedUrl})(ReadProject);
+export default connect(mapStateToProps, {checkAppreciations, getComments, saveComment, userAppreciated, getFilesObject, getSignedUrl})(ReadProject);

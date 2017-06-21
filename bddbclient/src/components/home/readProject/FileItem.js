@@ -4,7 +4,6 @@ import './modal.css';
 import htmlToText from 'html-to-text';
 import path from 'path';
 import Lightbox from 'react-image-lightbox';
-import download from 'download-file';
 
 const customStyles = {
 	    overlay : {
@@ -40,16 +39,16 @@ class FileItem extends React.Component{
    	 }
 
    	 getSignedUrlToDownload(e){
+   	 	e.preventDefault();
    	 	const fileIdQuery = 'fileId='+this.props.file.id;
 		this.props.getSignedUrl(fileIdQuery).then(
 			(res) => {
-				const link = JSON.parse(res.request.response);
-				download(link.url, function(err){
-					if(err) throw err
-					console.log('saved');
-				});
+				const link = JSON.parse(res.request.response).url;
+				return link;
 			},
-			(err) => { console.log(err); }
+			(err) => { console.log(err); 
+					return null;
+			}
 		);
 
    	 }
@@ -72,6 +71,7 @@ class FileItem extends React.Component{
 		return <span className="plain-background"><h5>{name}</h5></span>;
 	}
 
+
 	render() {
 		
 		const {
@@ -89,8 +89,8 @@ class FileItem extends React.Component{
 		return(
 			<div className="single-file container-fluid" >
 				<h5 className="file-item-title">{this.props.file.title}</h5>
-				<div className="file-image" >
-					{imgBool ? <img className="pull-left" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
+				<div className="col-sm-12 file-image" >
+					{imgBool ? <img onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
 				</div>
 				<div className="file-details">
 					<p > {text} </p>

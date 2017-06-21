@@ -2,6 +2,7 @@ import express from 'express';
 import Projects from '../models/projects';
 import AWS from 'aws-sdk';
 import commaSplit from 'comma-split';
+import Comments from '../models/comments';
 
 var s3 = new AWS.S3();
 let router = express.Router();
@@ -11,13 +12,13 @@ function getSignedUrl(projects){
 	const signed = projects.map((project) => {
 
 		var keyName = project.header_image_link;
-		var params = {Bucket: bucketName, Key: keyName, Expires: 600}
+		var params = {Bucket: bucketName, Key: keyName, Expires: 1800}
 		s3.getSignedUrl('getObject', params, (err, url) => {
 			project.header_image_link = url;
 		});
 		if(project.hero_image !== null){
 			var keyName1 = project.hero_image;
-			var params1 = {Bucket: bucketName, Key: keyName1, Expires: 600}
+			var params1 = {Bucket: bucketName, Key: keyName1, Expires: 1800}
 			s3.getSignedUrl('getObject', params1, (err, url) => {
 				project.hero_image = url;
 			});
@@ -29,13 +30,13 @@ function getSignedUrl(projects){
 
 function singleSignedUrl(project){
 	var keyName = project.header_image_link;
-	var params = {Bucket: bucketName, Key: keyName, Expires: 600}
+	var params = {Bucket: bucketName, Key: keyName, Expires: 3600}
 	s3.getSignedUrl('getObject', params, (err, url) => {
 		project.header_image_link = url;
 	});
 	if(project.hero_image !== null){
 		var keyName1 = project.hero_image;
-		var params1 = {Bucket: bucketName, Key: keyName1, Expires: 600}
+		var params1 = {Bucket: bucketName, Key: keyName1, Expires: 3600}
 		s3.getSignedUrl('getObject', params1, (err, url) => {
 			project.hero_image = url;
 		});
@@ -168,11 +169,63 @@ router.get('/project/', (req, res) => {
 	console.log(req.query);
 	Projects.where({id: req.query.projectId}).fetch()
 		.then(resData=> {
+			console.log(resData);
 			var resProject =  resData.toJSON();
 			res.status(200).json({error: false, data: singleSignedUrl(resProject)});
 		})
-		.catch(err => {res.status(500).json(err);
+		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
+});
+
+router.get('/comments/', (req, res) => {
+	console.log(req.query);
+	var _projectId = req.query.projectId;
+	Comments.query({
+		where: { project_id: _projectId }
+	}).fetchAll().then(comments => {
+		console.log(comments.toJSON());
+		var commentsArr = comments.toJSON();
+		res.json({ commentsArr });
+	});
+});
+/*
+
+router.post('/', (req, res) =>{
+	const user_id = req.body.userId;
+	const project_id = req.body.projectId;
+	var _projectAppreciations = req.body.projectAppreciations + 1;
+	Projects.where({id: project_id}).save({ likes: _projectAppreciations }, {patch: true}); //update the project appreciations in database
+
+	Appreciations.forge({ 
+		user_id,
+		project_id
+	}, { hasTimestamps: true }).save()
+	.then(appreciation => {
+		res.status(200).json({error: false, success: true})
+	})
+	.catch(err => console.log(err));
+});
+*/
+router.post('/comments/', (req, res) => {
+	const user_id = req.body.user_id;
+	const project_id = req.body.project_id;
+	const user_firstname = req.body.user_firstname;
+	const user_lastname = req.body.user_lastName;
+	const username = req.body.username;
+	const comment = req.body.comment;
+	
+	Comments.forge({ 
+		user_id,
+		project_id,
+		username,
+		user_firstname,
+		user_lastname,
+		comment
+	}, { hasTimestamps: true }).save()
+	.then(comment => {
+		res.status(200).json({error: false, success: true})
+	})
+	.catch(err => console.log(err));
 });
 
 export default router;

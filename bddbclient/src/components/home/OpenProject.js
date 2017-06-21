@@ -1,14 +1,13 @@
 import React from 'react';
 import GalleryItem from './GalleryItem';
 
-
 class OpenProject extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
 			projectAssigned: false,
 			project: {},
-			error: false
+			error: true
 		}
 	}
 
@@ -19,19 +18,23 @@ class OpenProject extends React.Component{
 				var response = JSON.parse(res.request.response);
 				this.setState({ projectAssigned: true, project: response.data});
 			},
-			(err) => { this.setState({ error: true }); }
+			(err) => { 
+				this.context.router.push('/serverError');
+			}
 		);
 	}
 
 	render(){
 		return( 
 			<div>
-				{this.state.error ? <div><h2> Oops! Something Went Wrong. </h2> <br/> <h5> please check your link again </h5></div> : '' }
-			
 				{this.state.projectAssigned ? <GalleryItem project={this.state.project} increaseAp={this.props.increaseAp} modalActive={true} /> : ''}
 			</div>
 		);
 	}
+}
+
+OpenProject.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 OpenProject.propTypes = {

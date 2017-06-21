@@ -22,6 +22,8 @@
     "react-redux": "^5.0.5",
     "react-router": "2.5.0",
     "react-router-dom": "^4.1.1",
+    "react-side-bar": "^0.3.5",
+    "react-simple-sidenav": "^0.1.6",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "shortid": "^2.2.8",

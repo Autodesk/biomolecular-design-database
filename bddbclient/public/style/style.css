@@ -1,5 +1,9 @@
 /* FONT */
 @font-face {
+	font-family: ArtifaktElement-reg;
+	src: url(fonts/ArtifaktElementRegular.ttf);
+}
+@font-face {
 	font-family: ArtifaktElement;
 	src: url(fonts/ArtifaktElementLight.ttf);
 }
@@ -109,8 +113,6 @@ input[type=text] {
     font-size: 16px;
 		text-align: center;
     background-color: white;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
 }
 
 

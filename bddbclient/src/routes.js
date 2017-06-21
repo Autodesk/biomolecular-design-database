@@ -8,6 +8,7 @@ import LoginPage from "./components/login/LoginPage";
 import EventPage from "./components/events/EventPage"
 import requireAuth from './utils/requireAuth';
 import NotFound from './components/NotFound';
+import serverError from './components/ServerError';
 // "/" path links to the App component (basic) + "/XX" {XX} component
 //"/signup" renders the App component + the signup component 
 
@@ -20,6 +21,7 @@ export default (
 		<Route path="login" component={LoginPage} />
 		<Route path="new-event" component={requireAuth(EventPage)} />
 		<Route path="notfound" component={NotFound} />
+		<Route path="serverError" component={serverError} />
 	</Route>
 );
 

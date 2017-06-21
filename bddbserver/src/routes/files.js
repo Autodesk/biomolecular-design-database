@@ -13,7 +13,7 @@ function getSignedUrl(files){
 		file.file_name = file.file_link;
 		const type = mime.lookup(file.file_link);
 		var keyName = file.file_link;
-		var params = {Bucket: bucketName, Key: keyName, Expires: 600}
+		var params = {Bucket: bucketName, Key: keyName, Expires: 2400}
 		s3.getSignedUrl('getObject', params, (err, url) => {
 			file.file_link = url;
 		});
@@ -25,7 +25,7 @@ function getSignedUrl(files){
 
 function getSignedUrlForSingleFile(file){
 	var keyName = file.file_link;
-	var params = {Bucket: bucketName, Key: keyName, Expires: 600}
+	var params = {Bucket: bucketName, Key: keyName, Expires: 2400}
 	s3.getSignedUrl('getObject', params, (err, url) => {
 		file.file_link = url;
 	});
