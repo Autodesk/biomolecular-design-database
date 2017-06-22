@@ -18,11 +18,15 @@ button:focus {
 	font-weight: 100;
 	color: #343950;
 }
-.welcomeStyle{
+.welcomeStyle {
 	margin: 35px 2px;
 	font-family:  ArtifaktElement;
 	font-weight: 100;
 	color: #2fe695;
+  text-align: center !important;
+}
+.general h4{
+  text-align: center !important;
 }
 .sortByStyle {
 	margin-left: 80%;
@@ -143,6 +147,10 @@ button:focus {
   cursor: pointer;
   cursor: hand;
 
+}
+.showcase-item-layout:hover{
+  cursor: pointer;
+  cursor: hand;
 }
 .showcase-item-layout h4:hover{
   cursor: pointer;

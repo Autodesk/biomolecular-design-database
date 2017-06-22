@@ -21,7 +21,6 @@
   padding: 0px;
   background: #fff;
   border: none;
-  border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.5);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.8s;
@@ -38,48 +37,66 @@
   from { opacity:0}
   to { opacity:1}
 }
+.overlay
+{   
+    width: 100%;
+    height: 100%;
+    max-width: 1400px;
+    min-width: 720px;
+    margin-right: auto;
+    margin-left: auto;
+}
 
 /*CONTENT */
 #content{
   align-items: stretch;
-  width: 75%;
-  padding: 0;
-  float: right;
   min-height: 100vh;
+  padding-left: 280px;
 }
-.glyphicon.glyphicon-remove-circle {
+.cross-icon-new {
   font-size: 25px;
+  border-radius: 100%;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
   -ms-transition: all 0.5s ease; /* IE 9 */
   -o-transition: all 0.5s ease; /* Opera */
   transition: all 0.5s ease;
 }
-.glyphicon.glyphicon-remove-circle:hover {
+.cross-icon-new:hover {
   -webkit-transform:scale(1.2); /* Safari and Chrome */
   -moz-transform:scale(1.2); /* Firefox */
   -ms-transform:scale(1.2); /* IE 9 */
   -o-transform:scale(1.2); /* Opera */
   transform:scale(1.2);
 }
+.cross-icon-new{
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  color: black;
+  opacity: 1;
+  padding: 12px !important;
+}
+.cross-icon-new img{
+  height: 40px;
+  width: 40px;
+
+}
 .cross-icon{
   border-radius: 50%;
   position: absolute;
-  float: right !important;
-  align-self: right;
-  margin-top: 0px;
-  margin-left: 33%;
+  top: 0;
+  right: 0;
   padding: 10px;
   z-index: 1000;
 }
-#content .cross-icon:hover{
+#content .cross-icon-new:hover{
   cursor: pointer;
   cursor: hand;
 }
 .hero-image {
-  width: 110%;
   max-width: 1120px;
-  min-width: 768px;
   height: auto;
 }
 .hero-image img{
@@ -92,15 +109,15 @@
   min-height: auto;
 }
 .project-title h1{
-  font-size: 50px;
   min-width: 100%;
+  font-size: 3.5em;
   float: left;
   color: #212a43;
   text-align: left;
   margin-top: 4%;
   padding-top: 3%;
-  padding-right: 3%;
-  padding-left: 5%;
+  padding-right: 30px;
+  padding-left: 4.5%;
   padding-bottom: 1%;
   font-family: ArtifaktElement-Thin;
 }
@@ -109,9 +126,9 @@
   color: #2c3247;
   min-width: 100%;
   font-family: ArtifaktElement;
-  font-size: 16px;
-  padding-left: 5%;
-  padding-right: 3%;
+  font-size: 1.2em;
+  padding-left: 4.5%;
+  padding-right: 30px;
   padding-bottom: 2%;
   opacity: 0.5;
 }
@@ -119,20 +136,19 @@
   min-height: 100%;
   min-width: 100%;
   align-items: left;
-  margin-bottom: 5% !important;
+  margin-bottom: 4% !important;
 }
 
 /* FILE ITEMS */
 .file-item-title{
   font-family: ArtifaktElement-Bold;
   margin-top: 3%;
-  margin-bottom: 2% !important;
   text-align: left;
   font-size: 15px;
   font-weight: bold !important;
   text-align: left;
   min-width: 100%;
-  padding-left: 5% !important;
+  padding-left: 4.5% !important;
   color: #2c3247;
 }
 .file-image{
@@ -156,9 +172,9 @@
   position: relative;
   max-width: 100%;
   height: auto;
-  padding-bottom: 2%;
-  padding-right: 5%;
-  padding-left: 5%;
+  padding-bottom: 1%;
+  padding-right: 30px;
+  padding-left: 4.5%;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
   -ms-transition: all 0.5s ease; /* IE 9 */
@@ -178,8 +194,8 @@
   text-align: left;
   font-family: ArtifaktElement;
   min-width: 100%;
-  padding-left: 5% !important;
-  padding-right: 5% !important;
+  padding-left: 4.5% !important;
+  padding-right: 30px !important;
 }
 .modal-display{
   max-height: 100%;
@@ -197,7 +213,7 @@
   margin-left: 5%;
   border-radius: 10px;
   padding: 5%;
-  margin-top: 2%;
+  margin-top: 1%;
   margin-bottom: 2%;
   cursor: default;
   z-index: 10
@@ -209,7 +225,7 @@
 .download{
   float: left;
   font-family: ArtifaktElement;
-  padding-left: 5%;
+  padding-left: 4.5%;
 }
 /*Comments section*/
 .comments-section{
@@ -255,7 +271,7 @@
 .single-comment p{
   padding-left: 5%;
 }
-.container-fluid h3{
+.user-comment-title h3{
   text-align: left !important;
   padding-left: 10%;
 }
@@ -306,17 +322,18 @@ textarea:focus{
   from { opacity: 0;} 
   to { opacity: 1;}
 }
+
+
 /*DETAILS */
 /* SUB parts DETAILS */
 #details{
   align-items: stretch;
-  padding-top: 1%;
-  padding-left: 3%;
-  padding-right: 2%;
+  position: absolute;
+  width: 280px;
+  float: left;
+  padding: 40px;
   margin-right: 0;
   background: #F5F5F5;
-  width: 25%;
-  float: left;
   min-height: 100%;
   overflow-y: scroll !important;
 }
@@ -344,7 +361,7 @@ textarea:focus{
 .sub-title .fa {
   padding: 8px;
   font-size: 12px;
-  margin-right: 3%;
+  margin-right: 4%;
   border-radius: 50%;
   float: left;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
@@ -367,6 +384,7 @@ textarea:focus{
   font-size: 12px !important;
 }
 .sub-title .fa:hover {
+  display: inline-block;
   cursor: pointer;
   -webkit-transform:scale(1.3); /* Safari and Chrome */
   -moz-transform:scale(1.3); /* Firefox */
@@ -376,10 +394,9 @@ textarea:focus{
 }
 .fa-facebook {
   opacity: 0.5;
+  font-size: 11px !important;
   background:  #212a43;
   color: white;
-  border-radius: 100% !important;
-  font-size: 12px !important;
 }
 .fa-linkedin {
   opacity: 0.5;

@@ -3,6 +3,7 @@ import './Home.css';
 import Modal from 'react-modal';
 import ReadProject from './readProject/ReadProject';
 import './readProject/modal.css';
+import './readProject/modalQueries.css';
 
 class GalleryItem extends React.Component {
 
@@ -44,27 +45,28 @@ class GalleryItem extends React.Component {
 		    left              : 0,
 		    right             : 0,
 		    bottom            : 0,
-		    backgroundColor   : 'rgba(0, 0, 0, 0.75)',
+		    backgroundColor   : 'rgba(0, 0, 0, 0.85)',
 		    padding			  : '0px',
 		    zIndex : 1050
 		  },
 		  content : {
-		    position                   : 'absolute',
+		     position                   : 'absolute',
 		    top                        : '0px',
 		    left                       : '0px',
 		    right                      : '0px',
-		    paddingTop 					: '3%',
-		    paddingBottom 				: '3%',
+		    bottom 						: '0px',
+		    paddingTop 					: '2%',
+		    paddingLeft					: '0px',
+		    paddingRight 				: '0px',
+		    marginBottom 				: '0px',
 		    minHeight 					: '100%',
-		    marginLeft					: '13%',
-		    marginRight					: '13%',
-		    width						: '74%',
+		    margin 						: 'auto',
+		    maxWidth 					: '1400px',
+    		minWidth					: '720px',
 		    border                     : 'none',
 		    background                 : 'transparent',
-		    WebkitOverflowScrolling    : 'hidden',
-		    borderRadius               : '4px',
 		    outline                    : 'none',
-		    overflow                   : 'auto',
+		    overflow                   : 'auto'
 		  }
 		};
 

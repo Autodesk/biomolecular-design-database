@@ -4,7 +4,8 @@ import { userAppreciated, getComments, saveComment, checkAppreciations, getFiles
 import './modal.css';
 import '../Home.css';
 import EntriesGallery from './EntriesGallery';
-import CommentsDisplay from './CommentsDisplay';
+//import CommentsDisplay from './CommentsDisplay';
+import crossIcon from '../../../../public/Assets/cross.png';
 
 class ReadProject extends React.Component {
 	constructor(props){
@@ -29,7 +30,7 @@ class ReadProject extends React.Component {
 		var _userId = 0;
 		var _appreciateButtonEnabled = false;
 		var filesQuery = 'projectId='+this.props.project.id;
-		var query = 'projectId='+this.props.project.id; 
+		
 		this.props.getFilesObject(filesQuery).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
@@ -76,14 +77,7 @@ class ReadProject extends React.Component {
 			});
 		}
 
-		//Mount Comments
-		this.props.getComments(query).then(
-			(res) => {
-				var response = JSON.parse(res.request.response);
-				this.setState( { comments: response.commentsArr}); //change the current state. this will render 
-			},
-			(err) => { this.context.router.push('/notfound');}
-		);
+		
 
 		setInterval(() => {
 			console.log('updated');
@@ -166,10 +160,10 @@ class ReadProject extends React.Component {
 			if(count === 1){ return keyword; }
 			return ', '+keyword;
 		});
-		const allowComment = ( <button type="button" className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
-			);
-		const disableComment = ( <button type="button" disabled={true} className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
-			);
+		//const allowComment = ( <button type="button" className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
+		//	);
+		//const disableComment = ( <button type="button" disabled={true} className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
+		//	);
 		const allowAppreciation = (
 			<button className="btn btn-success appreciate-btn" onClick={this.appreciationClick}> Appreciate Project </button>
 		);
@@ -186,7 +180,8 @@ class ReadProject extends React.Component {
 		}
 		return(
 			<div className="modal-body " >
-				<div id="details">
+			<div className="container-fluid overlay">
+				<div id="details" className="hidden-xs">
 					<div className="sub-part pull-left">
 						<div className="sub-title">
 							<h5> AUTHORS </h5>
@@ -273,37 +268,22 @@ class ReadProject extends React.Component {
 					</div>
 				</div>
 				<div id="content">
-					<span className="glyphicon glyphicon-remove-circle cross-icon" onClick={this.props.deactivateModal} aria-hidden="true"></span>
-    				
+					<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt=""/></div>
+					
     				<div className="hero-image">
     					<img className="img-responsive" src={this.props.project.hero_image ? this.props.project.hero_image : this.props.project.header_image_link} alt=""/>
     				</div>
-    				<div className="project-title"> <h1> {this.props.project.name}</h1>  </div>
-    				<div className="project-abstract"> 
-    					<p> {this.props.project.project_abstract} </p>
-    				</div>
-    				<div className="container-fluid"> <EntriesGallery getSignedUrl={this.props.getSignedUrl} files={this.state.files} /> </div> 
-    				
-    				<div className="comments-section">
-	    				<div className="container-fluid">
-	    					<hr/>
-	    					<h3>Users Comments: </h3>
-	    				</div>
-	    				<div className="container-fluid comments-display">
-	    					<CommentsDisplay comments={this.state.comments} />
-	    				</div>
-
-	    				<div className="comment-container container">
-	    					<h4> Write a comment: </h4>
-		    				<div className="comment-input row">
-    	  						<textarea className="form-control" type="text" onChange={this.onChange} name="commentInput" placeholder="Write a comment here..." value={this.state.commentInput} id="comment"></textarea>
-    						</div>
-    						{this.props.auth.isAuthenticated && this.state.postEnable ? allowComment : disableComment}
+    				<div className="container-fluid content-details">
+	    				<div className="project-title"> <h1> {this.props.project.name}</h1>  </div>
+    					<div className="project-abstract"> 
+    						<p> {this.props.project.project_abstract} </p>
     					</div>
-
-	    			</div>
+    					<div className="container-fluid"> <EntriesGallery getSignedUrl={this.props.getSignedUrl} files={this.state.files} /> </div> 
+    				</div>
+    		
     			</div>
     			<hr/>
+    			</div>
 			</div>
 		);
 	}
@@ -326,4 +306,40 @@ ReadProject.contextTypes = {
 function mapStateToProps(state){
 	return { auth: state.auth };
 }
+
+//to add comments section, just add this part before the end of content div
+/*
+
+<div className="comments-section">
+	    				<div className="container-fluid user-comment-title">
+	    					<hr/>
+	    					<h3>Comments: </h3>
+	    				</div>
+	    				<div className="container-fluid comments-display">
+	    					<CommentsDisplay comments={this.state.comments} />
+	    				</div>
+
+	    				<div className="comment-container container">
+	    					<h4> Write a comment: </h4>
+		    				<div className="comment-input row">
+    	  						<textarea className="form-control" type="text" onChange={this.onChange} name="commentInput" placeholder="Write a comment here..." value={this.state.commentInput} id="comment"></textarea>
+    						</div>
+    						{this.props.auth.isAuthenticated && this.state.postEnable ? allowComment : disableComment}
+    					</div>
+
+	    			</div>
+
+	    //and place this at the end of componentWillMount function
+	    //Mount Comments
+	    var query = 'projectId='+this.props.project.id; 
+		this.props.getComments(query).then(
+			(res) => {
+				var response = JSON.parse(res.request.response);
+				this.setState( { comments: response.commentsArr}); //change the current state. this will render 
+			},
+			(err) => { this.context.router.push('/notfound');}
+		);
+
+	  */
+
 export default connect(mapStateToProps, {checkAppreciations, getComments, saveComment, userAppreciated, getFilesObject, getSignedUrl})(ReadProject);
