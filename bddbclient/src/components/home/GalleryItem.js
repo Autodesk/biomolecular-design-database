@@ -62,7 +62,6 @@ class GalleryItem extends React.Component {
 		    minHeight 					: '100%',
 		    margin 						: 'auto',
 		    maxWidth 					: '1400px',
-    		minWidth					: '720px',
 		    border                     : 'none',
 		    background                 : 'transparent',
 		    outline                    : 'none',
@@ -97,7 +96,7 @@ class GalleryItem extends React.Component {
 
 	return (
 	
-		<div className="col-lg-3 col-md-4 col-xs-12 showcase-item-layout" onClick={this.activateModal}>
+		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout" onClick={this.activateModal}>
 	      	<img className="img-responsive project-image" src={this.props.project.header_image_link} alt=""/>
 	        <h4 className="project-item-title" >{this.props.project.name}</h4>
 	        <p className="authors-styling">{authors}</p>

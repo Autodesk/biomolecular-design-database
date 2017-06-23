@@ -90,7 +90,7 @@ class FileItem extends React.Component{
 			<div className="single-file container-fluid" >
 				<h5 className="file-item-title">{this.props.file.title}</h5>
 				<div className="col-sm-12 file-image" >
-					{imgBool ? <img onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
+					{imgBool ? <img className="image-responsive" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
 				</div>
 				<div className="file-details">
 					<p > {text} </p>

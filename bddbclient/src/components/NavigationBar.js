@@ -15,7 +15,7 @@ class NavigationBar extends React.Component{
 		const userLinks = (
 			<ul className="nav navbar-nav">
 				<li><Link to="/" style={{color: '#343950'}} >Browse All </Link></li>
-				<li><Link to="/" style={{color: '#343950'}}> My Projects </Link></li>
+				<li><Link to="/profile" style={{color: '#343950'}}> My Projects </Link></li>
 				<li><Link to="/new-event" style={{color: '#343950'}}> Upload New </Link></li>
 				<li color="black"><a href="#  " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
 

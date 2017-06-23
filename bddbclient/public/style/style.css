@@ -31,6 +31,9 @@ body {
 	padding: 70px;
 
 }
+input:focus{
+	outline: none;
+}
 input{
 	padding: 5px;
 }

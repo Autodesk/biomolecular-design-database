@@ -84,6 +84,7 @@ class ReadProject extends React.Component {
 			this.props.getFilesObject(filesQuery).then(
 				(res) => {
 					var response = JSON.parse(res.request.response);
+					console.log(response);
 					this.setState( { files: response.data} ); //change the current state. this will render 
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -264,7 +265,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left row">
 						<a href="" className="link-left">Link to Project</a>
-						<a href={mailLink}>Flag content</a>
+						<a href={mailLink} className="link-right" >Flag content</a>
 					</div>
 				</div>
 				<div id="content">

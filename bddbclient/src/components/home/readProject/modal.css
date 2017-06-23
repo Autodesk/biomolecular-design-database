@@ -7,6 +7,7 @@
 .ReactModal__Body--open {
   overflow: hidden;
 }
+
 ::-webkit-scrollbar {
   width: 0px;  /* remove scrollbar space */
   background: transparent;  /* optional: just make scrollbar invisible */
@@ -26,6 +27,7 @@
   -webkit-animation-duration: 0.8s;
   animation-name: animatetop;
   animation-duration: 0.8s;
+  overflow-x: auto !important;
 }
 /* Add Animation */
 @-webkit-keyframes animatetop {
@@ -76,11 +78,12 @@
   z-index: 1000;
   color: black;
   opacity: 1;
-  padding: 12px !important;
+  margin-top: 8px !important;
+  margin-right: 12px !important;
 }
 .cross-icon-new img{
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
 
 }
 .cross-icon{
@@ -137,6 +140,7 @@
   min-width: 100%;
   align-items: left;
   margin-bottom: 4% !important;
+  padding-left: 4.5% !important;
 }
 
 /* FILE ITEMS */
@@ -148,7 +152,6 @@
   font-weight: bold !important;
   text-align: left;
   min-width: 100%;
-  padding-left: 4.5% !important;
   color: #2c3247;
 }
 .file-image{
@@ -158,7 +161,6 @@
   margin-bottom: 1% !important;
   height: auto;
   align-items: center;
-  min-width: 100%;
   align-self: left;
 }
 .file-image img:hover{
@@ -168,13 +170,17 @@
 .file-image span:hover{
   cursor: none;
 }
+.molecular-viewer{
+   position: relative;
+  max-width: 992px;
+  width: 100%;
+  height: 45vh;
+}
 .file-image img {
   position: relative;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  padding-bottom: 1%;
   padding-right: 30px;
-  padding-left: 4.5%;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
   -ms-transition: all 0.5s ease; /* IE 9 */
@@ -194,7 +200,6 @@
   text-align: left;
   font-family: ArtifaktElement;
   min-width: 100%;
-  padding-left: 4.5% !important;
   padding-right: 30px !important;
 }
 .modal-display{
@@ -210,7 +215,6 @@
   border: 1px solid black;
   float: left;
   font-family: ArtifaktElement;
-  margin-left: 5%;
   border-radius: 10px;
   padding: 5%;
   margin-top: 1%;
@@ -225,7 +229,6 @@
 .download{
   float: left;
   font-family: ArtifaktElement;
-  padding-left: 4.5%;
 }
 /*Comments section*/
 .comments-section{
@@ -344,11 +347,11 @@ textarea:focus{
   margin-top: 1%;
 }
 .sub-part-hr{
-  min-width: 90%;
+  min-width: 100%;
 }
 .sub-part{
   font-size: 12px;
-  min-width: 90%;
+  min-width: 100%;
   font-family: ArtifaktElement-Book;
 }
 .sub-title h5{
@@ -417,8 +420,6 @@ textarea:focus{
   position: relative;
   font-size: 12px;
   float: left;
-  margin-left: 0px !important;
-  width: 33%;
 }
 .views-details h5 {
   font-size: 12px;
@@ -429,9 +430,10 @@ textarea:focus{
 }
 .views-styling{
   font-size: 12px;
-  float: left !important;
-  width: 100%;
-  text-align: left;
+  float: left;
+}
+.views-styling p{
+  float: left;
 }
 .views-details i{
   padding-left: 0% !important;
@@ -445,19 +447,19 @@ textarea:focus{
   opacity: 0.5 !important;
   color: #212a43 !important;
   font-size: 12px;
-  float: left;
-  padding-left: 5%;
+  float: right;
 }
 .likes-styling{
-  width: 65%;
   font-size: 12px;
-  text-align: left;
-  padding-left: 5%;
+  float: right;
+  margin-top: 1%;
+  margin-left: 15%;
+  margin-right: 69%;
 }
 .appreciate-btn{
   border-radius: 0px;
   background-color: #2acc84 !important;
-  width: 100%;
+  min-width: 100% !important;
   border: none;
   padding: 5%;
   font-size: 14px;
@@ -487,4 +489,7 @@ textarea:focus{
   float: left;
   width: 50%;
   text-align: left;
+}
+.link-right{
+  float: right;
 }

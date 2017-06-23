@@ -1,6 +1,7 @@
 import React from 'react';
 import './modal.css';
 import FileItem from './FileItem.js';
+import MolViewer from './testMolViewer';
 
 class EntriesGallery extends React.Component{
 	componentWillMount(){
@@ -13,6 +14,7 @@ class EntriesGallery extends React.Component{
 		return(
 			<div>
 				{fileDisplay}
+				<MolViewer />
 			</div>
 		);
 	}

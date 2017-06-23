@@ -172,11 +172,11 @@ class HomePage extends React.Component {
 					<h1 className="home-title"> Showcase & Discover  </h1>
 					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome {user.firstName}!  </h3> : signUp}
 				</div>
-				<hr width="80%"/>
+				<hr width="85%"/>
 
 				<div className="container-fluid showcase-layout animated zoomInRight">
 					<div className="row">
-						<div className="pull-left">
+						<div className="filter-style pull-left">
 							<p> FILTER BY KEYWORDS </p>
 							<div className="btn-group">
 								<button name="Lattice: Honeycomb" onClick={this.handleFilters} className={this.state.filters.indexOf("Lattice: Honeycomb") >= 0 ? "greenBtn" : "filterBtn" }>Lattice: Honeycomb</button>
@@ -186,7 +186,7 @@ class HomePage extends React.Component {
 								<button name="Scaffold: M13mp18" onClick={this.handleFilters} className={this.state.filters.indexOf("Scaffold: M13mp18") >= 0 ? "greenBtn" : "filterBtn" }>Scaffold: M13mp18</button>
 							</div>
 						</div>
-						<div className="dropdown pull-right">
+						<div className="dropdown sort-style pull-right">
 						  	<div className="sub-menu-parent">
 							  	<p1> SORT BY: <p className="dropbtn btn  btn-mini" >{this.state.sortBy}<span className="caret"></span></p>
 								  	<ul className="sub-menu">
