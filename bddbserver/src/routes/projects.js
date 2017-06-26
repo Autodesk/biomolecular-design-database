@@ -128,7 +128,7 @@ router.get('/', (req, res) => { //get all projects
 	var to = req.query.to;
 
 	if(sortby === 'Most Viewed'){ 
-		Projects.forge().orderBy('views', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -137,7 +137,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}
 	else if( sortby === 'Quality of Documentation') {
-		Projects.forge().orderBy('quality_of_documentation', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -146,7 +146,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}
 	else if(sortby === 'Most Appreciations'){
-		Projects.forge().orderBy('likes', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -155,7 +155,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}	
 	else{ //return Newest
-		Projects.forge().orderBy('created_at', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -166,7 +166,6 @@ router.get('/', (req, res) => { //get all projects
 });
 
 router.get('/project/', (req, res) => {
-	console.log(req.query);
 	Projects.where({id: req.query.projectId}).fetch()
 		.then(resData=> {
 			console.log(resData);
@@ -178,7 +177,6 @@ router.get('/project/', (req, res) => {
 });
 
 router.get('/comments/', (req, res) => {
-	console.log(req.query);
 	var _projectId = req.query.projectId;
 	Comments.query({
 		where: { project_id: _projectId }
@@ -206,6 +204,7 @@ router.post('/', (req, res) =>{
 	.catch(err => console.log(err));
 });
 */
+
 router.post('/comments/', (req, res) => {
 	const user_id = req.body.user_id;
 	const project_id = req.body.project_id;

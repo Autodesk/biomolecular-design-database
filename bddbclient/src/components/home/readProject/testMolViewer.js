@@ -19,9 +19,4 @@ class testMolViewer extends React.Component{
 	}
 }
 
-testMolViewer.propTypes = {
-	file: React.PropTypes.object.isRequired,
-	getSignedUrl: React.PropTypes.func.isRequired
-}
-
 export default testMolViewer;

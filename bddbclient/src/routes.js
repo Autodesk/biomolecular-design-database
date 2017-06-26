@@ -20,7 +20,7 @@ export default (
 		<Route path="projects" component={HomePage}/>
 		<Route path="projects/:projectId" component={HomePage}/>
 		<Route path="signup" component={SignupPage} />
-		<Route path="profile" component={Profile} />
+		<Route path="profile" component={requireAuth(Profile)} />
 		<Route path="login" component={LoginPage} />
 		<Route path="new-event" component={requireAuth(EventPage)} />
 		<Route path="notfound" component={NotFound} />

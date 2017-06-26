@@ -58,11 +58,11 @@
 .cross-icon-new {
   font-size: 25px;
   border-radius: 100%;
-  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
-  -moz-transition: all 0.5s ease; /* Firefox */
-  -ms-transition: all 0.5s ease; /* IE 9 */
-  -o-transition: all 0.5s ease; /* Opera */
-  transition: all 0.5s ease;
+  -webkit-transition: all 0.3s ease; /* Safari and Chrome */
+  -moz-transition: all 0.3s ease; /* Firefox */
+  -ms-transition: all 0.3s ease; /* IE 9 */
+  -o-transition: all 0.3s ease; /* Opera */
+  transition: all 0.3s ease;
 }
 .cross-icon-new:hover {
   -webkit-transform:scale(1.2); /* Safari and Chrome */
@@ -154,14 +154,11 @@
   min-width: 100%;
   color: #2c3247;
 }
-.file-image{
-  max-width: 992px;
-  position: relative;
-  white-space: nowrap;
-  margin-bottom: 1% !important;
-  height: auto;
-  align-items: center;
-  align-self: left;
+
+.image-file.style{
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px;
 }
 .file-image img:hover{
   cursor: zoom-in;
@@ -176,11 +173,13 @@
   width: 100%;
   height: 45vh;
 }
+
 .file-image img {
+    margin-left: auto;
+  margin-right: auto;
   position: relative;
-  width: 100%;
-  height: auto;
-  padding-right: 30px;
+  padding-right: 60px !important;
+  padding: 25px;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
   -ms-transition: all 0.5s ease; /* IE 9 */
@@ -395,27 +394,13 @@ textarea:focus{
   -o-transform:scale(1.3); /* Opera */
   transform:scale(1.3);
 }
-.fa-facebook {
-  opacity: 0.5;
-  font-size: 11px !important;
-  background:  #212a43;
-  color: white;
+.icons-style{
+  float: left !important;
 }
-.fa-linkedin {
-  opacity: 0.5;
-  background:  #212a43;
-  color: white;
+.icons-style a{
+  padding-right: 5px;
 }
-.fa-envelope-o {
-  opacity: 0.5;
-  background-color: #212a43;
-  color: white;
-}
-.fa-home {
-  opacity: 0.5;
-  background-color:  #212a43;
-  color:white;
-}
+
 .views-details{
   position: relative;
   font-size: 12px;

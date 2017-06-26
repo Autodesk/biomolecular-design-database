@@ -197,8 +197,7 @@ p1{
 @media (max-width:1450px) and (min-width: 1101px)
 {
     .showcase-item-layout {
-      width: 33% !important;
-      min-height: 540px !important;
+      min-height: 440px !important;
     }
 }
 /**** GALLERY */
@@ -244,6 +243,9 @@ p1{
     float: right;
     font-size: 12px;
 }
+.ticks-style{
+  margin-right: 2px;
+}
 .tick-stat {
   padding: 8px !important ;
 }
@@ -253,10 +255,17 @@ p1{
 .tick{
   font-size: 12px;
     float: left;
-    margin-left: 1%;
+    margin-left: 2%;
     letter-spacing: 3px;
 
 }
+.likes-style{
+  margin-right: 5px;
+  margin-left: 2px;
+  font-family: ArtifaktElement-regular;
+  color: #212a43;
+}
+
 .fa-thumbs-o-up{
     opacity: 0.6;
 }

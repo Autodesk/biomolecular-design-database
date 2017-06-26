@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="46px" height="46px" viewBox="0 0 46 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-5">
+            <g id="Group-12-Copy">
+                <circle id="Oval-3-Copy" fill="#2ACC84" cx="23" cy="23" r="23"></circle>
+                <g id="Group-6" transform="translate(18.000000, 15.000000)" fill="#FFFFFF">
+                    <g id="Group-2">
+                        <path d="M1,5 L0,5 L0,16 L11,16 L11,5 L10,5 L10,15 L1,15 L1,5 Z" id="Combined-Shape"></path>
+                        <rect id="Rectangle-3" x="3" y="6" width="1" height="7" rx="0.5"></rect>
+                        <path d="M2,1 L0,1 L0,3 L11,3 L11,1 L9,1 L9,1 C8.44771525,1 8,0.55228475 8,5.6655389e-16 L8,4.4408921e-16 L3,4.4408921e-16 L3,4.4408921e-16 L3,4.4408921e-16 C3,0.55228475 2.55228475,1 2,1 Z" id="Combined-Shape"></path>
+                        <rect id="Rectangle-3-Copy-2" x="5" y="6" width="1" height="7" rx="0.5"></rect>
+                        <rect id="Rectangle-3-Copy-3" x="7" y="6" width="1" height="7" rx="0.5"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

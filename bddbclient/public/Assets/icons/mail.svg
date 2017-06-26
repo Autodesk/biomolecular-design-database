@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.496263587">
+        <g id="Epic-2" transform="translate(-405.000000, -1423.000000)" fill-rule="nonzero" fill="#212A43">
+            <g id="iconmonstr-email-10" transform="translate(405.000000, 1423.000000)">
+                <path d="M12,0.02 C5.373,0.02 0,5.393 0,12.02 C0,18.647 5.373,24.02 12,24.02 C18.627,24.02 24,18.647 24,12.02 C24,5.393 18.627,0.02 12,0.02 Z M17.9405924,7.7506492 L12,12.5660135 L6.05855771,7.7506492 L17.9405924,7.7506492 Z M17.9490911,16.2493508 L6.05090888,16.2493508 L6.05090888,9.02120509 L12,13.8425185 L17.9490911,9.02205496 L17.9490911,16.2493508 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

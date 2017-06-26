@@ -7,6 +7,7 @@ import upload from './routes/upload';
 import projects from './routes/projects';
 import details from './routes/details';
 import files from './routes/files';
+import profile from './routes/profile';
 
 let app = express();
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/api/upload', upload);
+app.use('/api/profile', profile);
 app.use('/api/projects', projects);
 app.use('/api/details', details);
 app.use('/api/files', files);

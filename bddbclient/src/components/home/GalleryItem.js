@@ -4,6 +4,10 @@ import Modal from 'react-modal';
 import ReadProject from './readProject/ReadProject';
 import './readProject/modal.css';
 import './readProject/modalQueries.css';
+import appreciation from '../../../public/Assets/icons/appreciations.svg';
+import views from '../../../public/Assets/icons/views.svg';
+import ratingOff from '../../../public/Assets/icons/ratingOff.svg';
+import ratingOn from '../../../public/Assets/icons/ratingOn.svg';
 
 class GalleryItem extends React.Component {
 
@@ -87,10 +91,10 @@ class GalleryItem extends React.Component {
 		var ticks = [];
 		for(var i = 0; i < 5; i++){
 			if( i < qod){
-				ticks.push(<span className='green-tick glyphicon glyphicon-ok-circle' aria-hidden='true'></span>);
+				ticks.push(<img className="ticks-style" src={ratingOn} alt="green tick"/>);
 			}
 			else{
-				ticks.push(<span className='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>);
+				ticks.push(<img className="ticks-style" src={ratingOff} alt="grey tick"/>);
 			}
 		}
 
@@ -111,8 +115,8 @@ class GalleryItem extends React.Component {
 	        </div>
 	  
     	    <div className="stats"> 
-	  	       	<i className="fa fa-thumbs-o-up" aria-hidden="true"></i><strong>{this.props.project.likes}</strong>
-	           	<i className="fa fa-eye" aria-hidden="true"> </i><strong>{this.props.project.views}</strong>
+	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style">{this.props.project.likes}</strong>
+	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style">{this.props.project.views}</strong>
             </div>
             </div>
             {modal}
@@ -123,7 +127,7 @@ class GalleryItem extends React.Component {
 
 GalleryItem.propTypes = {
 	project: React.PropTypes.object.isRequired,
-	increaseAp: React.PropTypes.func.isRequired
+	increaseAp: React.PropTypes.func
 }
 
 export default GalleryItem;

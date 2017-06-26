@@ -5,7 +5,16 @@ import './modal.css';
 import '../Home.css';
 import EntriesGallery from './EntriesGallery';
 //import CommentsDisplay from './CommentsDisplay';
-import crossIcon from '../../../../public/Assets/cross.png';
+import crossIcon from '../../../../public/Assets/icons/close.svg';
+import appreciation from '../../../../public/Assets/icons/appreciations.svg';
+import views from '../../../../public/Assets/icons/views.svg';
+import facebook from '../../../../public/Assets/icons/facebook.svg';
+import linkedin from '../../../../public/Assets/icons/linkedIn.svg';
+import mail from '../../../../public/Assets/icons/mail.svg';
+import web from '../../../../public/Assets/icons/web.svg';
+import help from '../../../../public/Assets/icons/help.svg';
+import ratingOff from '../../../../public/Assets/icons/ratingOff.svg';
+import ratingOn from '../../../../public/Assets/icons/ratingOn.svg';
 
 class ReadProject extends React.Component {
 	constructor(props){
@@ -173,10 +182,10 @@ class ReadProject extends React.Component {
 		);
 		for(var i = 0; i < 5; i++){
 			if( i < qod){
-				ticks.push(<span className='green-tick glyphicon glyphicon-ok-circle' aria-hidden='true'></span>);
+				ticks.push(<img className="ticks-style" src={ratingOn} alt="green tick"/>);
 			}
 			else{
-				ticks.push(<span className='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>);
+				ticks.push(<img className="ticks-style" src={ratingOff} alt="grey tick"/>);
 			}
 		}
 		return(
@@ -209,18 +218,18 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
-							<h5> USER RIGHTS <span className="glyphicon glyphicon-question-sign" aria-hidden="true"></span> </h5>
+							<h5> USER RIGHTS <img src={help} alt="help icon"/> </h5>
 						<p className="authors-styling"> {this.props.project.user_rights} </p>
 						</div>
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
 							<h5> CONTACT</h5>
-							<div className="row">
-								<i className="fa fa-linkedin" aria-hidden="true"></i>
-								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '' }> <i className="fa fa-envelope-o" aria-hidden="true"></i></a>
-								<i className="fa fa-facebook" aria-hidden="true"></i>
-								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' } target="_blank"><i className="fa fa-home" aria-hidden="true"></i></a>
+							<div className="row icons-style">
+								<a href={this.props.project.contact_linkedin ? this.props.project.contact_linkedin : '' } target="_blank"><img src={linkedin} alt="linkedin icon"/></a>
+								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '' }> <img src={mail} alt="mail icon"/></a>
+								<a href={this.props.project.contact_facebook ? this.props.project.contact_facebook : '' } target="_blank"><img src={facebook} alt="facebook icon"/></a>
+								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' } target="_blank"><img src={web} alt="home web"/></a>
 							</div>
 						</div>
 					</div>
@@ -231,7 +240,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
-							<h5> QUALITY OF DOCUMENTATION <span className="glyphicon glyphicon-question-sign" aria-hidden="true"></span> </h5>
+							<h5> QUALITY OF DOCUMENTATION <img src={help} alt="help icon"/>  </h5>
 							<div className="ticks-details"> 
 								<div className="tick">
 							        {ticks[0]}
@@ -245,11 +254,11 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="row sub-part pull-left">
 						<div className=" views-details">
-							<h5>VIEWS <i className="fa fa-eye" aria-hidden="true"></i> </h5><br/>
+							<h5>VIEWS <img src={views} alt="views"/> </h5><br/>
 							<p className="views-styling"> {this.props.project.views} </p>
 						</div>
 						<div className=" likes-details">
-							<h5> APPRECIATIONS <i className="fa fa-thumbs-o-up" aria-hidden="true"></i> </h5><br/>
+							<h5> APPRECIATIONS <img src={appreciation} alt="appreciation"/> </h5><br/>
 							<p className="likes-styling"> {this.state.likes} </p>
 						</div>
 					</div>
@@ -269,7 +278,7 @@ class ReadProject extends React.Component {
 					</div>
 				</div>
 				<div id="content">
-					<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt=""/></div>
+					<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt="close modal"/></div>
 					
     				<div className="hero-image">
     					<img className="img-responsive" src={this.props.project.hero_image ? this.props.project.hero_image : this.props.project.header_image_link} alt=""/>
