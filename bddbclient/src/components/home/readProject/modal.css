@@ -178,8 +178,9 @@
     margin-left: auto;
   margin-right: auto;
   position: relative;
-  padding-right: 60px !important;
-  padding: 25px;
+  padding-right: 80px !important;
+  padding-left: 60px;
+  padding-bottom: 25px;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
   -ms-transition: all 0.5s ease; /* IE 9 */

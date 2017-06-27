@@ -38,29 +38,24 @@ class Profile extends React.Component{
 		);	
 	}
 
-
-
 	render() {
 		return( 
 			<div className="container-fluid profile">
-
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
 					<h2> profile </h2>
 					<button className="button-upload"> Upload New  </button>
 				</div>
-
 				<div className="published">
-					<h5> Published </h5>
+					<h4> Published </h4>
 					<hr/>
 					<div className="gallery-layout">
 						<Gallery projects={this.state.published} />
 					</div>
 					{this.state.published.length === 0 ? <h6> You've not uploaded any project. </h6> : '' }
 				</div>
-
 				<div className="drafts">
-					<h5> Drafts </h5>
+					<h4> Drafts </h4>
 					<hr/>
 					<div className="gallery-layout">
 						<Gallery projects={this.state.drafts} />

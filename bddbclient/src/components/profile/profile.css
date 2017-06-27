@@ -21,7 +21,6 @@
 	  padding-top: 10px;
 	  font-size: 14px;
 }
-
 .button-upload{
     background-color: #2acc84;
     border-radius: 29px;
@@ -34,14 +33,14 @@
     margin: 35px 2px;
 }
 .published{
-  margin-top: 5%;
+  margin-top: 3%;
   font-weight: bold;
   font-family: ArtifaktElement-bold;
   text-align: left;
   color: #2c3247;
 }
 .drafts{
-  margin-top: 5%;
+  margin-top: 3%;
   font-weight: bold;
   font-family: ArtifaktElement-bold;
   text-align: left;
@@ -50,4 +49,105 @@
 }
 .gallery-layout{
 	padding-top: 3%;
+}
+
+/*layout and hover effects */
+.project-item-layout{
+	padding-top: 18px;
+	padding-right: 18px;
+	position: relative;
+}
+.project-item-layout:hover .project-image{
+  opacity: 0.3;
+  transition: .5s ease;
+}
+.project-item-layout:hover .delete-project{
+	display:block
+}
+.project-item-layout:hover .edit-icon{
+	display:block
+}
+.edit-icon{
+  margin-top: calc(50% - 50px);
+  margin-left: calc(50% - 50px);
+  position:absolute;
+  align-self: center;
+  display: none;
+  z-index: 100;
+  -webkit-animation-name: animateIcon;
+  -webkit-animation-duration: 0.5s;
+  animation-name: animateIcon;
+  animation-duration: 0.5s;
+  overflow-x: auto !important;
+}
+.delete-project{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 46px;
+  display: none;
+  z-index: 100;
+  -webkit-animation-name: animateIcon;
+  -webkit-animation-duration: 0.5s;
+  animation-name: animateIcon;
+  animation-duration: 0.5s;
+  overflow-x: auto !important;
+}
+/* Add Animation */
+@-webkit-keyframes animateIcon {
+  from { opacity:0} 
+  to { opacity:1}
+}
+
+@keyframes animateIcon {
+  from { opacity:0}
+  to { opacity:1}
+}
+.project-item-layout:hover{
+    cursor: default ;
+}
+.project-item-layout img:hover{
+  cursor: pointer;
+}
+.delete-project:hover .delete-alert{
+  display: block
+}
+/*DELETE ALERT */
+.delete-alert{
+  margin-top: 38px;
+  right: 0px;
+  font-family: ArtifaktElement;
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+  border-radius: .4em;
+  text-align: center;
+  padding: 8px;
+  z-index: 150;
+  font-size: 12px;
+}
+.delete-alert:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 90%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom-color: #ffffff;
+  border-top: 0;
+  margin-left: -10px;
+  margin-top: -10px;
+}
+.button-delete{
+    background-color: #2acc84;
+    border-radius: 29px;
+    color: white;
+    font-family: ArtifaktElement;
+    padding: 6px 18px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    font-size: 12px;
+    margin: 10px 2px;
 }

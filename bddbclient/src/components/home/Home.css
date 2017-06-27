@@ -199,6 +199,8 @@ p1{
     .showcase-item-layout {
       min-height: 440px !important;
     }
+
+
 }
 /**** GALLERY */
 /* SHOW ALL DESIGNS */
@@ -281,10 +283,18 @@ p1{
   color: #212a43;
 }
 .authors-styling{
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 12px;
    opacity: 0.59;
   font-family: ArtifaktElement-Book;
   text-align: left;
   color: #2c3247;
+}
+.showcase-item-layout p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 

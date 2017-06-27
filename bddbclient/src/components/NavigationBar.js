@@ -48,7 +48,7 @@ class NavigationBar extends React.Component{
 					 { isAuthenticated ? userLinks : guestLinks }
 				 </div>
 				 <form onSubmit={this.props.searchSubmnit}>
-						 <input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
+						<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
 				 </form>
 			</div>
 				 <hr width="95%" />
@@ -57,7 +57,6 @@ class NavigationBar extends React.Component{
 		);
 	}
 }
-
 
 NavigationBar.propTypes = {
 	searchValUpdate: React.PropTypes.func.isRequired,
