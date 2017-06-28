@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "server": "sleep 10; babel-node src/index.js",
+<<<<<<< HEAD
     "start": "sleep 10; nodemon --watch src --exec babel-node -- src/index.js",
+=======
+    "start": "nodemon --watch src --exec babel-node -- src/index.js",
+>>>>>>> 3ad078fc1ef899f76cf26580033ae9dbfc4b51cc
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:migrate": "knex migrate:latest --knexfile ./src/knexfile.js"
   },
