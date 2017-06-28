@@ -207,7 +207,7 @@ class ReadProject extends React.Component {
 			}
 		}
 		return(
-			<div className="modal-body " >
+			<div className="modal-body ">
 			<div className="container-fluid overlay">
 				<div id="details" className="hidden-xs">
 					<div className="sub-part pull-left">
@@ -291,7 +291,7 @@ class ReadProject extends React.Component {
 						</div>
 					</div>
 					<div className="sub-part pull-left row">
-						<a href="#" className="link-left btn" data-clipboard-text={projectLink} onClick={this.toggleCopied}>Link to Project</a>
+						<a  className="link-left btn" data-clipboard-text={projectLink} onClick={this.toggleCopied}>Link to Project</a>
 						<a href={mailLink} className="link-right" >Flag content</a>
 						{this.state.showCopied ? copiedMessage : ''}
 					</div>

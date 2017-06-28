@@ -487,8 +487,15 @@ textarea:focus{
 .link-right:hover{
   text-decoration: none;
 }
+.link-right a:hover{
+  text-decoration: none;
+}
+.link-right a{
+  text-decoration: none;
+}
 .link-right{
   float: right;
+  text-decoration: none !important;
 }
 /*clipboard ALERT */
 .copied-alert{

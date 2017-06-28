@@ -17,15 +17,28 @@ class ProjectItem extends React.Component {
 		super(props);
 		this.state = {
 			modalActive: false,
-			deleteAlert: false
-		};
+			deleteAlert: false,
+			showCopied: false
+		}
+		this.toggleCopied = this.toggleCopied.bind(this);
+		this.changeShowCopied = this.changeShowCopied.bind(this);
 		this.onClick = this.onClick.bind(this);
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.activateDeleteAlert = this.activateDeleteAlert.bind(this);
 		this.closeDeleteAlert = this.closeDeleteAlert.bind(this);
 	}
+	changeShowCopied(){
+		this.setState({ showCopied :  false});
+	}
 
+	toggleCopied(){
+		if(!this.state.showCopied){
+			console.log('changed');
+			this.setState({ showCopied: true});
+		}
+		setTimeout(this.changeShowCopied, 6000);
+	}
 	activateModal(){
 		this.setState({ modalActive: true });
 	};
