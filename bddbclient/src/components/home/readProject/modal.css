@@ -178,8 +178,8 @@
     margin-left: auto;
   margin-right: auto;
   position: relative;
-  padding-right: 80px !important;
-  padding-left: 60px;
+  padding-right: 90px !important;
+  padding-left: 40px;
   padding-bottom: 25px;
   -webkit-transition: all 0.5s ease; /* Safari and Chrome */
   -moz-transition: all 0.5s ease; /* Firefox */
@@ -350,6 +350,7 @@ textarea:focus{
   min-width: 100%;
 }
 .sub-part{
+  position: relative;
   font-size: 12px;
   min-width: 100%;
   font-family: ArtifaktElement-Book;
@@ -471,11 +472,82 @@ textarea:focus{
   margin-bottom: 20%;
   color: #212a43
 }
+.link-left:hover{
+  text-decoration: none;
+}
 .link-left{
-  float: left;
+  float: left !important;
   width: 50%;
-  text-align: left;
+  height: auto;
+  text-align: left !important;
+  font-size: 12px !important;
+  padding: 0px !important;
+  margin: 0px !important; 
+}
+.link-right:hover{
+  text-decoration: none;
 }
 .link-right{
   float: right;
+}
+/*clipboard ALERT */
+.copied-alert{
+  margin-top: 30px !important;
+  float: left !important;
+  width: 100%;
+  background-color: black !important;
+  color: #2fe695;
+  font-family: ArtifaktElement;
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+  border-radius: .4em;
+  text-align: center;
+  padding-top: 8px !important;
+  z-index: 150;
+  font-size: 12px;
+  opacity: 0;
+  -webkit-animation: fadeInOut 6s;
+  animation: fadeInOut 6s;
+}
+.copied-alert:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom-color: #000000;
+  border-top: 0;
+  margin-left: -10px;
+  margin-top: -10px;
+}
+@-webkit-keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

@@ -50,6 +50,9 @@
 .gallery-layout{
 	padding-top: 3%;
 }
+.delete-alert-cancel:hover {
+  cursor: pointer;
+}
 
 /*layout and hover effects */
 .project-item-layout{
@@ -110,7 +113,7 @@
   cursor: pointer;
 }
 .delete-project:hover .delete-alert{
-  display: block
+  display: block !important;
 }
 /*DELETE ALERT */
 .delete-alert{

@@ -49,23 +49,23 @@ class GalleryItem extends React.Component {
 		    left              : 0,
 		    right             : 0,
 		    bottom            : 0,
-		    backgroundColor   : 'rgba(0, 0, 0, 0.85)',
+		    backgroundColor   : 'rgba(0, 0, 0, 0.80)',
 		    padding			  : '0px',
-		    zIndex : 1050
+		    zIndex 			  : 1050
 		  },
 		  content : {
-		     position                   : 'absolute',
+		     position                  : 'absolute',
 		    top                        : '0px',
-		    left                       : '0px',
-		    right                      : '0px',
-		    bottom 						: '0px',
-		    paddingTop 					: '2%',
-		    paddingLeft					: '0px',
-		    paddingRight 				: '0px',
-		    marginBottom 				: '0px',
-		    minHeight 					: '100%',
-		    margin 						: 'auto',
-		    maxWidth 					: '1400px',
+		    left                       : '50px',
+		    right                      : '50px',
+		    bottom 					   : '0px',
+		    paddingTop 				   : '2%',
+		    paddingLeft				   : '0px',
+		    paddingRight 			   : '0px',
+		    marginBottom 			   : '0px',
+		    minHeight 				   : '100%',
+		    margin 					   : 'auto',
+		    maxWidth 				   : '1400px',
 		    border                     : 'none',
 		    background                 : 'transparent',
 		    outline                    : 'none',
@@ -115,8 +115,8 @@ class GalleryItem extends React.Component {
 	        </div>
 	  
     	    <div className="stats"> 
-	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style">{this.props.project.likes}</strong>
-	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style">{this.props.project.views}</strong>
+	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
+	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
             </div>
             </div>
             {modal}

@@ -1,4 +1,4 @@
-/* FONT */
+/* FONTS */
 @font-face {
 	font-family: ArtifaktElement-reg;
 	src: url(fonts/ArtifaktElementRegular.ttf);
@@ -43,8 +43,6 @@ input{
 		margin-top: 20% !important;
 	}
 }
-
-
 .not-found-layout {
 	margin-top: 20%;
 	margin-bottom: 10%;

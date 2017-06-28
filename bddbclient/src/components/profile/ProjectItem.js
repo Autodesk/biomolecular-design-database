@@ -61,22 +61,22 @@ class ProjectItem extends React.Component {
 		    zIndex : 1050
 		  },
 		  content : {
-		     position                   : 'absolute',
-		    top                        : '0px',
-		    left                       : '0px',
-		    right                      : '0px',
-		    bottom 						: '0px',
-		    paddingTop 					: '2%',
-		    paddingLeft					: '0px',
-		    paddingRight 				: '0px',
-		    marginBottom 				: '0px',
-		    minHeight 					: '100%',
-		    margin 						: 'auto',
-		    maxWidth 					: '1400px',
-		    border                     : 'none',
-		    background                 : 'transparent',
-		    outline                    : 'none',
-		    overflow                   : 'auto'
+		     position               : 'absolute',
+		    top                     : '0px',
+		    left                    : '0px',
+		    right                   : '0px',
+		    bottom 					: '0px',
+		    paddingTop 			    : '2%',
+		    paddingLeft				: '0px',
+		    paddingRight 			: '0px',
+		    marginBottom 			: '0px',
+		    minHeight 				: '100%',
+		    margin 					: 'auto',
+		    maxWidth 				: '1400px',
+		    border                  : 'none',
+		    background              : 'transparent',
+		    outline                 : 'none',
+		    overflow                : 'auto'
 		  }
 		};
 
@@ -93,7 +93,7 @@ class ProjectItem extends React.Component {
 			<div className="delete-alert"> 
 				<p> Delete? You can't undo this action </p>
 				<button className="button-delete"> Yes, delete project </button>
-				<p onClick={this.closeDeleteAlert}> Cancel </p>
+				<p className="delete-alert-cancel" onClick={this.closeDeleteAlert}> Cancel </p>
 			</div>
 		);
 		const qod = this.props.project.quality_of_documentation;
@@ -133,8 +133,8 @@ class ProjectItem extends React.Component {
 	        </div>
 	  
     	    <div className="stats"> 
-	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style">{this.props.project.likes}</strong>
-	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style">{this.props.project.views}</strong>
+	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
+	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
             </div>
             </div>
 	    	{modal}

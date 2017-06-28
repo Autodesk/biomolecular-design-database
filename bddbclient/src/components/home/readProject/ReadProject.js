@@ -27,11 +27,14 @@ class ReadProject extends React.Component {
 			files: [],
 			comments: [],
 			commentInput: '',
-			postEnable: false
+			postEnable: false,
+			showCopied: false
 		}
+		this.toggleCopied = this.toggleCopied.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.appreciationClick = this.appreciationClick.bind(this);
 		this.postComment = this.postComment.bind(this);
+		this.changeShowCopied = this.changeShowCopied.bind(this);
 	}	
 
 	componentWillMount() {
@@ -85,9 +88,6 @@ class ReadProject extends React.Component {
 				likes: this.props.project.likes
 			});
 		}
-
-		
-
 		setInterval(() => {
 			console.log('updated');
 			this.props.getFilesObject(filesQuery).then(
@@ -100,6 +100,19 @@ class ReadProject extends React.Component {
 			);
 		}, 2400000); //2400 secs update the content, links will be re-generated
 	}
+
+	changeShowCopied(){
+		this.setState({ showCopied :  false});
+	}
+
+	toggleCopied(){
+		if(!this.state.showCopied){
+			console.log('changed');
+			this.setState({ showCopied: true});
+		}
+		setTimeout(this.changeShowCopied, 6000);
+	}
+
 
 	onChange(e){
 		e.preventDefault();
@@ -170,6 +183,11 @@ class ReadProject extends React.Component {
 			if(count === 1){ return keyword; }
 			return ', '+keyword;
 		});
+		const copiedMessage = (
+			<div className="copied-alert"> 
+				<p> Weblink copied to clipboard </p>
+			</div>
+		);
 		//const allowComment = ( <button type="button" className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
 		//	);
 		//const disableComment = ( <button type="button" disabled={true} className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
@@ -227,7 +245,7 @@ class ReadProject extends React.Component {
 							<h5> CONTACT</h5>
 							<div className="row icons-style">
 								<a href={this.props.project.contact_linkedin ? this.props.project.contact_linkedin : '' } target="_blank"><img src={linkedin} alt="linkedin icon"/></a>
-								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '' }> <img src={mail} alt="mail icon"/></a>
+								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '#' }><img src={mail} alt="email icon"/></a>
 								<a href={this.props.project.contact_facebook ? this.props.project.contact_facebook : '' } target="_blank"><img src={facebook} alt="facebook icon"/></a>
 								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' } target="_blank"><img src={web} alt="home web"/></a>
 							</div>
@@ -273,13 +291,13 @@ class ReadProject extends React.Component {
 						</div>
 					</div>
 					<div className="sub-part pull-left row">
-						<a href="" className="link-left">Link to Project</a>
+						<a href="#" className="link-left btn" data-clipboard-text={projectLink} onClick={this.toggleCopied}>Link to Project</a>
 						<a href={mailLink} className="link-right" >Flag content</a>
+						{this.state.showCopied ? copiedMessage : ''}
 					</div>
 				</div>
 				<div id="content">
 					<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt="close modal"/></div>
-					
     				<div className="hero-image">
     					<img className="img-responsive" src={this.props.project.hero_image ? this.props.project.hero_image : this.props.project.header_image_link} alt=""/>
     				</div>
@@ -290,7 +308,6 @@ class ReadProject extends React.Component {
     					</div>
     					<div className="container-fluid"> <EntriesGallery getSignedUrl={this.props.getSignedUrl} files={this.state.files} /> </div> 
     				</div>
-    		
     			</div>
     			<hr/>
     			</div>

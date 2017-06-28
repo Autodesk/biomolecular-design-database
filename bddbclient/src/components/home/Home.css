@@ -2,7 +2,38 @@
 	margin-top: 8%;
 	margin-bottom: 4%;
 }
-
+.username-nav{
+  position: relative;
+}
+.username-nav:hover .dropdown-logout{
+  display: block;
+}
+.logout-dropdown{
+  margin-top: 38px;
+  right: 0px;
+  font-family: ArtifaktElement;
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
+  border-radius: .4em;
+  text-align: center;
+  padding: 8px;
+  z-index: 1500;
+  font-size: 12px;
+}
+.logout-dropdown:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 90%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-bottom-color: #ffffff;
+  border-top: 0;
+  margin-left: -10px;
+  margin-top: -10px;
+}
 button:focus {
     outline:none !important;
 }
@@ -264,7 +295,7 @@ p1{
 .likes-style{
   margin-right: 5px;
   margin-left: 2px;
-  font-family: ArtifaktElement-regular;
+  font-family: ArtifaktElement-Book;
   color: #212a43;
 }
 

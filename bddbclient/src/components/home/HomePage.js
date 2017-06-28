@@ -173,7 +173,6 @@ class HomePage extends React.Component {
 					{ isAuthenticated ? <h3 className="welcomeStyle"> Welcome {user.firstName}!  </h3> : signUp}
 				</div>
 				<hr width="85%"/>
-
 				<div className="container-fluid showcase-layout animated zoomInRight">
 					<div className="row">
 						<div className="filter-style pull-left">
