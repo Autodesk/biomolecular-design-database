@@ -10,6 +10,7 @@ import deleteIcon from '../../../public/Assets/icons/delete.svg';
 import edit from '../../../public/Assets/icons/edit.svg';
 import Modal from 'react-modal';
 import ReadProject from '../home/readProject/ReadProject';
+import UploadNew from '../upload/UploadNew';
 
 class ProjectItem extends React.Component {
 
@@ -18,7 +19,8 @@ class ProjectItem extends React.Component {
 		this.state = {
 			modalActive: false,
 			deleteAlert: false,
-			showCopied: false
+			showCopied: false,
+			openWrite: false
 		}
 		this.deleteClicked = this.deleteClicked.bind(this);
 		this.toggleCopied = this.toggleCopied.bind(this);
@@ -28,7 +30,15 @@ class ProjectItem extends React.Component {
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.activateDeleteAlert = this.activateDeleteAlert.bind(this);
 		this.closeDeleteAlert = this.closeDeleteAlert.bind(this);
-
+		this.editClicked = this.editClicked.bind(this);
+		this.closeWrite = this.closeWrite.bind(this);
+	}
+	closeWrite(){
+		this.setState({openWrite : false});
+	}
+	editClicked(e){
+		e.preventDefault();
+		this.setState({ openWrite: true })
 	}
 	deleteClicked(){
 		var queryString = "project_id="+this.props.project.id;
@@ -40,7 +50,6 @@ class ProjectItem extends React.Component {
 
 	toggleCopied(){
 		if(!this.state.showCopied){
-			console.log('changed');
 			this.setState({ showCopied: true});
 		}
 		setTimeout(this.changeShowCopied, 6000);
@@ -137,7 +146,7 @@ class ProjectItem extends React.Component {
 		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout project-item-layout">
 			<div className="delete-project"> < img src={deleteIcon} onClick={this.activateDeleteAlert} alt="delete icon"/></div>
 			{this.state.deleteAlert ? deleteMessage : '' }
-			<div className="edit-icon"> < img src={edit} alt="edit icon"/></div>
+			<div className="edit-icon" onClick={this.editClicked}> < img src={edit} alt="edit icon"/></div>
 	      	<img className="img-responsive project-image" onClick={this.activateModal} src={this.props.project.header_image_link} alt=""/>
 	        <h4 className="project-item-title" onClick={this.activateModal}>{this.props.project.name}</h4>
 	        <p className="authors-styling">{authors}</p>
@@ -156,6 +165,7 @@ class ProjectItem extends React.Component {
             </div>
             </div>
 	    	{modal}
+	    	{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} closeBool={true} project={this.props.project} /> : ''}
 	    </div> 
 	    
 	);

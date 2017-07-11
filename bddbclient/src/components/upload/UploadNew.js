@@ -19,8 +19,13 @@ class UpoloadNew extends React.Component{
 
 	deactivateModal(){
 		this.setState({ modalActive: false });
+		if(this.props.closeBool) {
+			this.props.closeWrite();
+		}
 	}
-
+	componentWillMount(){
+		console.log(this.props.project);
+	}
 	render(){
 		const customStyles = {
 		  overlay : {
@@ -72,4 +77,8 @@ class UpoloadNew extends React.Component{
 	}
 }
 
+UpoloadNew.propTypes = {
+	closeWrite: React.PropTypes.func,
+	closeBool: React.PropTypes.bool
+}
 export default UpoloadNew;
