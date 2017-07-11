@@ -2,12 +2,15 @@ import React from 'react';
 import Modal from 'react-modal';
 import './upload.css';
 import WritePage from './WritePage.js';
+import { getFilesObject } from '../../actions/detailsAction';
+import { connect } from 'react-redux';
 
 class UpoloadNew extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
 			modalActive: true,
+			files: [],
 			authors: [],
 			version: '',
 			publication: '',
@@ -42,6 +45,7 @@ class UpoloadNew extends React.Component{
 	}
 	componentWillMount(){
 		if(this.props.project){
+			var filesQuery = 'projectId='+this.props.project.id;
 			this.setState({
 				authors: this.props.project.authors,
 				version: this.props.project.version,
@@ -57,6 +61,13 @@ class UpoloadNew extends React.Component{
 				headerImageLink: this.props.project.header_image_link,
 				heroImageLink: this.props.project.hero_image
 			});
+			this.props.getFilesObject(filesQuery).then(
+				(res) => {
+					var response = JSON.parse(res.request.response);
+					this.setState( { files: response.data} ); //change the current state. this will render 
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);
 		}
 	}
 	render(){
@@ -99,10 +110,10 @@ class UpoloadNew extends React.Component{
 				onRequestClose={this.deactivateModal}
 				style={customStyles}
 				contentLabel="Modal Open">
-					<WritePage deactivateModal={this.deactivateModal} onChange={this.onChange} authors={this.state.authors} version={this.state.version} 
+					<WritePage deactivateModal={this.deactivateModal} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
 						publication={this.state.publication} heroImage={this.state.heroImageLink} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook}
-						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage}
+						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} 
 						projectTitle={this.state.projectTitle} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}
 					/>
 				</Modal>
@@ -118,6 +129,14 @@ class UpoloadNew extends React.Component{
 UpoloadNew.propTypes = {
 	closeWrite: React.PropTypes.func,
 	closeBool: React.PropTypes.bool,
-	project: React.PropTypes.object
+	project: React.PropTypes.object,
+	getFilesObject: React.PropTypes.func.isRequired
 }
-export default UpoloadNew;
+UpoloadNew.contextTypes = {
+	router: React.PropTypes.object.isRequired
+}
+function mapStateToProps(state){
+	return { auth: state.auth };
+}
+
+export default connect(mapStateToProps, {getFilesObject})(UpoloadNew);

@@ -73,6 +73,40 @@
   margin-left: 52px !important;
   margin-right: 52px !important;
 }
+.file-abstract-input{
+  float: left;
+  width: 95%;
+  color: #212a43;
+  font-family: ArtifaktElement;
+}
+.file-abstract-input textarea{
+  padding: 5px; 
+  font-size: 14px;
+  float: left;
+  min-height: 72px !important;
+  width: 100%;
+  background-color: #d8d8d8;
+  border-style: none;
+  margin-right: 10%;
+}
+.file-title-write{
+  float: left;
+  height: 25px;
+  color: #212a43;
+  width: 95%;
+  margin: 52px 0px 15px 0px !important;
+  margin-bottom: 8px;
+}
+.file-title-write input{
+  font-size: 14px;
+  float: left;
+  width: 100%;
+  color: #212a43 !important;
+  font-family: ArtifaktElement;
+  background-color: #d8d8d8;
+  border-style: none;
+  margin-right: 10%;
+}
 .project-abstract-input textarea{
   padding: 5px; 
   font-size: 14px;
@@ -91,6 +125,10 @@
   font-style: italic;
   text-align: left;
   color: #212a43;
+}
+.hr-display{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .content-hr{
   width: 100%;

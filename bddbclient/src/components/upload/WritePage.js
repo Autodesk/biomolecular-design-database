@@ -2,6 +2,7 @@ import React from 'react';
 import InputStyle from './InputStyle';
 import help from '../../../public/Assets/icons/help.svg';
 import crossIcon from '../../../public/Assets/icons/close.svg';
+import FileWriteDisplay from './files/FileWriteDisplay';
 
 class WritePage extends React.Component{
 	constructor(props){
@@ -10,10 +11,11 @@ class WritePage extends React.Component{
 
 		}
 	}
-	componentWillMount(){
-		console.log(this.props.heroImage);
-	}
+
 	render(){
+		const filesDisplay = this.props.files.map((fileItem) => {
+			return <FileWriteDisplay key={fileItem.id} file={fileItem} />;
+		});
 		const headerImg = ( 
 			<div className="hero-image">
     			<img className="img-responsive" src={this.props.heroImage ? this.props.heroImage : this.props.headerImageLink} alt=""/>
@@ -83,8 +85,10 @@ class WritePage extends React.Component{
 							<textarea type='text' placeholder="Description" value={this.props.projectAbstract ? this.props.projectAbstract : ''} onChange={this.props.onChange} name="projectAbstract" rows='4'></textarea>
 						</div>
 						<div className="content-hr pull-left">
-					
 								<hr/>
+						</div>
+						<div>
+							{filesDisplay}
 						</div>
     				</div>
 				</div>
@@ -96,6 +100,7 @@ class WritePage extends React.Component{
 WritePage.propTypes = {
 	deactivateModal: React.PropTypes.func.isRequired,
 	onChange: React.PropTypes.func.isRequired,
+	files: React.PropTypes.array,
 	heroImage: React.PropTypes.string,
 	authors: React.PropTypes.array,
 	version: React.PropTypes.string,
