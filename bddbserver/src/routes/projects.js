@@ -1,8 +1,10 @@
 import express from 'express';
 import Projects from '../models/projects';
+import file from '../models/files';
 import AWS from 'aws-sdk';
 import commaSplit from 'comma-split';
 import Comments from '../models/comments';
+import jwtDecode from 'jwt-decode';
 
 var s3 = new AWS.S3();
 let router = express.Router();
@@ -10,7 +12,6 @@ var bucketName = 'bionano-bdd-app';
 
 function getSignedUrl(projects){
 	const signed = projects.map((project) => {
-
 		var keyName = project.header_image_link;
 		var params = {Bucket: bucketName, Key: keyName, Expires: 1800}
 		s3.getSignedUrl('getObject', params, (err, url) => {
@@ -121,6 +122,8 @@ function applyFilters(reqQuery, projects){
 	return projects;
 }
 
+
+
 router.get('/', (req, res) => { //get all projects 
 	const search = req.query.search;
 	const sortby = req.query.sortby;   
@@ -128,7 +131,7 @@ router.get('/', (req, res) => { //get all projects
 	var to = req.query.to;
 
 	if(sortby === 'Most Viewed'){ 
-		Projects.forge().where({ published: 'true'}).orderBy('views', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -137,7 +140,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}
 	else if( sortby === 'Quality of Documentation') {
-		Projects.forge().where({ published: 'true'}).orderBy('quality_of_documentation', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -146,7 +149,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}
 	else if(sortby === 'Most Appreciations'){
-		Projects.forge().where({ published: 'true'}).orderBy('likes', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -155,7 +158,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}	
 	else{ //return Newest
-		Projects.forge().where({ published: 'true'}).orderBy('created_at', 'DESC').fetchAll()
+		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -166,7 +169,7 @@ router.get('/', (req, res) => { //get all projects
 });
 
 router.get('/project/', (req, res) => {
-	Projects.where({id: req.query.projectId}).fetch()
+	Projects.where({id: req.query.projectId}).where({deleted: 'false'}).fetch()
 		.then(resData=> {
 			console.log(resData);
 			var resProject =  resData.toJSON();
@@ -185,6 +188,23 @@ router.get('/comments/', (req, res) => {
 		var commentsArr = comments.toJSON();
 		res.json({ commentsArr });
 	});
+});
+
+router.delete('/', (req, res) => {
+	var _projectId = req.query.project_id;
+	var keyName = 'allFiles/1/allFiles/4/SquareNut_Temperatures.png';
+	var params = { Bucket: bucketName, Key: keyName }
+	if(req.headers.authorization){
+		var userObj = jwtDecode(req.headers.authorization);
+		//console.log(userObj);
+		if (userObj.id) {
+			Projects.where({id: _projectId}).where({user_id: userObj.id}).save({ deleted: 'true' }, {patch: true}); //update the project appreciations in database
+			res.json({success: true, projectId: _projectId});
+		}
+	}
+	else{
+		res.json({success: false});
+	}
 });
 /*
 

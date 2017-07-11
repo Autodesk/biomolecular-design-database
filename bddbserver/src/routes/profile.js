@@ -30,7 +30,7 @@ function getSignedUrl(projects){
 
 
 router.get('/published/', (req, res) => {
-	Projects.where({ user_id: req.query.user_id, published: true}).fetchAll()
+	Projects.where({ user_id: req.query.user_id, published: true}).where({deleted: 'false'}).fetchAll()
 	.then(resData => { 
 		res.status(200).json({publishedProjects: getSignedUrl(resData.toJSON())})
 	})
@@ -38,7 +38,7 @@ router.get('/published/', (req, res) => {
 });
 
 router.get('/drafts/', (req, res) =>{
-	Projects.where({ user_id: req.query.user_id, published: false}).fetchAll()
+	Projects.where({ user_id: req.query.user_id, published: false}).where({deleted: 'false'}).fetchAll()
 	.then(resData => { 
 		res.status(200).json({drafts: getSignedUrl(resData.toJSON())})
 	})

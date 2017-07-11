@@ -13,7 +13,6 @@ class NavigationBar extends React.Component{
 	}
 
 	toggleLogout(){
-		console.log('toggleing');
 		if(this.state.showLogout){
 			this.setState({ showLogout : false });
 		}
@@ -30,8 +29,10 @@ class NavigationBar extends React.Component{
 	render (){
 		const { isAuthenticated } = this.props.auth;
 		const logoutDiv = (
-			<div className="logout-dropdown"> 
-				<p> logout </p>
+			<div className="container-logout" onClick={this.toggleLogout}>
+				<div className="logout-alert"> 
+					<a href="# " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a>
+				</div>
 			</div>
 		);
 
@@ -39,12 +40,10 @@ class NavigationBar extends React.Component{
 			<ul className="nav navbar-nav">
 				<li><Link to="/" style={{color: '#343950'}} >Browse All </Link></li>
 				<li><Link to="/profile" style={{color: '#343950'}}> My Projects </Link></li>
-				<li><Link to="/new-event" style={{color: '#343950'}}> Upload New </Link></li>
-				<li color="black"><a href="# " style={{color: '#343950'}} onClick={this.logout.bind(this)} > <i className="fa fa-sign-out" aria-hidden="true"></i> Logout </a></li>
+				<li><Link to="/upload-new" style={{color: '#343950'}}> Upload New </Link></li>
 			</ul>
 		);
-//<li color="black" className="username-nav"> <a href="#" style={{color: '#343950'}} onClick={this.toggleLogout} className="username-nav">{this.props.auth.user.firstName} {this.props.auth.user.lastName} <span className="caret"></span></a>
-//				</li>
+
 		const guestLinks = (
 			<ul className="nav navbar-nav">
 				<li><Link to="/signup" style={{color: '#343950'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
@@ -70,12 +69,18 @@ class NavigationBar extends React.Component{
 				 	<div className=" nav-links">
 					 	{ isAuthenticated ? userLinks : guestLinks }
 				 	</div>
+				 	{isAuthenticated ? 
+				 		<div className="nav-username" onClick={this.toggleLogout}><p>{this.props.auth.user.firstName} {this.props.auth.user.lastName}<span className="caret"></span></p></div>
+				 		: ''
+				 	}
 					<form onSubmit={this.props.searchSubmnit}>
 						<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
 				 	</form>
 				 	{this.state.showLogout ? logoutDiv : '' }
 				</div>
+					
 				<hr width="95%" />
+				
 			</div>
 		</nav>
 		);

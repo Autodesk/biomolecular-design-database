@@ -4,6 +4,7 @@ import '../home/Home.css';
 import './profile.css';
 import {getAllPublishedProjects, getAllDrafts} from '../../actions/profileActions';
 import Gallery from './ProfileProjectGallery';
+import { Link } from 'react-router';
 
 class Profile extends React.Component{
 	constructor(props){
@@ -13,6 +14,7 @@ class Profile extends React.Component{
 			drafts: [],
 			error: false
 		}
+		this.deleteClicked = this.deleteClicked.bind(this);
 	}
 
 	componentWillMount(){
@@ -38,19 +40,50 @@ class Profile extends React.Component{
 		);	
 	}
 
+	updatePublished(response){
+		var updatedPublished = [];
+		var len = this.state.published.length;
+		for(var i = 0; i < len; i++){
+			if(this.state.published[i].id.toString() !== response.projectId.toString()){
+				updatedPublished.push(this.state.published[i]);
+			}
+		}
+		return updatedPublished;
+	}
+
+	updateDrafts(response){
+		var updatedDrafts = [];
+		var len = this.state.drafts.length;
+		for(var i = 0; i < len; i++){
+			if(this.state.drafts[i].id.toString() !== response.projectId.toString()){
+				updatedDrafts.push(this.state.drafts[i]);
+			}
+		}
+		return updatedDrafts;
+	}
+
+	deleteClicked(response){
+		if(response.success){
+			console.log(this.state);
+			var updatedPublishedProjects = this.updatePublished(response);
+			var updatedDraftsProjects = this.updateDrafts(response);
+			this.setState({ published: updatedPublishedProjects, drafts: updatedDraftsProjects});
+		}		
+	}
+
 	render() {
 		return( 
 			<div className="container-fluid profile">
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
 					<h2> profile </h2>
-					<button className="button-upload"> Upload New  </button>
+					<Link to="/upload-new"> <button className="button-upload"> Upload New  </button></Link>
 				</div>
 				<div className="published">
 					<h4> Published </h4>
 					<hr/>
 					<div className="gallery-layout">
-						<Gallery projects={this.state.published} />
+						<Gallery projects={this.state.published} deleteClicked={this.deleteClicked} />
 					</div>
 					{this.state.published.length === 0 ? <h6> You've not uploaded any project. </h6> : '' }
 				</div>
@@ -58,7 +91,7 @@ class Profile extends React.Component{
 					<h4> Drafts </h4>
 					<hr/>
 					<div className="gallery-layout">
-						<Gallery projects={this.state.drafts} />
+						<Gallery projects={this.state.drafts} deleteClicked={this.deleteClicked} />
 					</div>
 					{this.state.drafts.length === 0 ? <h6> No drafts to display.  </h6> : '' }
 				</div>

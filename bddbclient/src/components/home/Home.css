@@ -298,7 +298,6 @@ p1{
   font-family: ArtifaktElement-Book;
   color: #212a43;
 }
-
 .fa-thumbs-o-up{
     opacity: 0.6;
 }
@@ -328,4 +327,101 @@ p1{
     text-overflow: ellipsis;
     max-width: 100%;
 }
+/* Nav */
+.navbar-nav{
+  font-family: ArtifaktElement-Book;
+  width: 60%;
+  font-size: 14px;
+}
+.nav-username:hover {
+  cursor: pointer;
+  cursor: hand;
+}
+.nav-username{
+  color: #212a43;
+  font-size: 14px;
+  width: 8%;
+  text-align: right;
+  float: left;
+  padding-top: 15px ;
+  font-family: ArtifaktElement-Book;
+  height: auto;
+  position: relative;
+}
+@media (min-width: 768px) and (max-width: 1000px) {
+  .nav-username{
+    float: left;
+  }
+  .navbar-nav{
+    width: 55%
+  }
+}
+@media screen and (max-width: 768px){
+  .navbar-nav{
+    width: 100%;
+  }
+  .nav-username{
+    width: 100%;
+    text-align: center;
+    padding-right: 3%;
+    padding-top: 0px;
+  }
+  .container-logout{
+    width: 100%;
+    box-shadow: none;
+  }
+}
 
+/*LOGOUT ALERT */
+.container-logout{
+  position: relative;
+  width: 120px;
+  height: 40px;
+  float: right;
+  margin-right: 28% !important;
+  -webkit-animation-name: animateTop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animateTop;
+  animation-duration: 0.4s;
+}
+
+/* Add Animation */
+@-webkit-keyframes animateTop {
+  from { margin-top: -45px; opacity:0; } 
+  to { margin-top:  0px; opacity: 1; }
+}
+
+@keyframes animateTop {
+  from { margin-top: -45px; opacity: 0; } 
+  to { margin-top:  0px; opacity: 1; }
+}
+
+.logout-alert{
+  position: absolute;
+  right: 0px;
+  width: 120px;
+  font-family: ArtifaktElement;
+  background-color: #ffffff;
+  box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
+  padding: 8px;
+  z-index: 150;
+  font-size: 12px;
+  text-decoration: none;
+}
+.logout-alert a:hover{
+  text-decoration: none;
+}
+.logout-alert:after {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: 80%;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-bottom-color: #ffffff;
+  border-top: 0;
+  margin-left: -10px;
+  margin-top: -10px;
+}

@@ -14,6 +14,13 @@ export function getAllDrafts(queryString){
 	}
 }
 
+export function deleteProject(queryString) {
+	console.log('here in actiopns');
+	const apiCall = '/api/projects?'+queryString;
+	return dispatch => {
+		return axios.delete(apiCall);
+	}
+}
 
 /*
 export function getProjectsFiltered(queryString) {

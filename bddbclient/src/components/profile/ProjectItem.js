@@ -20,6 +20,7 @@ class ProjectItem extends React.Component {
 			deleteAlert: false,
 			showCopied: false
 		}
+		this.deleteClicked = this.deleteClicked.bind(this);
 		this.toggleCopied = this.toggleCopied.bind(this);
 		this.changeShowCopied = this.changeShowCopied.bind(this);
 		this.onClick = this.onClick.bind(this);
@@ -27,6 +28,11 @@ class ProjectItem extends React.Component {
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.activateDeleteAlert = this.activateDeleteAlert.bind(this);
 		this.closeDeleteAlert = this.closeDeleteAlert.bind(this);
+
+	}
+	deleteClicked(){
+		var queryString = "project_id="+this.props.project.id;
+		this.props.onDeleteClick(queryString);
 	}
 	changeShowCopied(){
 		this.setState({ showCopied :  false});
@@ -39,6 +45,7 @@ class ProjectItem extends React.Component {
 		}
 		setTimeout(this.changeShowCopied, 6000);
 	}
+
 	activateModal(){
 		this.setState({ modalActive: true });
 	};
@@ -101,11 +108,10 @@ class ProjectItem extends React.Component {
 				contentLabel="Modal Open">
 					<ReadProject project={this.props.project} increaseAp={this.props.increaseAp} deactivateModal={this.deactivateModal} />
 				</Modal>
-
 		const deleteMessage = (
 			<div className="delete-alert"> 
 				<p> Delete? You can't undo this action </p>
-				<button className="button-delete"> Yes, delete project </button>
+				<button className="button-delete" onClick={this.deleteClicked} > Yes, delete project </button>
 				<p className="delete-alert-cancel" onClick={this.closeDeleteAlert}> Cancel </p>
 			</div>
 		);
@@ -144,7 +150,6 @@ class ProjectItem extends React.Component {
 		        {ticks[3]}
 		        {ticks[4]}
 	        </div>
-	  
     	    <div className="stats"> 
 	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
 	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
@@ -159,7 +164,7 @@ class ProjectItem extends React.Component {
 
 ProjectItem.propTypes = {
 	project: React.PropTypes.object.isRequired,
-	increaseAp: React.PropTypes.func
+	increaseAp: React.PropTypes.func,
+	onDeleteClick: React.PropTypes.func.isRequired
 }
-
 export default ProjectItem;
