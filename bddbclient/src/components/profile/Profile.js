@@ -4,7 +4,7 @@ import '../home/Home.css';
 import './profile.css';
 import {getAllPublishedProjects, getAllDrafts} from '../../actions/profileActions';
 import Gallery from './ProfileProjectGallery';
-import { Link } from 'react-router';
+import UploadNew from '../upload/UploadNew';
 
 class Profile extends React.Component{
 	constructor(props){
@@ -12,9 +12,19 @@ class Profile extends React.Component{
 		this.state = {
 			published: [],
 			drafts: [],
-			error: false
+			error: false,
+			openWrite: false
 		}
 		this.deleteClicked = this.deleteClicked.bind(this);
+		this.closeWrite = this.closeWrite.bind(this);
+		this.uploadNewClicked = this.uploadNewClicked.bind(this);
+	}
+	closeWrite(){
+		this.setState({openWrite : false});
+	}
+	uploadNewClicked(e){
+		e.preventDefault();
+		this.setState({ openWrite: true })
 	}
 
 	componentWillMount(){
@@ -77,7 +87,7 @@ class Profile extends React.Component{
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
 					<h2> profile </h2>
-					<Link to="/upload-new"> <button className="button-upload"> Upload New  </button></Link>
+					<button className="button-upload" onClick={this.uploadNewClicked}> Upload New </button>
 				</div>
 				<div className="published">
 					<h4> Published </h4>
@@ -95,6 +105,7 @@ class Profile extends React.Component{
 					</div>
 					{this.state.drafts.length === 0 ? <h6> No drafts to display.  </h6> : '' }
 				</div>
+				{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} closeBool={true} /> : ''}
 			</div>
 		);
 	}

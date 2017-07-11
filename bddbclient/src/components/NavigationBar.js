@@ -2,16 +2,26 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
+import UploadNew from './upload/UploadNew';
 
 class NavigationBar extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			showLogout: false
+			showLogout: false,
+			openWrite: false
 		}
+		this.closeWrite = this.closeWrite.bind(this);
+		this.uploadNewClicked = this.uploadNewClicked.bind(this);
 		this.toggleLogout = this.toggleLogout.bind(this);
 	}
-
+	closeWrite(){
+		this.setState({openWrite : false});
+	}
+	uploadNewClicked(e){
+		e.preventDefault();
+		this.setState({ openWrite: true })
+	}
 	toggleLogout(){
 		if(this.state.showLogout){
 			this.setState({ showLogout : false });
@@ -20,12 +30,10 @@ class NavigationBar extends React.Component{
 			this.setState({ showLogout: true });
 		}
 	}
-
 	logout(e){
 		e.preventDefault();
 		this.props.logout(); //props.logout  (logout action which is imported)
 	}
-
 	render (){
 		const { isAuthenticated } = this.props.auth;
 		const logoutDiv = (
@@ -40,7 +48,7 @@ class NavigationBar extends React.Component{
 			<ul className="nav navbar-nav">
 				<li><Link to="/" style={{color: '#343950'}} >Browse All </Link></li>
 				<li><Link to="/profile" style={{color: '#343950'}}> My Projects </Link></li>
-				<li><Link to="/upload-new" style={{color: '#343950'}}> Upload New </Link></li>
+				<li><p className="upload-nav" style={{color: '#343950'}} onClick={this.uploadNewClicked}> Upload New </p></li>
 			</ul>
 		);
 
@@ -80,7 +88,7 @@ class NavigationBar extends React.Component{
 				</div>
 					
 				<hr width="95%" />
-				
+				{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} closeBool={true} /> : ''}
 			</div>
 		</nav>
 		);

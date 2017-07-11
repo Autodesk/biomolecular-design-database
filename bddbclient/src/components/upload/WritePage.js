@@ -7,27 +7,18 @@ class WritePage extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			authors: '',
-			version: '',
-			publication: '',
-			keywords: '',
-			usageRights: '',
-			contactLinkedin: '',
-			contactFacebook: '',
-			contactEmail: '',
-			contactHomepage: '',
-			projectTitle: '',
-			projectAbstract: ''
+
 		}
-		this.onChange = this.onChange.bind(this);
 	}
-
-	onChange(e){
-		this.setState({ [e.target.name]: e.target.value });
+	componentWillMount(){
+		console.log(this.props.heroImage);
 	}
-	
 	render(){
-
+		const headerImg = ( 
+			<div className="hero-image">
+    			<img className="img-responsive" src={this.props.heroImage ? this.props.heroImage : this.props.headerImageLink} alt=""/>
+    		</div>
+    		);
 		return(
 			<div className="modal-body">
 				<div className="container-fluid overlay">
@@ -35,61 +26,61 @@ class WritePage extends React.Component{
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> VERSION </h5>
-								<InputStyle onChange={this.onChange} value={this.state.version} field="version" />
+								<InputStyle onChange={this.props.onChange} value={this.props.version ? this.props.version : ''} field="version" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> AUTHORS* </h5>
-								<InputStyle onChange={this.onChange} value={this.state.authors} field="authors" />
+								<InputStyle onChange={this.props.onChange} value={this.props.authors ? this.props.authors.toString() : ''} field="authors" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> PUBLICATION </h5>
-								<InputStyle onChange={this.onChange} value={this.state.publication} field="publication" />
+								<InputStyle onChange={this.props.onChange} value={this.props.publication ? this.props.publication : ''} field="publication" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> KEYWORDS* </h5>
-								<InputStyle label="Separate by comma" onChange={this.onChange} value={this.state.keywords} field="keywords" />
+								<InputStyle label="Separate by comma" onChange={this.props.onChange} value={this.props.keywords ? this.props.keywords.toString() : ''} field="keywords" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> USAGE RIGHTS* <img className="help-icon" src={help} alt="help icon"/> </h5>
-								<InputStyle onChange={this.onChange} value={this.state.usageRights} field="usageRights" />
+								<InputStyle onChange={this.props.onChange} value={this.props.usageRights ? this.props.usageRights : ''} field="usageRights" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> CONTACT </h5>
 								<div className="contact-inputs">
-									<InputStyle label="Email*"  onChange={this.onChange} value={this.state.contactEmail} field="contactEmail" />
+									<InputStyle label="Email*"  onChange={this.props.onChange} value={this.props.contactEmail ? this.props.contactEmail: ''} field="contactEmail" />
 								</div>
 								<div className="contact-inputs">
-									<InputStyle label="Homepage" onChange={this.onChange} value={this.state.contactHomepage} field="contactHomepage" />
+									<InputStyle label="Homepage" onChange={this.props.onChange} value={this.props.contactHomepage ? this.props.contactHomepage: ''} field="contactHomepage" />
 								</div>
 								<div className="contact-inputs">
-									<InputStyle label="Facebook"  onChange={this.onChange} value={this.state.contactFacebook} field="contactFacebook" />
+									<InputStyle label="Facebook"  onChange={this.props.onChange} value={this.props.contactFacebook ? this.props.contactFacebook: ''} field="contactFacebook" />
 								</div>
 								<div className="contact-inputs">
-									<InputStyle label="LinkedIn" onChange={this.onChange} value={this.state.contactLinkedin} field="contactLinkedin" />
+									<InputStyle label="LinkedIn" onChange={this.props.onChange} value={this.props.contactLinkedin ? this.props.contactLinkedin: ''} field="contactLinkedin" />
 								</div>
 							</div>
 						</div>
 					</div>
 					<div id="content">
-						<div className="temp-hero-img"> </div>
+						{this.props.headerImageLink || this.props.heroImage ? headerImg : <div className="temp-hero-img"> </div>}
 						<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt="close modal"/></div>
 		    			<div className="project-title-input">
 			    			<div className='form-group'>
-								<input type='text' placeholder="Project Title*" value={this.state.projectTitle} onChange={this.onChange} name="projectTitle" />
+								<input type='text' placeholder="Project Title*" value={this.props.projectTitle ? this.props.projectTitle : '' } onChange={this.props.onChange} name="projectTitle" />
 							</div>
 						</div>
 						<div className="project-abstract-input">
-							<textarea type='text' placeholder="Description" value={this.state.projectAbstract} onChange={this.onChange} name="projectAbstract" rows='4'></textarea>
+							<textarea type='text' placeholder="Description" value={this.props.projectAbstract ? this.props.projectAbstract : ''} onChange={this.props.onChange} name="projectAbstract" rows='4'></textarea>
 						</div>
 						<div className="content-hr pull-left">
 					
@@ -103,7 +94,21 @@ class WritePage extends React.Component{
 }
 
 WritePage.propTypes = {
-	deactivateModal: React.PropTypes.func.isRequired
+	deactivateModal: React.PropTypes.func.isRequired,
+	onChange: React.PropTypes.func.isRequired,
+	heroImage: React.PropTypes.string,
+	authors: React.PropTypes.array,
+	version: React.PropTypes.string,
+	publication: React.PropTypes.string,
+	keywords: React.PropTypes.array,
+	usageRights: React.PropTypes.string,
+	contactLinkedin: React.PropTypes.string,
+	contactFacebook: React.PropTypes.string,
+	contactEmail: React.PropTypes.string,
+	contactHomepage: React.PropTypes.string,
+	projectTitle: React.PropTypes.string,
+	projectAbstract: React.PropTypes.string,
+	headerImageLink: React.PropTypes.string
 }
 
 export default WritePage;

@@ -15,7 +15,7 @@
 }
 .input-form-control::-webkit-input-placeholder{
   opacity: 0.4;
-  font-family: ArtifaktElement-Book;
+  font-family: ArtifaktElement;
   font-size: 12px;
   font-style: italic;
   text-align: left;
@@ -37,6 +37,7 @@
 .project-title-input{
   float: left;
   height: 72px;
+  color: #212a43;
   width: 90%;
   margin: 52px 52px 15px 52px !important;
   margin-bottom: 8px;
@@ -54,6 +55,8 @@
   font-size: 50px;
   float: left;
   width: 100%;
+  color: #212a43 !important;
+  font-family: ArtifaktElement;
   background-color: #d8d8d8;
   min-height: 72px !important;
   border-style: none;
@@ -65,6 +68,8 @@
 .project-abstract-input{
   float: left;
   width: 90%;
+  color: #212a43;
+  font-family: ArtifaktElement;
   margin-left: 52px !important;
   margin-right: 52px !important;
 }
@@ -91,7 +96,15 @@
   width: 100%;
   color: black;
   margin-top: 30px !important;
+  margin-bottom: 30px !important;
 }
 .content-hr hr{
   color: black;
+}
+.upload-nav{
+  padding-top: 15px;
+}
+.upload-nav:hover{
+  cursor: pointer;
+  cursor: hand;
 }
