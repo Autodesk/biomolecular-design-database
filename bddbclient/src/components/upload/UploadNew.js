@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import './upload.css';
 import WritePage from './WritePage.js';
-import { getFilesObject } from '../../actions/detailsAction';
+import { getFilesObject, updateProject } from '../../actions/detailsAction';
 import { connect } from 'react-redux';
 
 class UpoloadNew extends React.Component{
@@ -11,10 +11,11 @@ class UpoloadNew extends React.Component{
 		this.state = {
 			modalActive: true,
 			files: [],
-			authors: [],
+			id: 0,
+			authors: '',
 			version: '',
 			publication: '',
-			keywords: [],
+			keywords: '',
 			usageRights: '',
 			contactLinkedin: '',
 			contactFacebook: '',
@@ -22,35 +23,23 @@ class UpoloadNew extends React.Component{
 			contactHomepage: '',
 			projectTitle: '',
 			projectAbstract: '',
-			headerImageLink: ''
+			headerImageLink: '',
+			changed: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
-	}
-	onChange(e){
-		this.setState({ [e.target.name]: e.target.value });
-		console.log(this.state);
-	}
-	activateModal(){
-		this.setState({ modalActive: true });
-	}
-
-	deactivateModal(){
-		this.setState({ modalActive: false });
-		if(this.props.closeBool) {
-			this.props.closeWrite();
-		}
-		console.log(this.state);
+		this.saveData = this.saveData.bind(this);
 	}
 	componentWillMount(){
 		if(this.props.project){
 			var filesQuery = 'projectId='+this.props.project.id;
 			this.setState({
-				authors: this.props.project.authors,
+				id: this.props.project.id,
+				authors: this.props.project.authors.toString(),
 				version: this.props.project.version,
 				publication: this.props.project.publication,
-				keywords: this.props.project.keywords,
+				keywords: this.props.project.keywords.toString(),
 				usageRights: this.props.project.user_rights,
 				contactLinkedin: this.props.project.contact_linkedin,
 				contactFacebook: this.props.project.contact_facebook,
@@ -69,6 +58,38 @@ class UpoloadNew extends React.Component{
 				(err) => { this.context.router.push('/notfound');}
 			);
 		}
+	}
+	saveData(e){
+		e.preventDefault();
+		console.log('calling put req to update project');
+		this.props.updateProject(this.state).then(
+				(res) => {
+					window.location.reload(true);
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);
+	}
+	onChange(e){
+		if(this.state.changed)	this.setState({ [e.target.name]: e.target.value });
+		else this.setState({changed: true, [e.target.name]: e.target.value });
+	}
+	activateModal(){
+		this.setState({ modalActive: true });
+	}
+
+	deactivateModal(){
+		this.setState({ modalActive: false });
+		if(this.props.closeBool) {
+			this.props.closeWrite();
+		}
+		console.log('calling put req to update project');
+		this.props.updateProject(this.state).then(
+				(res) => {
+				 	console.log('updated');
+					if(this.state.changed) 	window.location.reload(true);
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);
 	}
 	render(){
 		const customStyles = {
@@ -110,7 +131,7 @@ class UpoloadNew extends React.Component{
 				onRequestClose={this.deactivateModal}
 				style={customStyles}
 				contentLabel="Modal Open">
-					<WritePage deactivateModal={this.deactivateModal} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
+					<WritePage deactivateModal={this.deactivateModal} saveData={this.saveData} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
 						publication={this.state.publication} heroImage={this.state.heroImageLink} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook}
 						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} 
@@ -130,7 +151,8 @@ UpoloadNew.propTypes = {
 	closeWrite: React.PropTypes.func,
 	closeBool: React.PropTypes.bool,
 	project: React.PropTypes.object,
-	getFilesObject: React.PropTypes.func.isRequired
+	getFilesObject: React.PropTypes.func.isRequired,
+	updateProject: React.PropTypes.func.isRequired
 }
 UpoloadNew.contextTypes = {
 	router: React.PropTypes.object.isRequired
@@ -139,4 +161,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, {getFilesObject})(UpoloadNew);
+export default connect(mapStateToProps, {getFilesObject, updateProject})(UpoloadNew);

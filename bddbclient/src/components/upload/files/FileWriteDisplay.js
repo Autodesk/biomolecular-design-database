@@ -40,8 +40,7 @@ class FileWriteDisplay extends React.Component{
 		this.setState({
 			title: this.props.file.title,
 			details: this.props.file.description
-		})
-		console.log(this.props.file);
+		});
 	}
 
 	imgOrNot(type){

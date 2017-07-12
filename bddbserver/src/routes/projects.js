@@ -122,16 +122,13 @@ function applyFilters(reqQuery, projects){
 	return projects;
 }
 
-
-
 router.get('/', (req, res) => { //get all projects 
 	const search = req.query.search;
 	const sortby = req.query.sortby;   
 	const from = req.query.from;
 	var to = req.query.to;
-
 	if(sortby === 'Most Viewed'){ 
-		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('views', 'DESC').fetchAll()
+		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -140,7 +137,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}
 	else if( sortby === 'Quality of Documentation') {
-		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('quality_of_documentation', 'DESC').fetchAll()
+		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -149,7 +146,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}
 	else if(sortby === 'Most Appreciations'){
-		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('likes', 'DESC').fetchAll()
+		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -158,7 +155,7 @@ router.get('/', (req, res) => { //get all projects
 		});
 	}	
 	else{ //return Newest
-		Projects.forge().where({ published: 'true'}).where({ deleted: 'false'}).orderBy('created_at', 'DESC').fetchAll()
+		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
 			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
@@ -168,8 +165,30 @@ router.get('/', (req, res) => { //get all projects
 	}
 });
 
+router.put('/project/', (req, res) => {
+	console.log('puttiong data');
+	Projects.where({id: req.body.id}).where({deleted: false})
+	.save({ name: req.body.projectTitle,
+		authors: JSON.stringify(req.body.authors.split(',')),
+		keywords: JSON.stringify(req.body.keywords.split(',')),
+		version: req.body.version,
+		publication: req.body.publication,
+		user_rights: req.body.usageRights,
+		contact_email: req.body.contactEmail,
+		contact_linkedin: req.body.contactLinkedin,
+		contact_facebook: req.body.contactFacebook,
+		contact_homepage: req.body.contactHomepage,
+		project_abstract: req.body.projectAbstract
+	 }, {patch: true})
+	.then(resData=> {
+			res.status(200).json({error: false});
+		})
+		.catch(err => {res.status(500).json({error: true})
+		});
+});
+
 router.get('/project/', (req, res) => {
-	Projects.where({id: req.query.projectId}).where({deleted: 'false'}).fetch()
+	Projects.where({deleted: 'false'}).where({id: req.query.projectId}).fetch()
 		.then(resData=> {
 			console.log(resData);
 			var resProject =  resData.toJSON();
@@ -179,24 +198,12 @@ router.get('/project/', (req, res) => {
 		});
 });
 
-router.get('/comments/', (req, res) => {
-	var _projectId = req.query.projectId;
-	Comments.query({
-		where: { project_id: _projectId }
-	}).fetchAll().then(comments => {
-		console.log(comments.toJSON());
-		var commentsArr = comments.toJSON();
-		res.json({ commentsArr });
-	});
-});
-
 router.delete('/', (req, res) => {
 	var _projectId = req.query.project_id;
 	var keyName = 'allFiles/1/allFiles/4/SquareNut_Temperatures.png';
 	var params = { Bucket: bucketName, Key: keyName }
-	if(req.headers.authorization){
+	if(req.headers.authorization){ //VERIFY
 		var userObj = jwtDecode(req.headers.authorization);
-		//console.log(userObj);
 		if (userObj.id) {
 			Projects.where({id: _projectId}).where({user_id: userObj.id}).save({ deleted: 'true' }, {patch: true}); //update the project appreciations in database
 			res.json({success: true, projectId: _projectId});
@@ -206,8 +213,8 @@ router.delete('/', (req, res) => {
 		res.json({success: false});
 	}
 });
-/*
 
+/*
 router.post('/', (req, res) =>{
 	const user_id = req.body.userId;
 	const project_id = req.body.projectId;
@@ -224,6 +231,16 @@ router.post('/', (req, res) =>{
 	.catch(err => console.log(err));
 });
 */
+router.get('/comments/', (req, res) => {
+	var _projectId = req.query.projectId;
+	Comments.query({
+		where: { project_id: _projectId }
+	}).fetchAll().then(comments => {
+		console.log(comments.toJSON());
+		var commentsArr = comments.toJSON();
+		res.json({ commentsArr });
+	});
+});
 
 router.post('/comments/', (req, res) => {
 	const user_id = req.body.user_id;

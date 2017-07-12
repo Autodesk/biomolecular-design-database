@@ -40,3 +40,12 @@ export function saveComment(obj){
 		return axios.post('/api/projects/comments', obj);
 	}
 }
+
+export function updateProject(data){
+	console.log('here in actions');
+	return dispatch => {
+		return axios.put('/api/projects/project', data).then( res => { //promise returns
+			console.log('updated');
+		}); //return promise from axios 
+	}
+}
