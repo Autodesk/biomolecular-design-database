@@ -80,6 +80,10 @@ class FileWriteDisplay extends React.Component{
 				<div className="file-abstract-input">
 					<textarea type='text' placeholder="File Details" value={this.state.details} onChange={this.onChange} name="details" rows='5'></textarea>
 				</div>
+				<div className="row file-btns">
+					<button className="btn upload-media-btn">Upload Additional Media</button>
+					<button className="btn done-file-btn"> Done </button>
+				</div>
 				{isOpen ? lightboxDisplay : ''}
 				
 			</div>
