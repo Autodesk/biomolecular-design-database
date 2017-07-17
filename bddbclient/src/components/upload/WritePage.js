@@ -113,7 +113,8 @@ WritePage.propTypes = {
 	contactHomepage: React.PropTypes.string,
 	projectTitle: React.PropTypes.string,
 	projectAbstract: React.PropTypes.string,
-	headerImageLink: React.PropTypes.string
+	headerImageLink: React.PropTypes.string,
+	fileChanged: React.PropTypes.func
 }
 
 export default WritePage;

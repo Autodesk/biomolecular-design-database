@@ -86,7 +86,6 @@ class Profile extends React.Component{
 			<div className="container-fluid profile">
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
-					<h2> profile </h2>
 					<button className="button-upload" onClick={this.uploadNewClicked}> Upload New </button>
 				</div>
 				<div className="published">

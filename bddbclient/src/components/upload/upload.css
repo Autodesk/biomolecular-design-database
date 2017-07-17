@@ -157,7 +157,8 @@
   padding-left: 22px;
   padding-right: 22px;
   padding-top: 5px;
-  font-size: 14px
+  font-size: 14px;
+  color: #2c3247;
 }
 .upload-media-btn:hover{
   cursor: pointer;
@@ -176,6 +177,7 @@
   border: solid 1px #979797;
   background-color: #ffffff;
   font-family: ArtifaktElement-Book;
+  color: #2c3247;
 }
 .done-file-btn:hover{
   cursor: pointer;

@@ -30,6 +30,7 @@ class UpoloadNew extends React.Component{
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.saveData = this.saveData.bind(this);
+		this.fileChanged = this.fileChanged.bind(this);
 	}
 	componentWillMount(){
 		if(this.props.project){
@@ -61,7 +62,6 @@ class UpoloadNew extends React.Component{
 	}
 	saveData(e){
 		e.preventDefault();
-		console.log('calling put req to update project');
 		this.props.updateProject(this.state).then(
 				(res) => {
 					window.location.reload(true);
@@ -69,6 +69,12 @@ class UpoloadNew extends React.Component{
 				(err) => { this.context.router.push('/notfound');}
 			);
 	}
+
+	fileChanged(e){
+		this.setState({ changed: true });
+		console.log('file changed');
+	}
+
 	onChange(e){
 		if(this.state.changed)	this.setState({ [e.target.name]: e.target.value });
 		else this.setState({changed: true, [e.target.name]: e.target.value });
@@ -82,10 +88,8 @@ class UpoloadNew extends React.Component{
 		if(this.props.closeBool) {
 			this.props.closeWrite();
 		}
-		console.log('calling put req to update project');
 		this.props.updateProject(this.state).then(
 				(res) => {
-				 	console.log('updated');
 					if(this.state.changed) 	window.location.reload(true);
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -132,7 +136,7 @@ class UpoloadNew extends React.Component{
 				style={customStyles}
 				contentLabel="Modal Open">
 					<WritePage deactivateModal={this.deactivateModal} saveData={this.saveData} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
-						publication={this.state.publication} heroImage={this.state.heroImageLink} keywords={this.state.keywords} usageRights={this.state.usageRights}
+						publication={this.state.publication} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook}
 						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} 
 						projectTitle={this.state.projectTitle} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}

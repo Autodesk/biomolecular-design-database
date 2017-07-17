@@ -42,6 +42,20 @@ router.get('/', (req, res) => {
 		});
 });
 
+router.put('/file/', (req, res) => {
+	console.log('puttiong data');
+	console.log(req.body.id);
+	Files.where({id: req.body.id})
+	.save({ title: req.body.title,
+		description: req.body.details
+	 }, {patch: true})
+	.then(resData=> {
+			res.status(200).json({error: false});
+		})
+		.catch(err => {res.status(500).json({error: true})
+		});
+});
+
 router.get('/file/', (req, res) => {
 	const fileId = req.query.fileId;
 	Files.forge().where({id: fileId}).fetch()

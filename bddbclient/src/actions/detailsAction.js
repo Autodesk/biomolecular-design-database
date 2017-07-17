@@ -49,3 +49,9 @@ export function updateProject(data){
 		}); //return promise from axios 
 	}
 }
+
+export function updateFileItem(data){
+	return dispatch => {
+		return axios.put('/api/files/file', data);
+	}
+}

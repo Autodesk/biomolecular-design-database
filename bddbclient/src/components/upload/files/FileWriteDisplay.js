@@ -1,7 +1,8 @@
 import React from 'react';
 import Lightbox from 'react-image-lightbox';
 import path from 'path';
-
+import { updateFileItem } from '../../../actions/detailsAction';
+import { connect } from 'react-redux';
 
 const customStyles = {
 	    overlay : {
@@ -14,17 +15,38 @@ class FileWriteDisplay extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			id: 0,
 			isOpen: false,
             lightboxDisplay: '',
             title: '',
-            details: ''
+            details: '',
+            filesLink: [],
+            changed: false
 		}
 		this.onChange = this.onChange.bind(this);
+		this.doneClicked = this.doneClicked.bind(this);
+	}
+
+	doneClicked(e){	
+		e.preventDefault();
+		if(this.state.changed){
+			this.props.updateFileItem(this.state).then(
+				(res) => {
+					this.setState({ changed: false });
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);	
+		}
 	}
 
 	onChange(e){
 		e.preventDefault();
-		this.setState({ [e.target.name]: e.target.value });
+		if(!this.state.changed){
+			this.setState({ changed: true, [e.target.name]: e.target.value });
+		}
+		else{
+			this.setState({ [e.target.name]: e.target.value });
+		}
 	}
 
 	componentWillMount(){
@@ -38,9 +60,11 @@ class FileWriteDisplay extends React.Component{
 	    	});
 		}
 		this.setState({
+			id: this.props.file.id,
 			title: this.props.file.title,
 			details: this.props.file.description
 		});
+		console.log(this.props.file);
 	}
 
 	imgOrNot(type){
@@ -82,7 +106,7 @@ class FileWriteDisplay extends React.Component{
 				</div>
 				<div className="row file-btns">
 					<button className="btn upload-media-btn">Upload Additional Media</button>
-					<button className="btn done-file-btn"> Done </button>
+					<button className="btn done-file-btn" disabled={!this.state.changed} onClick={this.doneClicked}> Done </button>
 				</div>
 				{isOpen ? lightboxDisplay : ''}
 				
@@ -94,7 +118,17 @@ class FileWriteDisplay extends React.Component{
 }
 
 FileWriteDisplay.propTypes = {
-	file: React.PropTypes.object
+	file: React.PropTypes.object,
+	updateFileItem: React.PropTypes.func,
+	fileChanged: React.PropTypes.func
 }
 
-export default FileWriteDisplay;
+FileWriteDisplay.contextTypes = {
+	router: React.PropTypes.object.isRequired
+}
+function mapStateToProps(state){
+	return { auth: state.auth };
+}
+
+export default connect(mapStateToProps, {updateFileItem})(FileWriteDisplay);
+
