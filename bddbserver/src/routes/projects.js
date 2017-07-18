@@ -4,7 +4,8 @@ import file from '../models/files';
 import AWS from 'aws-sdk';
 import commaSplit from 'comma-split';
 import Comments from '../models/comments';
-import jwtDecode from 'jwt-decode';
+import config from '../config';
+import jwt from 'jsonwebtoken';
 
 var s3 = new AWS.S3();
 let router = express.Router();
@@ -166,25 +167,44 @@ router.get('/', (req, res) => { //get all projects
 });
 
 router.put('/project/', (req, res) => {
-	console.log('puttiong data');
-	Projects.where({id: req.body.id}).where({deleted: false})
-	.save({ name: req.body.projectTitle,
-		authors: JSON.stringify(req.body.authors.split(',')),
-		keywords: JSON.stringify(req.body.keywords.split(',')),
-		version: req.body.version,
-		publication: req.body.publication,
-		user_rights: req.body.usageRights,
-		contact_email: req.body.contactEmail,
-		contact_linkedin: req.body.contactLinkedin,
-		contact_facebook: req.body.contactFacebook,
-		contact_homepage: req.body.contactHomepage,
-		project_abstract: req.body.projectAbstract
-	 }, {patch: true})
-	.then(resData=> {
-			res.status(200).json({error: false});
-		})
-		.catch(err => {res.status(500).json({error: true})
+	const authorizationHeader = req.headers['authorization'];
+	let token;
+
+	if(authorizationHeader) {
+		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
+													//split and take the index 1 to access token
+	}
+
+	if(token){
+		jwt.verify(token, config.jwtSecret, (err, decode) => {
+			if(err) {
+				res.status(401).json({ error: 'Failed to authenticate'})
+			} else {
+				Projects.where({id: req.body.id}).where({deleted: false}).where({user_id: decode.id})
+				.save({ name: req.body.projectTitle,
+					authors: JSON.stringify(req.body.authors.split(',')),
+					keywords: JSON.stringify(req.body.keywords.split(',')),
+					version: req.body.version,
+					publication: req.body.publication,
+					user_rights: req.body.usageRights,
+					contact_email: req.body.contactEmail,
+					contact_linkedin: req.body.contactLinkedin,
+					contact_facebook: req.body.contactFacebook,
+					contact_homepage: req.body.contactHomepage,
+					project_abstract: req.body.projectAbstract
+				 }, {patch: true})
+				.then(resData=> {
+						res.status(200).json({error: false});
+					})
+					.catch(err => {res.status(500).json({error: true})
+					});
+			}
 		});
+	} 
+
+	else{
+		res.status(403).json({	error: 'No token provided' 	});
+	}
 });
 
 router.get('/project/', (req, res) => {
@@ -200,17 +220,28 @@ router.get('/project/', (req, res) => {
 
 router.delete('/', (req, res) => {
 	var _projectId = req.query.project_id;
-	var keyName = 'allFiles/1/allFiles/4/SquareNut_Temperatures.png';
-	var params = { Bucket: bucketName, Key: keyName }
-	if(req.headers.authorization){ //VERIFY
-		var userObj = jwtDecode(req.headers.authorization);
-		if (userObj.id) {
-			Projects.where({id: _projectId}).where({user_id: userObj.id}).save({ deleted: 'true' }, {patch: true}); //update the project appreciations in database
-			res.json({success: true, projectId: _projectId});
-		}
+	const authorizationHeader = req.headers['authorization'];
+	let token;
+
+	if(authorizationHeader) {
+		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
+													//split and take the index 1 to access token
 	}
+
+	if(token){
+		jwt.verify(token, config.jwtSecret, (err, decode) => {
+			if(err) {
+				res.status(401).json({ error: 'Failed to authenticate'})
+			} else {
+				console.log(decode);
+				Projects.where({id: _projectId}).where({user_id: decode.id}).save({ deleted: 'true' }, {patch: true}); //update the project appreciations in database
+				res.json({success: true, projectId: _projectId});
+			}
+		});
+	} 
+
 	else{
-		res.json({success: false});
+		res.status(403).json({	error: 'No token provided' 	});
 	}
 });
 

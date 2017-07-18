@@ -27,28 +27,6 @@ class FileWriteDisplay extends React.Component{
 		this.doneClicked = this.doneClicked.bind(this);
 	}
 
-	doneClicked(e){	
-		e.preventDefault();
-		if(this.state.changed){
-			this.props.updateFileItem(this.state).then(
-				(res) => {
-					this.setState({ changed: false });
-				},
-				(err) => { this.context.router.push('/notfound');}
-			);	
-		}
-	}
-
-	onChange(e){
-		e.preventDefault();
-		if(!this.state.changed){
-			this.setState({ changed: true, [e.target.name]: e.target.value });
-		}
-		else{
-			this.setState({ [e.target.name]: e.target.value });
-		}
-	}
-
 	componentWillMount(){
 		if(this.props.file.file_link){
 			this.setState ({
@@ -64,7 +42,29 @@ class FileWriteDisplay extends React.Component{
 			title: this.props.file.title,
 			details: this.props.file.description
 		});
-		console.log(this.props.file);
+	}
+
+	doneClicked(e){	
+		e.preventDefault();
+		if(this.state.changed){
+			this.props.updateFileItem(this.state).then(
+				(res) => {
+					console.log(this.state);
+					this.setState({ changed: false });
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);	
+		}
+	}
+
+	onChange(e){
+		e.preventDefault();
+		if(!this.state.changed){
+			this.setState({ changed: true, [e.target.name]: e.target.value });
+		}
+		else{
+			this.setState({ [e.target.name]: e.target.value });
+		}
 	}
 
 	imgOrNot(type){

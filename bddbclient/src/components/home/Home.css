@@ -383,6 +383,7 @@ p1{
   -webkit-animation-duration: 0.4s;
   animation-name: animateTop;
   animation-duration: 0.4s;
+  z-index: 999;
 }
 
 /* Add Animation */

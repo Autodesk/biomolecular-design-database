@@ -3,6 +3,9 @@ import InputStyle from './InputStyle';
 import help from '../../../public/Assets/icons/help.svg';
 import crossIcon from '../../../public/Assets/icons/close.svg';
 import FileWriteDisplay from './files/FileWriteDisplay';
+import classnames from 'classnames';
+//import NewFileBlock from './files/NewFileBlock';
+import add from '../../../public/Assets/add.png';
 
 class WritePage extends React.Component{
 	constructor(props){
@@ -10,6 +13,12 @@ class WritePage extends React.Component{
 		this.state = {
 
 		}
+		this.addFileClicked = this.addFileClicked.bind(this);
+	}
+
+	addFileClicked(e){
+		e.preventDefault();
+		console.log("adding a file");
 	}
 
 	render(){
@@ -24,6 +33,7 @@ class WritePage extends React.Component{
 		return(
 			<div className="modal-body">
 				<div className="container-fluid overlay">
+				{ this.props.errors.form && <div className="alert alert-danger"> { this.props.errors.form} </div> }
 					<div id="details" className="hidden-xs">
 						<div className="sub-part pull-left">
 							<div className="sub-title">
@@ -34,7 +44,7 @@ class WritePage extends React.Component{
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> AUTHORS* </h5>
-								<InputStyle onChange={this.props.onChange} value={this.props.authors ? this.props.authors.toString() : ''} field="authors" />
+								<InputStyle error={this.props.errors.authors} onChange={this.props.onChange} value={this.props.authors ? this.props.authors.toString() : ''} field="authors" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
@@ -46,20 +56,20 @@ class WritePage extends React.Component{
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> KEYWORDS* </h5>
-								<InputStyle label="Separate by comma" onChange={this.props.onChange} value={this.props.keywords ? this.props.keywords.toString() : ''} field="keywords" />
+								<InputStyle error={this.props.errors.keywords} label="Separate by comma" onChange={this.props.onChange} value={this.props.keywords ? this.props.keywords.toString() : ''} field="keywords" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> USAGE RIGHTS* <img className="help-icon" src={help} alt="help icon"/> </h5>
-								<InputStyle onChange={this.props.onChange} value={this.props.usageRights ? this.props.usageRights : ''} field="usageRights" />
+								<InputStyle error={this.props.errors.usageRights} onChange={this.props.onChange} value={this.props.usageRights ? this.props.usageRights : ''} field="usageRights" />
 							</div>
 						</div>
 						<div className="sub-part pull-left">
 							<div className="sub-title">
 								<h5> CONTACT </h5>
 								<div className="contact-inputs">
-									<InputStyle label="Email*"  onChange={this.props.onChange} value={this.props.contactEmail ? this.props.contactEmail: ''} field="contactEmail" />
+									<InputStyle error={this.props.errors.email} label="Email*"  onChange={this.props.onChange} value={this.props.contactEmail ? this.props.contactEmail: ''} field="contactEmail" />
 								</div>
 								<div className="contact-inputs">
 									<InputStyle label="Homepage" onChange={this.props.onChange} value={this.props.contactHomepage ? this.props.contactHomepage: ''} field="contactHomepage" />
@@ -72,12 +82,32 @@ class WritePage extends React.Component{
 								</div>
 							</div>
 						</div>
+						<div className="sub-part pull-left">
+							<div className="sub-title">
+								<h5> HEADER IMAGE* </h5>
+								<img className="img-responsive project-image" src={this.props.headerImageLink} alt=""/>
+							</div>
+						</div>
+						<div className="sub-part toggle-switch pull-left">
+							<div className="sub-title">
+							<h5>PUBLISH/DRAFT</h5>
+					
+								<h5 className="draft-switch">Draft</h5>
+								<label className="switch">
+								  	<input type="checkbox"/>
+								  	<span className="slider round"></span>
+								</label>
+								<h5 className="publish-switch">PUBLISH</h5>
+							</div>
+							
+						</div>
 					</div>
 					<div id="content">
 						{this.props.headerImageLink || this.props.heroImage ? headerImg : <div className="temp-hero-img"> </div>}
 						<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt="close modal"/></div>
 		    			<div className="project-title-input">
-			    			<div className='form-group'>
+			    			<div className={classnames('form-group', {'has-error': this.props.errors.projectTitle})}>
+			    				{this.props.errors.projectTitle && <span className="help-block">{this.props.errors.projectTitle}</span>}
 								<input type='text' placeholder="Project Title*" value={this.props.projectTitle ? this.props.projectTitle : '' } onChange={this.props.onChange} name="projectTitle" />
 							</div>
 						</div>
@@ -89,6 +119,13 @@ class WritePage extends React.Component{
 						</div>
 						<div>
 							{filesDisplay}
+						</div>
+						<div className="content-hr pull-left">
+								<hr/>
+						</div>
+						<div className="upload-new-file-layout" onClick={this.addFileClicked} >
+							<img className="add-icon" src={add} alt="add icon"/>
+							<h3 className="add-new"> Click here to add a new file block </h3>
 						</div>
     				</div>
 				</div>
@@ -114,7 +151,8 @@ WritePage.propTypes = {
 	projectTitle: React.PropTypes.string,
 	projectAbstract: React.PropTypes.string,
 	headerImageLink: React.PropTypes.string,
-	fileChanged: React.PropTypes.func
+	fileChanged: React.PropTypes.func,
+	errors: React.PropTypes.object
 }
 
 export default WritePage;

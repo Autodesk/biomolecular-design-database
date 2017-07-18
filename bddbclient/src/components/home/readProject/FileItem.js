@@ -7,10 +7,10 @@ import Lightbox from 'react-image-lightbox';
 
 const customStyles = {
 	    overlay : {
-	    position          : 'fixed',
 	    zIndex 			  : 9999
 	}
 }
+var images = [];
 
 class FileItem extends React.Component{
 	constructor(props) {
@@ -18,21 +18,46 @@ class FileItem extends React.Component{
  
         this.state = {
             isOpen: false,
+            photoIndex: 0,
             downloadable: true,
             lightboxDisplay: ''
         };
         this.getSignedUrlToDownload = this.getSignedUrlToDownload.bind(this);
     }
     componentWillMount(){
+    	console.log(this.props.file);
     	if(!this.props.file.file_link){ //link is undefined
 	    	this.setState({ downloadable: false, linkPresent: false });
     	}
-    	else{
+    	else if(this.props.file.links_array.length <= 0){
     		this.setState ({
 				lightboxDisplay:	<Lightbox
 						reactModalStyle={customStyles}
                         mainSrc={this.props.file.file_link}
                         onCloseRequest={() => this.setState({ isOpen: false })}
+                    /> 
+	    	});
+    	}
+    	else{
+    		//var images = this.props.file.links_array;
+    		images = ['https://www.w3schools.com/css/trolltunga.jpg', 'https://tse4.mm.bing.net/th?id=ORT.TH_470633631&pid=1.12&eid=G.470633631', 'https://s-media-cache-ak0.pinimg.com/originals/1f/dd/a0/1fdda06cf10ff1c105e61ab8812920d8.jpg' ];
+ 
+    		this.setState ({
+				lightboxDisplay:	<Lightbox
+						mainSrc={images[this.state.photoIndex]}
+                        nextSrc={images[(this.state.photoIndex + 1) % images.length]}
+                        prevSrc={images[(this.state.photoIndex + images.length - 1) % images.length]}
+						reactModalStyle={customStyles}
+                       
+                        onCloseRequest={() => this.setState({ isOpen: false })}
+                        onMovePrevRequest={() => this.setState({
+                            photoIndex: (this.state.photoIndex + images.length - 1) % images.length,
+                        })}
+                        onMoveNextRequest={() => {
+                        	console.log(images[this.state.photoIndex]);
+                        	this.setState({
+                            photoIndex: (this.state.photoIndex + 1) % images.length,
+                        })}}
                     /> 
 	    	});
    	 	}

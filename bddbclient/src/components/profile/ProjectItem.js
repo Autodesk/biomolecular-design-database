@@ -152,20 +152,20 @@ class ProjectItem extends React.Component {
 	        <p className="authors-styling">{authors}</p>
 	        <hr/>
 	        <div className="tick-stat row">
-	        <div className="tick">
-		        {ticks[0]}
-		        {ticks[1]}
-		        {ticks[2]}
-		        {ticks[3]}
-		        {ticks[4]}
-	        </div>
-    	    <div className="stats"> 
-	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
-	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
-            </div>
+		        <div className="tick">
+			        {ticks[0]}
+			        {ticks[1]}
+			        {ticks[2]}
+			        {ticks[3]}
+			        {ticks[4]}
+		        </div>
+	    	    <div className="stats"> 
+		  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
+		           	<img className="views-style" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
+	            </div>
             </div>
 	    	{modal}
-	    	{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} closeBool={true} project={this.props.project} /> : ''}
+	    	{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} newProject={false} closeBool={true} project={this.props.project} /> : ''}
 	    </div> 
 	    
 	);

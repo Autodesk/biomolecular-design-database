@@ -84,10 +84,10 @@ class NavigationBar extends React.Component{
 					<form onSubmit={this.props.searchSubmnit}>
 						<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
 				 	</form>
-				 	{this.state.showLogout ? logoutDiv : '' }
+				 	<hr width="95%" />
+				 	
 				</div>
-					
-				<hr width="95%" />
+					{this.state.showLogout ? logoutDiv : '' }
 				{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} closeBool={true} /> : ''}
 			</div>
 		</nav>

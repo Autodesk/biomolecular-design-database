@@ -30,8 +30,6 @@ class ProjectDetails extends React.Component {
 
 	componentWillMount() { //gets evoked before rendering the component
 		console.log(this.props);
-		console.log('haha I am here');
-		console.log(this.props);
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
 		queryString += '&from='+0+'&to='+9; //only get first 9 projects initially
 		this.props.reloadProjects(queryString).then(

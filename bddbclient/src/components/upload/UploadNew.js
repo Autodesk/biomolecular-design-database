@@ -4,6 +4,31 @@ import './upload.css';
 import WritePage from './WritePage.js';
 import { getFilesObject, updateProject } from '../../actions/detailsAction';
 import { connect } from 'react-redux';
+import Validator from 'validator';
+import isEmpty from 'lodash/isEmpty';
+
+function validateInput(data) {
+	let errors= {};
+	if(Validator.isNull(data.authors)){
+		errors.authors = 'Author name is required';
+	}
+	if(Validator.isNull(data.keywords)){
+		errors.keywords = 'Keywords are required';
+	}
+	if(Validator.isNull(data.usageRights)){
+		errors.usageRights = 'Usage rights information is required';
+	}
+	if(Validator.isNull(data.contactEmail)){
+		errors.email = 'Email is required';
+	}
+	if(Validator.isNull(data.projectTitle)){
+		errors.projectTitle = 'Project Title required';
+	}
+	return {
+		errors,
+		isValid: isEmpty(errors)
+	};	
+}
 
 class UpoloadNew extends React.Component{
 	constructor(props){
@@ -24,14 +49,23 @@ class UpoloadNew extends React.Component{
 			projectTitle: '',
 			projectAbstract: '',
 			headerImageLink: '',
-			changed: false
+			changed: false,
+			errors: {}
 		}
 		this.onChange = this.onChange.bind(this);
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
-		this.saveData = this.saveData.bind(this);
 		this.fileChanged = this.fileChanged.bind(this);
 	}
+	
+	isValid() {
+		const { errors, isValid } = validateInput(this.state);
+		if(!isValid){
+			this.setState({errors});
+		}
+		return isValid;
+	}
+
 	componentWillMount(){
 		if(this.props.project){
 			var filesQuery = 'projectId='+this.props.project.id;
@@ -60,15 +94,6 @@ class UpoloadNew extends React.Component{
 			);
 		}
 	}
-	saveData(e){
-		e.preventDefault();
-		this.props.updateProject(this.state).then(
-				(res) => {
-					window.location.reload(true);
-				},
-				(err) => { this.context.router.push('/notfound');}
-			);
-	}
 
 	fileChanged(e){
 		this.setState({ changed: true });
@@ -84,17 +109,40 @@ class UpoloadNew extends React.Component{
 	}
 
 	deactivateModal(){
-		this.setState({ modalActive: false });
-		if(this.props.closeBool) {
-			this.props.closeWrite();
+		if(!this.props.newProject){ //existing project
+			if(this.isValid()){
+				if(this.props.closeBool) {
+					this.props.closeWrite();
+				}
+				if(this.state.changed){ //if the project details are changed, update in the database
+					this.setState({ errors: {}, modalActive: false, isLoading: true });
+					this.props.updateProject(this.state).then(
+						(res) => {
+							if(this.state.changed) 	window.location.reload(true);
+						},
+						(err) => { this.context.router.push('/notfound');}
+					);
+				}
+			}
 		}
-		this.props.updateProject(this.state).then(
-				(res) => {
-					if(this.state.changed) 	window.location.reload(true);
-				},
-				(err) => { this.context.router.push('/notfound');}
-			);
+		else{ //new Project 
+			if(!this.state.changed){
+				this.setState({modalActive: false});
+				this.props.closeWrite();
+			}
+			else{
+				//data changed, Create a new project and save in the Database
+				if(this.isValid()){
+					console.log('upload to do');
+					if(this.props.closeBool) {
+						this.props.closeWrite();
+					}
+					this.setState({ errors: {}, modalActive: false, isLoading: true });
+				}
+			}
+		}
 	}
+
 	render(){
 		const customStyles = {
 		  overlay : {
@@ -135,7 +183,7 @@ class UpoloadNew extends React.Component{
 				onRequestClose={this.deactivateModal}
 				style={customStyles}
 				contentLabel="Modal Open">
-					<WritePage deactivateModal={this.deactivateModal} saveData={this.saveData} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
+					<WritePage deactivateModal={this.deactivateModal} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
 						publication={this.state.publication} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook}
 						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} 
@@ -156,7 +204,8 @@ UpoloadNew.propTypes = {
 	closeBool: React.PropTypes.bool,
 	project: React.PropTypes.object,
 	getFilesObject: React.PropTypes.func.isRequired,
-	updateProject: React.PropTypes.func.isRequired
+	updateProject: React.PropTypes.func.isRequired,
+	newProject: React.PropTypes.bool
 }
 UpoloadNew.contextTypes = {
 	router: React.PropTypes.object.isRequired

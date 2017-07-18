@@ -18,6 +18,7 @@ class Profile extends React.Component{
 		this.deleteClicked = this.deleteClicked.bind(this);
 		this.closeWrite = this.closeWrite.bind(this);
 		this.uploadNewClicked = this.uploadNewClicked.bind(this);
+		this.btnClicked = this.btnClicked.bind(this);
 	}
 	closeWrite(){
 		this.setState({openWrite : false});
@@ -28,7 +29,7 @@ class Profile extends React.Component{
 	}
 
 	componentWillMount(){
-		console.log(this.props.auth);
+		
 		var queryString = 'user_id='+this.props.auth.user.id;
 		this.props.getAllPublishedProjects(queryString).then(
 			(res) => {
@@ -71,7 +72,9 @@ class Profile extends React.Component{
 		}
 		return updatedDrafts;
 	}
-
+	btnClicked(){
+		console.log(this.props.searchValue);
+	}
 	deleteClicked(response){
 		if(response.success){
 			console.log(this.state);
@@ -84,6 +87,7 @@ class Profile extends React.Component{
 	render() {
 		return( 
 			<div className="container-fluid profile">
+				
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
 					<button className="button-upload" onClick={this.uploadNewClicked}> Upload New </button>
@@ -104,7 +108,7 @@ class Profile extends React.Component{
 					</div>
 					{this.state.drafts.length === 0 ? <h6> No drafts to display.  </h6> : '' }
 				</div>
-				{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} closeBool={true} /> : ''}
+				{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} newProject={true} closeBool={true} /> : ''}
 			</div>
 		);
 	}

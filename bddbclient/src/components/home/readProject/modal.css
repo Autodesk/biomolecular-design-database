@@ -12,7 +12,7 @@
   width: 0px;  /* remove scrollbar space */
   background: transparent;  /* optional: just make scrollbar invisible */
 }
-
+li {list-style-type: none;}
 .modal-body{
   display: flex;
   overflow: hidden;

@@ -36,7 +36,6 @@
 }
 .project-title-input{
   float: left;
-  height: 72px;
   color: #212a43;
   width: 90%;
   margin: 52px 52px 15px 52px !important;
@@ -182,4 +181,98 @@
 .done-file-btn:hover{
   cursor: pointer;
   cursor: hand;
+}
+.upload-new-file-layout{
+  float: left;
+  height: auto;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  width: 90%;
+  color: #212a43;
+  font-family: ArtifaktElement;
+  margin-left: 52px !important;
+  margin-right: 52px !important;
+}
+.upload-new-file-layout:hover{
+  cursor: pointer;
+}
+.add-new{
+  text-align: center;
+  color: #2acc84;
+  margin-bottom: 8%;
+}
+.add-icon{
+  max-height: 60px;
+  margin-top: 8%;
+}
+.add-new:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+.toggle-switch{
+  margin-top: 10% !important;
+}
+/*SWITCH STYLING */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 23px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #2acc84;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #000000;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.draft-switch{
+  width: 60px;
+  float: left;
+}
+.publish-switch{
+
+  float: right !important;
+}
+/* Rounded sliders */
+.slider.round {
+  border-radius: 30px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
