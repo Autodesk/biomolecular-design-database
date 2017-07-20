@@ -72,9 +72,11 @@ class Profile extends React.Component{
 		}
 		return updatedDrafts;
 	}
+
 	btnClicked(){
-		console.log(this.props.searchValue);
+		console.log(this.props.searchValue); //search bar value
 	}
+	
 	deleteClicked(response){
 		if(response.success){
 			console.log(this.state);

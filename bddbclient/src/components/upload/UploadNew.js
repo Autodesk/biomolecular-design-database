@@ -6,6 +6,7 @@ import { getFilesObject, updateProject } from '../../actions/detailsAction';
 import { connect } from 'react-redux';
 import Validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
+import update from 'react-addons-update';
 
 function validateInput(data) {
 	let errors= {};
@@ -37,6 +38,7 @@ class UpoloadNew extends React.Component{
 			modalActive: true,
 			files: [],
 			id: 0,
+			published: '',
 			authors: '',
 			version: '',
 			publication: '',
@@ -56,8 +58,27 @@ class UpoloadNew extends React.Component{
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.fileChanged = this.fileChanged.bind(this);
+		this.changePublished = this.changePublished.bind(this);
+		this.deleteClicked = this.deleteClicked.bind(this);
+		this.getIndex = this.getIndex.bind(this);
 	}
-	
+
+	getIndex(fileId){
+		var len=this.state.files.length;
+		var index = -1;
+		for(var i = 0; i < len; i++){
+			if(this.state.files[i].id === fileId){
+				index=i;
+			}
+		}
+		return index;
+	}
+
+	deleteClicked(fileId){
+		const index = this.getIndex(fileId);
+		this.setState({ files: update(this.state.files, {$splice: [[index, 1]]}) })
+	}
+
 	isValid() {
 		const { errors, isValid } = validateInput(this.state);
 		if(!isValid){
@@ -69,8 +90,12 @@ class UpoloadNew extends React.Component{
 	componentWillMount(){
 		if(this.props.project){
 			var filesQuery = 'projectId='+this.props.project.id;
+			var _published;
+			if(this.props.project.published === 'true') _published = true;
+			else{ _published = false; }
 			this.setState({
 				id: this.props.project.id,
+				published: _published,
 				authors: this.props.project.authors.toString(),
 				version: this.props.project.version,
 				publication: this.props.project.publication,
@@ -88,6 +113,7 @@ class UpoloadNew extends React.Component{
 			this.props.getFilesObject(filesQuery).then(
 				(res) => {
 					var response = JSON.parse(res.request.response);
+					console.log(response.data);
 					this.setState( { files: response.data} ); //change the current state. this will render 
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -98,6 +124,11 @@ class UpoloadNew extends React.Component{
 	fileChanged(e){
 		this.setState({ changed: true });
 		console.log('file changed');
+	}
+
+	changePublished(_published){
+			this.setState({ published: !this.state.published, changed: true }, console.log(this.state.published));
+		
 	}
 
 	onChange(e){
@@ -183,10 +214,10 @@ class UpoloadNew extends React.Component{
 				onRequestClose={this.deactivateModal}
 				style={customStyles}
 				contentLabel="Modal Open">
-					<WritePage deactivateModal={this.deactivateModal} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
-						publication={this.state.publication} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} keywords={this.state.keywords} usageRights={this.state.usageRights}
-						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook}
-						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} 
+					<WritePage deactivateModal={this.deactivateModal} deleteClicked={this.deleteClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
+						publication={this.state.publication} published={this.state.published} changePublished={this.changePublished} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} 
+						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook} id={this.state.id}
+						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						projectTitle={this.state.projectTitle} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}
 					/>
 				</Modal>

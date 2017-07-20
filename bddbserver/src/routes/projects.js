@@ -191,7 +191,8 @@ router.put('/project/', (req, res) => {
 					contact_linkedin: req.body.contactLinkedin,
 					contact_facebook: req.body.contactFacebook,
 					contact_homepage: req.body.contactHomepage,
-					project_abstract: req.body.projectAbstract
+					project_abstract: req.body.projectAbstract,
+					published: req.body.published
 				 }, {patch: true})
 				.then(resData=> {
 						res.status(200).json({error: false});

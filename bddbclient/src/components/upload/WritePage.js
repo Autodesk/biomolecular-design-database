@@ -4,26 +4,63 @@ import help from '../../../public/Assets/icons/help.svg';
 import crossIcon from '../../../public/Assets/icons/close.svg';
 import FileWriteDisplay from './files/FileWriteDisplay';
 import classnames from 'classnames';
-//import NewFileBlock from './files/NewFileBlock';
+import NewFileBlock from './files/NewFileBlock';
 import add from '../../../public/Assets/add.png';
+import update from 'react-addons-update';
 
 class WritePage extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-
+			checked: true,
+			newFilesBlock: [],
+			currId: 0
 		}
 		this.addFileClicked = this.addFileClicked.bind(this);
+		this.newFileDeleteClicked = this.newFileDeleteClicked.bind(this);
+		this.getIndex = this.getIndex.bind(this);
+	}
+
+	getIndex(fileId){
+		var len=this.state.newFilesBlock.length;
+		var index = -1;
+		for(var i = 0; i < len; i++){
+			if(this.state.newFilesBlock[i].id === fileId){
+				index=i;
+			}
+		}
+		return index;
+	}
+
+	newFileDeleteClicked(fileId){
+		const index = this.getIndex(fileId);
+		this.setState({ newFilesBlock: update(this.state.newFilesBlock, {$splice: [[index, 1]]}) })
+	}
+
+	componentWillMount(){
+		this.setState({checked: this.props.published });
 	}
 
 	addFileClicked(e){
 		e.preventDefault();
-		console.log("adding a file");
+		var newFileItem = {
+			id: this.state.currId,
+			project_id: this.props.id,
+			title: '',
+			tags: '',
+			file_link: null,
+			description: '',
+			links_array: []
+		}
+		var newFilesArray = this.state.newFilesBlock;
+		newFilesArray.push(<NewFileBlock key={this.state.currId} newFileDeleteClicked={this.newFileDeleteClicked} file={newFileItem}/>);
+		this.setState({ currId: this.state.currId+1 });
+		console.log(newFileItem);
 	}
 
 	render(){
 		const filesDisplay = this.props.files.map((fileItem) => {
-			return <FileWriteDisplay key={fileItem.id} file={fileItem} />;
+			return <FileWriteDisplay key={fileItem.id} deleteClicked={this.props.deleteClicked} file={fileItem} />;
 		});
 		const headerImg = ( 
 			<div className="hero-image">
@@ -93,13 +130,12 @@ class WritePage extends React.Component{
 							<h5>PUBLISH/DRAFT</h5>
 					
 								<h5 className="draft-switch">Draft</h5>
-								<label className="switch">
-								  	<input type="checkbox"/>
+								<label className="switch" >
+								  	<input type="checkbox" checked={this.state.checked} onChange={(e) => { this.setState({ checked: !this.state.checked });  this.props.changePublished(this.state.checked)}}/> }
 								  	<span className="slider round"></span>
 								</label>
 								<h5 className="publish-switch">PUBLISH</h5>
 							</div>
-							
 						</div>
 					</div>
 					<div id="content">
@@ -120,6 +156,7 @@ class WritePage extends React.Component{
 						<div>
 							{filesDisplay}
 						</div>
+						{this.state.newFilesBlock}
 						<div className="content-hr pull-left">
 								<hr/>
 						</div>
@@ -152,7 +189,11 @@ WritePage.propTypes = {
 	projectAbstract: React.PropTypes.string,
 	headerImageLink: React.PropTypes.string,
 	fileChanged: React.PropTypes.func,
-	errors: React.PropTypes.object
+	errors: React.PropTypes.object,
+	published: React.PropTypes.bool,
+	id: React.PropTypes.number,
+	changePublished: React.PropTypes.func,
+	deleteClicked: React.PropTypes.func
 }
 
 export default WritePage;

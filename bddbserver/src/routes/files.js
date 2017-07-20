@@ -54,7 +54,7 @@ function getSignedUrlForSingleFile(file){
 router.get('/', (req, res) => {
 	const _projectId = req.query.projectId;
 	
-	Files.forge().where({project_id: _projectId}).orderBy('id', 'ASC').fetchAll()
+	Files.forge().where({project_id: _projectId, deleted: false}).orderBy('id', 'ASC').fetchAll()
 		.then(resData=> {
 			res.status(200).json({error: false, data: getSignedUrl(resData.toJSON())});
 		})
@@ -77,7 +77,7 @@ router.put('/file/', (req, res) => {
 				res.status(401).json({ error: 'Failed to authenticate'})
 			} else {
 				console.log(decode);
-				Files.where({id: req.body.id}).where({user_id: decode.id})
+				Files.where({id: req.body.id, user_id: decode.id})
 				.save({ title: req.body.title,
 					description: req.body.details
 				 }, {patch: true})
@@ -98,17 +98,82 @@ router.put('/file/', (req, res) => {
 router.get('/file/', (req, res) => {
 	const fileId = req.query.fileId;
 	
-	Files.forge().where({id: fileId}).fetch()
+	Files.forge().where({id: fileId, deleted: false}).fetch()
 	.then(resData=> {
 		const signedUrl = getSignedUrlForSingleFile(resData.toJSON());
 		console.log(signedUrl);
 		res.status(200).json({error: false, url: signedUrl })
 	});
-});
-
-router.post('/', (req, res) =>{
 
 });
+
+router.post('/file/', (req, res) =>{
+	
+	console.log(req.body);
+	const authorizationHeader = req.headers['authorization'];
+	let token;
+
+	if(authorizationHeader) {
+		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
+													//split and take the index 1 to access token
+	}
+
+	if(token){
+		jwt.verify(token, config.jwtSecret, (err, decode) => {
+			if(err) {
+				res.status(401).json({ error: 'Failed to authenticate'})
+			} else {
+				console.log(decode);
+				Files.forge({
+					user_id: decode.id,
+					project_id: req.body.project_id,
+					title: req.body.title,
+					tags: req.body.tags,
+					file_link: req.body.file_link,
+					description: req.body.details,
+					deleted: false
+				}, { hasTimestamps: true }).save()
+				.then(resData=> {
+					res.status(200).json({error: false});
+				})
+				.catch(err => {res.status(500).json({error: true})
+				});
+			}
+		});
+	} 
+
+	else{
+		res.status(403).json({	error: 'No token provided' 	});
+	}
+});
+
+router.delete('/file/', (req, res) => {
+	var file_id = req.query.file_id;
+	const authorizationHeader = req.headers['authorization'];
+	let token;
+	console.log(req.query);
+	if(authorizationHeader) {
+		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
+													//split and take the index 1 to access token
+	}
+
+	if(token){
+		jwt.verify(token, config.jwtSecret, (err, decode) => {
+			if(err) {
+				res.status(401).json({ error: 'Failed to authenticate'})
+			} else {
+				console.log(decode);
+				Files.where({id: file_id}).where({user_id: decode.id}).save({ deleted: true }, {patch: true}); //update the project appreciations in database
+				res.json({success: true});
+			}
+		});
+	} 
+
+	else{
+		res.status(403).json({	error: 'No token provided' 	});
+	}
+});
+
 
 
 export default router;

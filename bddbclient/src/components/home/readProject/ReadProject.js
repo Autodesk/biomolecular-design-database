@@ -245,10 +245,10 @@ class ReadProject extends React.Component {
 						<div className="sub-title">
 							<h5> CONTACT</h5>
 							<div className="row icons-style">
-								<a href={this.props.project.contact_linkedin ? this.props.project.contact_linkedin : '' } target="_blank"><img src={linkedin} alt="linkedin icon"/></a>
-								<a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '#' }><img src={mail} alt="email icon"/></a>
-								<a href={this.props.project.contact_facebook ? this.props.project.contact_facebook : '' } target="_blank"><img src={facebook} alt="facebook icon"/></a>
-								<a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' } target="_blank"><img src={web} alt="home web"/></a>
+								{this.props.project.contact_linkedin ? <a href={this.props.project.contact_linkedin ? this.props.project.contact_linkedin : '' } target="_blank"><img src={linkedin} alt="linkedin icon"/></a> : ''}
+								{this.props.project.contact_email ? <a href={this.props.project.contact_email ? "mailto:"+this.props.project.contact_email : '#' }><img src={mail} alt="email icon"/></a> : ''}
+								{this.props.project.contact_facebook ? <a href={this.props.project.contact_facebook ? this.props.project.contact_facebook : '' } target="_blank"><img src={facebook} alt="facebook icon"/></a> : ''}
+								{this.props.project.contact_homepage ? <a href={this.props.project.contact_homepage ? this.props.project.contact_homepage : '' } target="_blank"><img src={web} alt="home web"/></a> : ''}
 							</div>
 						</div>
 					</div>

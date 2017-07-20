@@ -147,6 +147,31 @@
 .file-btns{
   width: 95%;
 }
+.delete-file-btn{
+  margin: 15px;
+  border-radius: 100px;
+  border: solid 1px #979797;
+  background-color: #ffffff;
+  font-family: ArtifaktElement-Book;
+  padding-left: 22px;
+  padding-right: 22px;
+  padding-top: 5px;
+  font-size: 14px;
+  color: #2c3247;
+  float: left;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -ms-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+}
+.delete-file-btn:hover{
+  cursor: pointer;
+  cursor: hand;
+  background-color: #FE2E2E;
+  color: #ffffff;
+  border-style: none;
+}
 .upload-media-btn{
   margin: 15px;
   border-radius: 100px;
@@ -275,4 +300,32 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/*File Block */
+.file-block-wrapper{
+  position: relative;
+}
+.single-new-file{
+  position: relative;
+  -webkit-animation-name: slide; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 0.2s; /* Safari 4.0 - 8.0 */
+  animation-name: slide;
+  animation-duration: 0.2s;
+  width: 95%;
+  min-height: 100%;
+  align-items: left;
+  margin-left: 4.5% !important;
+  margin-bottom: 4% !important;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes slide {
+    0%   {left: -100%; opacity: 0;}
+    100% {left: -4.5%; opacity: 1;}
+}
+
+/* Standard syntax */
+@keyframes slide {
+    0%   {left: -100%; opacity: 0;}
+    100% {left: -4.5%; opacity: 1;}
 }

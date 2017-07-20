@@ -131,12 +131,14 @@ li {list-style-type: none;}
   padding-bottom: 2%;
   opacity: 0.5;
 }
+
 .single-file{
   min-height: 100%;
   min-width: 100%;
   align-items: left;
   margin-bottom: 4% !important;
   padding-left: 4.5% !important;
+
 }
 
 /* FILE ITEMS */
@@ -335,6 +337,7 @@ textarea:focus{
   background: #F5F5F5;
   min-height: 100%;
   overflow-y: scroll !important;
+  z-index: 4999;
 }
 #details .sub-part{
   margin-top: 7%;

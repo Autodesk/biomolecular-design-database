@@ -113,6 +113,7 @@ class FileItem extends React.Component{
 
 		return(
 			<div className="single-file container-fluid" >
+				<hr/>
 				<h5 className="file-item-title">{this.props.file.title}</h5>
 				<div className="col-sm-12 file-image" >
 					{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
@@ -121,8 +122,8 @@ class FileItem extends React.Component{
 					<p > {text} </p>
 				</div>
 				{this.state.downloadable ? <a href={this.props.file.file_link} className="download" download>DOWNLOAD</a> : ''}
-				{isOpen ? lightboxDisplay : ''}
 				<hr/>
+				{isOpen ? lightboxDisplay : ''}
 			</div>
 		);
 	}

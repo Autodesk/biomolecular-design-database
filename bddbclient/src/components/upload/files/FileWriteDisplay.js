@@ -2,6 +2,7 @@ import React from 'react';
 import Lightbox from 'react-image-lightbox';
 import path from 'path';
 import { updateFileItem } from '../../../actions/detailsAction';
+import { deleteFile } from '../../../actions/fileActions';
 import { connect } from 'react-redux';
 
 const customStyles = {
@@ -25,6 +26,7 @@ class FileWriteDisplay extends React.Component{
 		}
 		this.onChange = this.onChange.bind(this);
 		this.doneClicked = this.doneClicked.bind(this);
+		this.deleteClicked = this.deleteClicked.bind(this);
 	}
 
 	componentWillMount(){
@@ -42,6 +44,19 @@ class FileWriteDisplay extends React.Component{
 			title: this.props.file.title,
 			details: this.props.file.description
 		});
+	}
+
+	deleteClicked(e){
+		e.preventDefault();
+		console.log('delete clicked');
+		var query = "file_id="+this.props.file.id;
+		this.props.deleteFile(query).then(
+			(res) => {
+				console.log(this.state);
+				this.props.deleteClicked(this.props.file.id);
+			},
+			(err) => { this.context.router.push('/notfound');}
+		);	
 	}
 
 	doneClicked(e){	
@@ -105,6 +120,7 @@ class FileWriteDisplay extends React.Component{
 					<textarea type='text' placeholder="File Details" value={this.state.details} onChange={this.onChange} name="details" rows='5'></textarea>
 				</div>
 				<div className="row file-btns">
+					<button className="btn delete-file-btn" onClick={this.deleteClicked}>Delete File Block</button>
 					<button className="btn upload-media-btn">Upload Additional Media</button>
 					<button className="btn done-file-btn" disabled={!this.state.changed} onClick={this.doneClicked}> Done </button>
 				</div>
@@ -120,7 +136,9 @@ class FileWriteDisplay extends React.Component{
 FileWriteDisplay.propTypes = {
 	file: React.PropTypes.object,
 	updateFileItem: React.PropTypes.func,
-	fileChanged: React.PropTypes.func
+	fileChanged: React.PropTypes.func,
+	deleteFile: React.PropTypes.func,
+	deleteClicked: React.PropTypes.func
 }
 
 FileWriteDisplay.contextTypes = {
@@ -130,5 +148,5 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, {updateFileItem})(FileWriteDisplay);
+export default connect(mapStateToProps, {updateFileItem, deleteFile })(FileWriteDisplay);
 
