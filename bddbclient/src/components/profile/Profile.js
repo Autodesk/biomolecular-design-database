@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../home/Home.css';
 import './profile.css';
-import {getAllPublishedProjects, getAllDrafts} from '../../actions/profileActions';
+import {getAllPublishedProjects, getAllDrafts, reloadPublished, reloadDrafts} from '../../actions/profileActions';
 import Gallery from './ProfileProjectGallery';
 import UploadNew from '../upload/UploadNew';
 
@@ -19,17 +19,11 @@ class Profile extends React.Component{
 		this.closeWrite = this.closeWrite.bind(this);
 		this.uploadNewClicked = this.uploadNewClicked.bind(this);
 		this.btnClicked = this.btnClicked.bind(this);
-	}
-	closeWrite(){
-		this.setState({openWrite : false});
-	}
-	uploadNewClicked(e){
-		e.preventDefault();
-		this.setState({ openWrite: true })
+		this.loadProjects = this.loadProjects.bind(this);
 	}
 
 	componentWillMount(){
-		
+		console.log(this.props.auth.user);
 		var queryString = 'user_id='+this.props.auth.user.id;
 		this.props.getAllPublishedProjects(queryString).then(
 			(res) => {
@@ -49,6 +43,51 @@ class Profile extends React.Component{
 					this.setState({error: true});
 			}
 		);	
+	}
+
+	closeWrite(){
+		this.setState({openWrite : false});
+	}
+	
+	uploadNewClicked(e){
+		e.preventDefault();
+		this.setState({ openWrite: true })
+	}
+	
+	componentWillReceiveProps(nextProps){
+		this.setState({ search: this.props.searchValue },
+			this.loadProjects
+		);
+	}
+
+	loadProjects(e){
+		console.log('loadProjkects called');
+		if(this.props.searchValue !== ''){
+			console.log(this.props.searchValue);
+			var queryString = 'search='+this.props.searchValue+'&user_id='+this.props.auth.user.id;
+			this.props.reloadPublished(queryString).then(
+				(res) => {
+					var response = JSON.parse(res.request.response);
+					var newPublishedProjects = response.data;
+					this.setState( { published: newPublishedProjects } );  
+				}, (err) => { 
+						this.context.router.push('/notfound')
+				}
+			);
+
+			this.props.reloadDrafts(queryString).then(
+				(res) => {
+					var response = JSON.parse(res.request.response);
+					var newDraftsProjects = response.data;
+					this.setState( { drafts: newDraftsProjects } );  
+				}, (err) => { 
+						this.context.router.push('/notfound')
+				}
+			);
+		}
+		else{
+			this.componentWillMount();
+		}
 	}
 
 	updatePublished(response){
@@ -89,10 +128,10 @@ class Profile extends React.Component{
 	render() {
 		return( 
 			<div className="container-fluid profile">
-				
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
 					<button className="button-upload" onClick={this.uploadNewClicked}> Upload New </button>
+					
 				</div>
 				<div className="published">
 					<h4> Published </h4>
@@ -100,7 +139,7 @@ class Profile extends React.Component{
 					<div className="gallery-layout">
 						<Gallery projects={this.state.published} deleteClicked={this.deleteClicked} />
 					</div>
-					{this.state.published.length === 0 ? <h6> You've not uploaded any project. </h6> : '' }
+					{this.state.published.length === 0 ? <h6> No Published Projects to display. </h6> : '' }
 				</div>
 				<div className="drafts">
 					<h4> Drafts </h4>
@@ -119,7 +158,9 @@ class Profile extends React.Component{
 Profile.propTypes = {
 	auth: React.PropTypes.object.isRequired,
 	getAllPublishedProjects: React.PropTypes.func.isRequired,
-	getAllDrafts: React.PropTypes.func.isRequired
+	getAllDrafts: React.PropTypes.func.isRequired,
+	reloadPublished: React.PropTypes.func.isRequired,
+	reloadDrafts: React.PropTypes.func.isRequired
 }
 
 Profile.contextTypes = {
@@ -130,4 +171,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, { getAllPublishedProjects, getAllDrafts })(Profile);
+export default connect(mapStateToProps, { getAllPublishedProjects, reloadPublished, reloadDrafts, getAllDrafts })(Profile);

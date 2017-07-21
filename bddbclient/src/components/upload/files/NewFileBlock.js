@@ -18,7 +18,7 @@ class NewFileBlock extends React.Component{
             lightboxDisplay: '',
             title: '',
             details: '',
-            file_link: '',
+            file_link: null,
             tags: '',
             changed: false,
             project_id: 0

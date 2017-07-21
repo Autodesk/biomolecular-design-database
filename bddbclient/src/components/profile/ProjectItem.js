@@ -101,7 +101,7 @@ class ProjectItem extends React.Component {
 		    marginBottom 			: '0px',
 		    minHeight 				: '100%',
 		    margin 					: 'auto',
-		    maxWidth 				: '1400px',
+		    maxWidth 				: '1350px',
 		    border                  : 'none',
 		    background              : 'transparent',
 		    outline                 : 'none',
