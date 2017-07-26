@@ -23,14 +23,12 @@ class Profile extends React.Component{
 	}
 
 	componentWillMount(){
-		console.log(this.props.auth.user);
 		var queryString = 'user_id='+this.props.auth.user.id;
 		this.props.getAllPublishedProjects(queryString).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
 				this.setState({ published: response.publishedProjects})
-				console.log(response);//this.setState( { projects: newProjectArr, getFrom: _getFrom, getTo: _getTo } );  
-			}, (err) => { 
+				}, (err) => { 
 					this.setState({error: true});
 			}
 		);	
@@ -38,8 +36,7 @@ class Profile extends React.Component{
 			(res) => {
 				var response = JSON.parse(res.request.response);
 				this.setState({ drafts: response.drafts})
-				console.log(response);//this.setState( { projects: newProjectArr, getFrom: _getFrom, getTo: _getTo } );  
-			}, (err) => { 
+				}, (err) => { 
 					this.setState({error: true});
 			}
 		);	
@@ -61,9 +58,7 @@ class Profile extends React.Component{
 	}
 
 	loadProjects(e){
-		console.log('loadProjkects called');
 		if(this.props.searchValue !== ''){
-			console.log(this.props.searchValue);
 			var queryString = 'search='+this.props.searchValue+'&user_id='+this.props.auth.user.id;
 			this.props.reloadPublished(queryString).then(
 				(res) => {
@@ -118,7 +113,6 @@ class Profile extends React.Component{
 	
 	deleteClicked(response){
 		if(response.success){
-			console.log(this.state);
 			var updatedPublishedProjects = this.updatePublished(response);
 			var updatedDraftsProjects = this.updateDrafts(response);
 			this.setState({ published: updatedPublishedProjects, drafts: updatedDraftsProjects});
@@ -139,7 +133,7 @@ class Profile extends React.Component{
 					<div className="gallery-layout">
 						<Gallery projects={this.state.published} deleteClicked={this.deleteClicked} />
 					</div>
-					{this.state.published.length === 0 ? <h6> No Published Projects to display. </h6> : '' }
+					{this.state.published.length === 0 ? <h6> No published projects to display. </h6> : '' }
 				</div>
 				<div className="drafts">
 					<h4> Drafts </h4>

@@ -1,12 +1,12 @@
 import React from 'react';
-import Modal from 'react-modal';
 import './upload.css';
-import WritePage from './WritePage.js';
 import { getFilesObject, updateProject } from '../../actions/detailsAction';
 import { connect } from 'react-redux';
 import Validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import update from 'react-addons-update';
+import { getSingleProject } from '../../actions/homePageActions';
+import WritePageUpdate from './WritePageUpdate';
 
 function validateInput(data) {
 	let errors= {};
@@ -31,14 +31,15 @@ function validateInput(data) {
 	};	
 }
 
-class UpoloadNew extends React.Component{
+class Update extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			modalActive: true,
+			project: {},
+			projectAssigned: false,
 			files: [],
 			id: 0,
-			published: '',
+			published: false,
 			authors: '',
 			version: '',
 			publication: '',
@@ -55,12 +56,62 @@ class UpoloadNew extends React.Component{
 			errors: {}
 		}
 		this.onChange = this.onChange.bind(this);
-		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.fileChanged = this.fileChanged.bind(this);
 		this.changePublished = this.changePublished.bind(this);
-		this.deleteClicked = this.deleteClicked.bind(this);
+		this.deleteFileClicked = this.deleteFileClicked.bind(this);
 		this.getIndex = this.getIndex.bind(this);
+		this.assignValues = this.assignValues.bind(this);
+	}
+
+	componentWillMount(){
+		var _projectId = null;
+		if(this.props.params.projectId){
+			_projectId = this.props.params.projectId 
+			var queryString = 'projectId='+this.props.params.projectId;
+			this.props.getSingleProject(queryString).then(
+				(res) => {
+					var response = JSON.parse(res.request.response);
+					this.setState({ projectAssigned: true, project: response.data}, this.assignValues );
+				},
+				(err) => { 
+					this.context.router.push('/serverError');
+				}
+			);
+		}
+	}
+
+	assignValues(e){
+		if(this.state.projectAssigned){
+			var filesQuery = 'projectId='+this.state.project.id;
+			var _published;
+			if(this.state.project.published === 'true') _published = true;
+			else{ _published = false; }
+			this.setState({
+				id: this.state.project.id,
+				published: _published,
+				authors: this.state.project.authors.toString(),
+				version: this.state.project.version,
+				publication: this.state.project.publication,
+				keywords: this.state.project.keywords.toString(),
+				usageRights: this.state.project.user_rights,
+				contactLinkedin: this.state.project.contact_linkedin,
+				contactFacebook: this.state.project.contact_facebook,
+				contactEmail: this.state.project.contact_email,
+				contactHomepage: this.state.project.contact_homepage,
+				projectTitle: this.state.project.name,
+				projectAbstract: this.state.project.project_abstract,
+				headerImageLink: this.state.project.header_image_link,
+				heroImageLink: this.state.project.hero_image
+			});
+			this.props.getFilesObject(filesQuery).then(
+				(res) => {
+					var response = JSON.parse(res.request.response);
+					this.setState( { files: response.data}, console.log(this.state) ); //change the current state. this will render 
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);
+		}
 	}
 
 	getIndex(fileId){
@@ -74,7 +125,7 @@ class UpoloadNew extends React.Component{
 		return index;
 	}
 
-	deleteClicked(fileId){
+	deleteFileClicked(fileId){
 		const index = this.getIndex(fileId);
 		this.setState({ files: update(this.state.files, {$splice: [[index, 1]]}) })
 	}
@@ -87,56 +138,19 @@ class UpoloadNew extends React.Component{
 		return isValid;
 	}
 
-	componentWillMount(){
-		if(this.props.project){
-			var filesQuery = 'projectId='+this.props.project.id;
-			var _published;
-			if(this.props.project.published === 'true') _published = true;
-			else{ _published = false; }
-			this.setState({
-				id: this.props.project.id,
-				published: _published,
-				authors: this.props.project.authors.toString(),
-				version: this.props.project.version,
-				publication: this.props.project.publication,
-				keywords: this.props.project.keywords.toString(),
-				usageRights: this.props.project.user_rights,
-				contactLinkedin: this.props.project.contact_linkedin,
-				contactFacebook: this.props.project.contact_facebook,
-				contactEmail: this.props.project.contact_email,
-				contactHomepage: this.props.project.contact_homepage,
-				projectTitle: this.props.project.name,
-				projectAbstract: this.props.project.project_abstract,
-				headerImageLink: this.props.project.header_image_link,
-				heroImageLink: this.props.project.hero_image
-			});
-			this.props.getFilesObject(filesQuery).then(
-				(res) => {
-					var response = JSON.parse(res.request.response);
-					console.log(response.data);
-					this.setState( { files: response.data} ); //change the current state. this will render 
-				},
-				(err) => { this.context.router.push('/notfound');}
-			);
-		}
-	}
-
 	fileChanged(e){
 		this.setState({ changed: true });
 		console.log('file changed');
 	}
 
 	changePublished(_published){
-			this.setState({ published: !this.state.published, changed: true }, console.log(this.state.published));
+		this.setState({ published: !this.state.published, changed: true }, console.log(this.state.published));
 		
 	}
 
 	onChange(e){
 		if(this.state.changed)	this.setState({ [e.target.name]: e.target.value });
 		else this.setState({changed: true, [e.target.name]: e.target.value });
-	}
-	activateModal(){
-		this.setState({ modalActive: true });
 	}
 
 	deactivateModal(){
@@ -175,71 +189,29 @@ class UpoloadNew extends React.Component{
 	}
 
 	render(){
-		const customStyles = {
-		  overlay : {
-		    position          : 'fixed',
-		    top               : 0,
-		    left              : 0,
-		    right             : 0,
-		    bottom            : 0,
-		    backgroundColor   : 'rgba(0, 0, 0, 0.85)',
-		    padding			  : '0px',
-		    paddingRight	  : '52px',
-		    paddingLeft		  : '52px',
-		    zIndex : 1050
-		  },
-		  content : {
-		     position               : 'absolute',
-		    top                     : '0px',
-		    left                    : '0px',
-		    right                   : '0px',
-		    bottom 					: '0px',
-		    paddingTop 			    : '2%',
-		    paddingLeft				: '0px',
-		    paddingRight 			: '0px',
-		    marginBottom 			: '0px',
-		    minHeight 				: '100%',
-		    margin 					: 'auto',
-		    maxWidth 				: '1360px',
-		    border                  : 'none',
-		    background              : 'transparent',
-		    outline                 : 'none',
-		    overflow                : 'auto'
-		  }
-		};
-
-		const modal = <Modal
-				isOpen={this.state.modalActive}
-				onAfterOpen={this.activateModal}
-				onRequestClose={this.deactivateModal}
-				style={customStyles}
-				contentLabel="Modal Open">
-					<WritePage deactivateModal={this.deactivateModal} deleteClicked={this.deleteClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
+		return(
+			<div>
+				<WritePageUpdate deleteClicked={this.deleteFileClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
 						publication={this.state.publication} published={this.state.published} changePublished={this.changePublished} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} 
 						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook} id={this.state.id}
 						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						projectTitle={this.state.projectTitle} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}
 					/>
-				</Modal>
-
-		return(
-			<div>
-				{modal}
 			</div>
 		);
 	}
 }
 
-UpoloadNew.propTypes = {
+Update.propTypes = {
 	closeWrite: React.PropTypes.func,
-	closeBool: React.PropTypes.bool,
 	project: React.PropTypes.object,
 	getFilesObject: React.PropTypes.func.isRequired,
 	updateProject: React.PropTypes.func.isRequired,
+	getSingleProject: React.PropTypes.func.isRequired,
 	newProject: React.PropTypes.bool
 }
 
-UpoloadNew.contextTypes = {
+Update.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
 
@@ -247,4 +219,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, {getFilesObject, updateProject})(UpoloadNew);
+export default connect(mapStateToProps, {getFilesObject, getSingleProject, updateProject})(Update);

@@ -9,9 +9,20 @@ export function uploadFile(fileData) {
 }
 
 export function deleteFile(queryString) {
-	console.log('deleting file');
 	const apiCall = '/api/files/file?'+queryString;
 	return dispatch => {
 		return axios.delete(apiCall);
 	}
+}
+
+export function uploadDocumentToS3({ file, name }) {  
+  let data = new FormData();
+  data.append('file', document);
+  data.append('name', name);
+  console.log("here in actions, forwarding request to server. ");
+  return (dispatch) => {
+    axios.post('api/files/document', data)
+      .then(response => console.log("file successfully uploaded"))
+      .catch(error => console.log('error occured while uploading a file'));
+  };
 }

@@ -11,6 +11,7 @@ import edit from '../../../public/Assets/icons/edit.svg';
 import Modal from 'react-modal';
 import ReadProject from '../home/readProject/ReadProject';
 import UploadNew from '../upload/UploadNew';
+//import { Link } from 'react-router';
 
 class ProjectItem extends React.Component {
 
@@ -38,6 +39,7 @@ class ProjectItem extends React.Component {
 	}
 	editClicked(e){
 		e.preventDefault();
+		//this.context.router.push('/update/2');
 		this.setState({ openWrite: true })
 	}
 	deleteClicked(){
@@ -109,6 +111,7 @@ class ProjectItem extends React.Component {
 		  }
 		};
 
+		//const editLink = "/update/"+this.props.project.id;
 		const modal = <Modal
 				isOpen={this.state.modalActive}
 				onAfterOpen={this.activateModal}
@@ -177,4 +180,9 @@ ProjectItem.propTypes = {
 	increaseAp: React.PropTypes.func,
 	onDeleteClick: React.PropTypes.func.isRequired
 }
+
+ProjectItem.contextTypes = {
+	router: React.PropTypes.object.isRequired
+}
+
 export default ProjectItem;

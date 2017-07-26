@@ -45,14 +45,14 @@ button:focus {
 }
 .home-title{
 	text-align: center;
-	font-family: ArtifaktElement;
+	font-family: ArtifaktElement-Thin;
 	font-weight: 100;
 	color: #343950;
 }
 .welcomeStyle {
 	margin: 35px 2px;
 	font-family:  ArtifaktElement;
-	font-weight: 100;
+	font-weight: 90;
 	color: #2fe695;
   text-align: center !important;
 }
@@ -82,7 +82,6 @@ button:focus {
     text-align: center;
     text-decoration: none;
     border: none;
-    border-color: white !important;
     font-size: 12px;
     float: left;
     margin-right: 9px;
@@ -90,6 +89,7 @@ button:focus {
     color: white;
     padding-left: 12px;
     padding-right: 12px;
+    border: solid 1px #2fe695;
 }
 .nothing-found{
   margin-top: 12%;
@@ -101,15 +101,18 @@ button:focus {
     color: black !important; 
     text-align: center;
     text-decoration: none;
-    border-color: black;
-    border-width: 1px;
     font-size: 12px;
     float: left;
     margin-right: 9px;
     font-family: ArtifaktElement;
     color: white;
-    padding-left: 11px;
-    padding-right: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: solid 1px #979797;
+}
+.delete-x{
+  margin-left: 5px;
+  font-family: ArtifaktElement-Regular;
 }
 .gallery-container{
     width: 100%;
@@ -130,6 +133,14 @@ button:focus {
 }
 .sub-menu-parent p1 {
   font-size: 14px;
+  font-family: ArtifaktElement-Book;
+}
+.sub-menu-parent p btn{
+  padding: 0px !important;
+}
+.row{
+  margin-right: 0px;
+  margin-left: 0px;
 }
 .sub-menu { 
   border-radius: 5%;
@@ -163,11 +174,12 @@ button:focus {
 }
 
 .dropbtn {
-    color: #2fe695;
+    color: #212a43;
     border: none;
     cursor: pointer;
     display: inline-block;
-    font-size: 17px;
+    font-size: 14px;
+    font-family: ArtifaktElement-Book;
 }
 
 .sort-button{
@@ -175,13 +187,37 @@ button:focus {
     background-color: rgba(0,0,0,0);
 }
 p1{
-  font-size: 17px;
+  font-size: 14px;
 }
 
 @media (max-width:600px) and (min-width: 0px)
 {   
+  .home-title{
+    font-size:2.1em;
+  }
+  .welcomeStyle{
+    font-size: 1.4em;
+  }
+  .filter-style p{
+    font-size: 12px;
+  }
+  .filter-style button{
+    font-size: 10px;
+  }
   .sub-menu-parent p1{
     float: left !important;
+  }
+  .sort-style p1{
+    font-size: 12px;
+  }
+  .sort-style p{
+    font-size: 12px;
+  }
+  .project-item-title{
+    font-size: 16px;
+  }
+  .tick{
+    margin-left: 0% !important;
   }
     .greenBtn{
       min-width: 100% !important;
@@ -199,6 +235,8 @@ p1{
     .showcase-item-layout {
       width: 100% !important;
       min-height: 320px !important;
+      padding-left: 0px;
+      padding-right: 0px;
     }
 }
 @media (max-width:800px) and (min-width: 601px)
@@ -230,8 +268,6 @@ p1{
     .showcase-item-layout {
       min-height: 440px !important;
     }
-
-
 }
 /**** GALLERY */
 /* SHOW ALL DESIGNS */
@@ -272,31 +308,34 @@ p1{
     font-family: ArtifaktElement;
     margin-right: 1%;
     letter-spacing: 2px;
-    margin-top: 0px;
     float: right;
     font-size: 12px;
+    height: 28px;
 }
 .ticks-style{
   margin-right: 2px;
 }
 .tick-stat {
-  padding: 8px !important ;
+  padding: 9px 6px 0px 6px !important ;
 }
 .green-tick{
-    color: #2fe695;
+  color: #2fe695;
 }
 .tick{
   font-size: 12px;
-    float: left;
-    margin-left: 2%;
-    letter-spacing: 3px;
-
+  float: left;
+  margin-left: 2%;
+  letter-spacing: 3px;
+}
+.img-icon-styling{
+  margin-bottom: 5px;
 }
 .likes-style{
-  margin-right: 5px;
-  margin-left: 2px;
+  margin-right: 3px;
+  margin-left: 1px;
   font-family: ArtifaktElement-Book;
   color: #212a43;
+  height: 22px;
 }
 .fa-thumbs-o-up{
     opacity: 0.6;
@@ -306,6 +345,10 @@ p1{
     padding-left: 8px;
 }
 .project-item-title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 22px;
+  height: 44px;
   cursor: pointer;
   cursor: hand;
   font-family: ArtifaktElement-Book;
@@ -328,6 +371,12 @@ p1{
     max-width: 100%;
 }
 /* Nav */
+.navbar-styling{
+  padding-top: 9px;
+}
+.upload-nav{
+  padding-left: 10px;
+}
 .navbar-nav{
   font-family: ArtifaktElement-Book;
   width: 60%;
@@ -336,6 +385,9 @@ p1{
 .nav-username:hover {
   cursor: pointer;
   cursor: hand;
+}
+.navbar-header button{
+  margin-right: 35px;
 }
 .nav-username{
   color: #212a43;
@@ -369,6 +421,53 @@ p1{
   .container-logout{
     width: 100%;
     box-shadow: none;
+  }
+}
+
+/* SEARCH BAR LAYOUT */
+@media screen and (min-width: 768px) {
+  .searchBar-layout{
+    height: 36px;
+    padding-top: 2px;
+    padding-left: 8px;
+    width: 20%;
+    border-style: none;
+    float: right !important;
+    border-radius: 22px;
+    text-align: left;
+    margin-top: 9px;
+    margin-bottom: 17px;
+    margin-right: 6%;
+    background-color : #e8e8e8 !important;
+    font-family: ArtifaktElement;
+  }
+  .searchBar-layout input{
+    background-color: transparent;
+    border-style: none;
+    width: 92%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .searchBar-layout{
+    padding-left: 16px;
+    width: 60%;
+    margin-left: 20%;
+    height: 33px !important;
+    border-radius: 22px;
+    text-align: left;
+    border-style: none;
+    margin-top: 39px;
+    margin-bottom: 15px;
+    background-color : #e8e8e8 !important;
+    font-family: ArtifaktElement;
+  }
+  .searchBar-layout input{
+    background-color: transparent;
+    border-style: none;
+    width: 90%;
+  }
+  .navbar-nav{
+    width: 100%;
   }
 }
 
@@ -406,7 +505,6 @@ p1{
   background-color: #ffffff;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-
   text-align: center;
   padding: 8px;
   z-index: 150;

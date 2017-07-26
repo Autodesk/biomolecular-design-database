@@ -211,7 +211,6 @@ router.put('/project/', (req, res) => {
 router.get('/project/', (req, res) => {
 	Projects.where({deleted: 'false'}).where({id: req.query.projectId}).fetch()
 		.then(resData=> {
-			console.log(resData);
 			var resProject =  resData.toJSON();
 			res.status(200).json({error: false, data: singleSignedUrl(resProject)});
 		})
@@ -234,7 +233,6 @@ router.delete('/', (req, res) => {
 			if(err) {
 				res.status(401).json({ error: 'Failed to authenticate'})
 			} else {
-				console.log(decode);
 				Projects.where({id: _projectId}).where({user_id: decode.id}).save({ deleted: 'true' }, {patch: true}); //update the project appreciations in database
 				res.json({success: true, projectId: _projectId});
 			}

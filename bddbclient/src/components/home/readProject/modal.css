@@ -40,7 +40,6 @@ li {list-style-type: none;}
 {   
     width: 100%;
     max-width: 1400px;
-    min-width: 720px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -80,7 +79,6 @@ li {list-style-type: none;}
 .cross-icon-new img{
   height: 30px;
   width: 30px;
-
 }
 .cross-icon{
   border-radius: 50%;
@@ -131,7 +129,6 @@ li {list-style-type: none;}
   padding-bottom: 2%;
   opacity: 0.5;
 }
-
 .single-file{
   min-height: 100%;
   min-width: 100%;
@@ -140,19 +137,65 @@ li {list-style-type: none;}
   padding-left: 4.5% !important;
 
 }
-
+@media (max-width:780px) and (min-width: 551px)
+{   
+  .project-title h1{
+    font-size: 2.5em;
+    padding-right: 10px;
+  }
+  .project-abstract p{
+    text-align: left;
+    color: #2c3247;
+    min-width: 100%;
+    font-family: ArtifaktElement;
+    font-size: 1.0em;
+    padding-left: 4.5%;
+    padding-right: 30px;
+    padding-bottom: 2%;
+    opacity: 0.5;
+  }
+  .file-details p{
+    font-size: 12px;
+  }
+}
+@media (max-width:550px) and (min-width: 0px)
+{   
+  .project-title h1{
+    font-size: 2.1em;
+    padding-right: 10px;
+  }
+  .project-abstract p{
+    text-align: left;
+    color: #2c3247;
+    min-width: 100%;
+    font-family: ArtifaktElement;
+    font-size: 0.9em;
+    padding-left: 4.5%;
+    padding-right: 30px;
+    padding-bottom: 2%;
+    opacity: 0.5;
+  }
+  .single-file h5{
+    font-size: 13px;
+  }
+  .file-details p{
+    font-size: 10px;
+  }
+  .single-file a{
+    font-size: 10px !important;
+  }
+}
 /* FILE ITEMS */
 .file-item-title{
-  font-family: ArtifaktElement-Bold;
+  font-family: ArtifaktElement;
   margin-top: 3%;
   text-align: left;
-  font-size: 15px;
-  font-weight: bold !important;
+  font-size: 16px;
+  font-weight: bold ;
   text-align: left;
   min-width: 100%;
   color: #2c3247;
 }
-
 .image-file.style{
   margin-left: auto;
   margin-right: auto;
@@ -171,9 +214,8 @@ li {list-style-type: none;}
   width: 100%;
   height: 45vh;
 }
-
 .file-image img {
-    margin-left: auto;
+  margin-left: auto;
   margin-right: auto;
   position: relative;
   padding-right: 90px !important;
@@ -188,9 +230,17 @@ li {list-style-type: none;}
 .single-file p{
   font-family: ArtifaktElement;
 }
+.single-file a{
+  color: #212a43;
+  font-size: 12px; 
+}
+.single-file a:hover{
+  text-decoration: none;
+}
 .file-details{
   margin-bottom: 1% !important;
   height: auto;
+  font-size: 14px;
   float: left;
   align-self: left;
   color: #2c3247;
@@ -395,13 +445,22 @@ textarea:focus{
   -o-transform:scale(1.3); /* Opera */
   transform:scale(1.3);
 }
+.btn[disabled]{
+  opacity: 1;
+}
 .icons-style{
   float: left !important;
 }
 .icons-style a{
   padding-right: 5px;
 }
-
+.usage-rights{
+  height: auto;
+}
+.question{
+  margin-bottom: 3px;
+  margin-left: 5px !important;
+}
 .views-details{
   position: relative;
   font-size: 12px;
@@ -451,20 +510,6 @@ textarea:focus{
   font-size: 14px;
   margin-bottom: 8%;
   margin-top: 12%;
-  -webkit-transition: all 0.5s ease; /* Safari and Chrome */
-  -moz-transition: all 0.5s ease; /* Firefox */
-  -ms-transition: all 0.5s ease; /* IE 9 */
-  -o-transition: all 0.5s ease; /* Opera */
-  transition: all 0.5s ease;
-}
-.appreciate-btn:hover{
-  background-color: #2acc84;
-  opacity: 0.7;
-  -webkit-transform:scale(1.10); /* Safari and Chrome */
-  -moz-transform:scale(1.10); /* Firefox */
-  -ms-transform:scale(1.10); /* IE 9 */
-  -o-transform:scale(1.10); /* Opera */
-  transform:scale(1.10);
 }
 .sub-part a{
   display: inline;

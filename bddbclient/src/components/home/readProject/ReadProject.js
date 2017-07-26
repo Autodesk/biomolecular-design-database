@@ -197,7 +197,7 @@ class ReadProject extends React.Component {
 			<button className="btn btn-success appreciate-btn" onClick={this.appreciationClick}> Appreciate Project </button>
 		);
 		const disableAppreciation = (
-			<button disabled={true} className="btn btn-success appreciate-btn"> Appreciate Project </button>
+			<button disabled={true} className="btn btn-success appreciate-btn" > Thanks </button>
 		);
 		for(var i = 0; i < 5; i++){
 			if( i < qod){
@@ -237,7 +237,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
-							<h5> USER RIGHTS <img src={help} alt="help icon"/> </h5>
+							<h5 className="usage-rights"> USAGE RIGHTS <img className="question" src={help} alt="help icon"/> </h5>
 						<p className="authors-styling"> {this.props.project.user_rights} </p>
 						</div>
 					</div>
@@ -259,7 +259,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
-							<h5> QUALITY OF DOCUMENTATION <img src={help} alt="help icon"/>  </h5>
+							<h5> QUALITY OF DOCUMENTATION <img className="question" src={help} alt="help icon"/>  </h5>
 							<div className="ticks-details"> 
 								<div className="tick">
 							        {ticks[0]}
@@ -273,11 +273,11 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="row sub-part pull-left">
 						<div className=" views-details">
-							<h5>VIEWS <img src={views} alt="views"/> </h5><br/>
+							<h5>VIEWS <img src={views} className="question" alt="views"/> </h5><br/>
 							<p className="views-styling"> {this.props.project.views} </p>
 						</div>
 						<div className=" likes-details">
-							<h5> APPRECIATIONS <img src={appreciation} alt="appreciation"/> </h5><br/>
+							<h5> APPRECIATIONS <img src={appreciation} className="question" alt="appreciation"/> </h5><br/>
 							<p className="likes-styling"> {this.state.likes} </p>
 						</div>
 					</div>

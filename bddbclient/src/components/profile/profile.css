@@ -22,6 +22,17 @@
 	  padding-top: 10px;
 	  font-size: 14px;
 }
+
+@media (max-width: 780px) and (min-width: 0px) {
+  .button-upload{
+    font-size: 12px !important;
+    padding: 9px 45px !important;
+  }
+  .published h4{
+    font-size: 15px;
+  }
+}
+
 .button-upload{
     background-color: #2acc84;
     border-radius: 29px;
@@ -61,10 +72,6 @@
 	padding-right: 18px;
 	position: relative;
 }
-.project-item-layout:hover .project-image{
-  opacity: 0.3;
-  transition: .5s ease;
-}
 .project-item-layout:hover .delete-project{
 	display:block
 }
@@ -78,11 +85,13 @@
   align-self: center;
   display: none;
   z-index: 100;
+  border-radius: 50%;
   -webkit-animation-name: animateIcon;
-  -webkit-animation-duration: 0.5s;
+  -webkit-animation-duration: 0.8s;
   animation-name: animateIcon;
-  animation-duration: 0.5s;
+  animation-duration: 0.8s;
   overflow-x: auto !important;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.55);
 }
 .delete-project{
   position: absolute;
@@ -92,9 +101,9 @@
   display: none;
   z-index: 100;
   -webkit-animation-name: animateIcon;
-  -webkit-animation-duration: 0.5s;
+  -webkit-animation-duration: 0.8s;
   animation-name: animateIcon;
-  animation-duration: 0.5s;
+  animation-duration: 0.8s;
   overflow-x: auto !important;
 }
 /* Add Animation */
@@ -126,7 +135,7 @@
   box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
   border-radius: .4em;
   text-align: center;
-  padding: 8px;
+  padding: 14px 14px 8px 14px;
   z-index: 150;
   font-size: 12px;
 }

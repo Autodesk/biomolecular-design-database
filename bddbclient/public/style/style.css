@@ -5,7 +5,7 @@
 }
 @font-face {
 	font-family: ArtifaktElement;
-	src: url(fonts/ArtifaktElementLight.ttf);
+	src: url(fonts/ArtifaktElementBook.ttf);
 }
 @font-face {
 	font-family: ArtifaktElement-Book;
@@ -84,9 +84,9 @@ input{
 	position: fixed;
 	top: 0;
 	width: 100;
-	height: auto;
 	margin-bottom: 0px !important;
 }
+
 .logo{
 	margin-top: 15%;
 	margin-left: 45px;
@@ -123,37 +123,6 @@ input[type=text] {
 
 input{
 	padding-left: 14px;
-}
-
-
-@media screen and (min-width: 768px) {
-	.searchBar-layout{
-		padding-left: 16px;
-		width: 20%;
-		float: right !important;
-		border-radius: 22px;
-	    border: 2px solid #2fe695;
-	    text-align: left;
-	    margin-top: 9px;
-	    margin-right: 6%;
-	    background-color : #d1d1d1;
-	    font-family: ArtifaktElement;
-	}
-}
-@media screen and (max-width: 768px) {
-	.searchBar-layout{
-		padding-left: 16px;
-		width: 60%;
-		border-radius: 22px;
-	    border: 2px solid #2fe695;
-	    text-align: left;
-	    margin-top: 9px;
-	    background-color : #d1d1d1;
-	    font-family: ArtifaktElement;
-	}
-	.navbar-nav{
-		width: 100%;
-	}
 }
 
 hr {

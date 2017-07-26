@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
 import UploadNew from './upload/UploadNew';
+import search from '../../public/Assets/icons/search.svg';
 
 class NavigationBar extends React.Component{
 	constructor(props){
@@ -54,23 +55,23 @@ class NavigationBar extends React.Component{
 
 		const guestLinks = (
 			<ul className="nav navbar-nav">
-				<li><Link to="/signup" style={{color: '#343950'}} > <i className="fa fa-user-plus" aria-hidden="true"></i> Sign Up </Link> </li>
-				<li><Link to="/login" style={{color: '#343950'}} > <i className="fa fa-sign-in" aria-hidden="true"></i>  Login </Link></li>
+				<li><Link to="/signup" style={{color: '#343950'}} >  Sign Up </Link> </li>
+				<li><Link to="/login" style={{color: '#343950'}} >  Login </Link></li>
 			</ul>
 		);
 
 		return(
 		<nav className="navbar navbar-toggleable-md navbar-fixed-top navbar-layout animated bounceInDown">
-			<div className="container-fluid">
+			<div className="container-fluid navbar-styling">
 				<div className="navbar-header">
 				 	<button type="button" data-target="#navbarCollapse" data-toggle="collapse" className="navbar-toggle" style={{border: '1px solid #2fe695'}}>
 						<span className="sr-only">Toggle navigation</span>
-						<span className="green-bar icon-bar"></span>
+						<span className="green-bar icon-bar" ></span>
 						<span className="green-bar icon-bar"></span>
 						<span className="green-bar icon-bar"></span>
 				 	</button>
 				 	<div className=" page-scroll">
-					 	< Link to="/" className="navbar-brand"> <strong className="logo"> BDD </strong></Link>
+					 	< Link to="/" className="navbar-brand"> <strong className="logo">  BDD </strong></Link>
 				 	</div>
 			 	</div>
 				<div id="navbarCollapse" className="collapse navbar-collapse">
@@ -78,11 +79,13 @@ class NavigationBar extends React.Component{
 					 	{ isAuthenticated ? userLinks : guestLinks }
 				 	</div>
 				 	{isAuthenticated ? 
-				 		<div className="nav-username" onClick={this.toggleLogout}><p>{this.props.auth.user.firstName} {this.props.auth.user.lastName}<span className="caret"></span></p></div>
+				 		<div className="nav-username" onClick={this.toggleLogout}><p>{this.props.auth.user.firstName} {this.props.auth.user.lastName}  <span className="caret"></span></p></div>
 				 		: ''
 				 	}
 					<form onSubmit={this.props.searchSubmnit}>
-						<input type="text" className="searchBar-layout" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"  placeholder="Search...  " />
+						<div className="searchBar-layout"><input type="text" onChange={this.props.searchValUpdate} onSubmit={this.props.searchSubmnit} name="search"   />
+							<img src={search} alt="search"/>
+						</div>
 				 	</form>
 				 	<hr width="95%" />
 				 	

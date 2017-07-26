@@ -11,9 +11,9 @@ class HomePage extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			sortBy: 'Newest', //newest/mostViewed/QualityOfDocumentation (default: newest)
+			sortBy: 'NEWEST  ', //newest/mostViewed/QualityOfDocumentation (default: newest)
 			sortByOptions: ['newest', 'most_viewed', 'most_likes', 'quality_of_documentation'],
-			sortByLabels: ['Newest', 'Most Viewed', 'Most Appreciations', 'Quality of Documentation'],
+			sortByLabels: ['NEWEST  ', 'MOST VIEWED ', 'MOST APPRECIATIONS ', 'QUALITY OF DOCUMENTATION '],
 			filters: [],		  //array of filters selected by the user
 			projects: [], //projects to display 
 			getFrom: 0,
@@ -174,12 +174,12 @@ class HomePage extends React.Component {
 				</div>
 				<hr width="85%"/>
 				<div className="container-fluid showcase-layout animated zoomInRight">
-					<div className="row">
+					<div className="row filter-sort">
 						<div className="filter-style pull-left">
 							<p> FILTER BY KEYWORDS </p>
 							<div className="btn-group">
 								<button name="Lattice: Honeycomb" onClick={this.handleFilters} className={this.state.filters.indexOf("Lattice: Honeycomb") >= 0 ? "greenBtn" : "filterBtn" }>Lattice: Honeycomb</button>
-								<button name="2D" onClick={this.handleFilters} className={this.state.filters.indexOf("2D") >= 0 ? "greenBtn" : "filterBtn" }>2D</button>
+								<button name="2D" onClick={this.handleFilters} className={this.state.filters.indexOf("2D") >= 0 ? "greenBtn" : "filterBtn" }>2D </button>
 								<button name="Material: RNA" onClick={this.handleFilters} className={this.state.filters.indexOf("Material: RNA") >= 0 ? "greenBtn" : "filterBtn" }>Material: RNA</button>
 								<button name="3D" onClick={this.handleFilters} className={this.state.filters.indexOf("3D") >= 0 ? "greenBtn" : "filterBtn" }>3D</button>
 								<button name="Scaffold: M13mp18" onClick={this.handleFilters} className={this.state.filters.indexOf("Scaffold: M13mp18") >= 0 ? "greenBtn" : "filterBtn" }>Scaffold: M13mp18</button>
@@ -187,7 +187,7 @@ class HomePage extends React.Component {
 						</div>
 						<div className="dropdown sort-style pull-right">
 						  	<div className="sub-menu-parent">
-							  	<p1> SORT BY: <p className="dropbtn btn  btn-mini" >{this.state.sortBy}<span className="caret"></span></p>
+							  	<p1> SORT BY:<p className="dropbtn btn  btn-mini" >{this.state.sortBy}<span className="caret"></span></p>
 								  	<ul className="sub-menu">
 								  		<li><p>< SortOption name={this.state.sortByOptions[1]} label={this.state.sortByLabels[1]} handleSort={this.handleSort}/></p></li>
 								    	<li><p>< SortOption name={this.state.sortByOptions[2]} label={this.state.sortByLabels[2]} handleSort={this.handleSort}/></p></li>

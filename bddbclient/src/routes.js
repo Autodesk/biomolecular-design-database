@@ -11,6 +11,7 @@ import NotFound from './components/NotFound';
 import serverError from './components/ServerError';
 import Profile from './components/profile/Profile.js';
 import UploadNew from './components/upload/UploadNew.js';
+import Update from './components/upload/Update.js';
 
 // "/" path links to the App component (basic) + "/XX" {XX} component
 //"/signup" renders the App component + the signup component 
@@ -24,6 +25,7 @@ export default (
 		<Route path="profile" component={requireAuth(Profile)} />
 		<Route path="login" component={LoginPage} />
 		<Route path="upload-new" component={requireAuth(UploadNew)} />
+		<Route path="update/:projectId" component={requireAuth(Update)} />
 		<Route path="notfound" component={NotFound} />
 		<Route path="serverError" component={serverError} />
 	</Route>

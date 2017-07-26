@@ -115,8 +115,8 @@ class GalleryItem extends React.Component {
 	        </div>
 	  
     	    <div className="stats"> 
-	  	       	<img src={appreciation} alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
-	           	<img className="views-style" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
+	  	       	<img src={appreciation} className="img-icon-styling" alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
+	           	<img className="views-style img-icon-styling" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
             </div>
             </div>
             {modal}

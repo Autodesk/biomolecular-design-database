@@ -107,7 +107,7 @@ class FileItem extends React.Component{
 		const text = htmlToText.fromString(details);
 		const type = this.props.file.type;
 		const imgBool = this.imgOrNot(type);
-		const fileName = path.basename(this.props.file.file_name);
+		const fileName = path.basename(this.props.file.file_name, path.extname(this.props.file.file_name));
 		const nonImg = this.toDisplayName(fileName);
 		
 
@@ -122,7 +122,7 @@ class FileItem extends React.Component{
 					<p > {text} </p>
 				</div>
 				{this.state.downloadable ? <a href={this.props.file.file_link} className="download" download>DOWNLOAD</a> : ''}
-				<hr/>
+		
 				{isOpen ? lightboxDisplay : ''}
 			</div>
 		);
