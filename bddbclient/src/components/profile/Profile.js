@@ -36,8 +36,8 @@ class Profile extends React.Component{
 			(res) => {
 				var response = JSON.parse(res.request.response);
 				this.setState({ drafts: response.drafts})
-				}, (err) => { 
-					this.setState({error: true});
+			}, (err) => { 
+				this.setState({error: true});
 			}
 		);	
 	}

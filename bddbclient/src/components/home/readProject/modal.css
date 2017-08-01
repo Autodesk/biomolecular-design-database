@@ -428,7 +428,7 @@ textarea:focus{
   background-color: #000000;
   border-width: 1px;
   display: block;
-  margin-top: 10% !important;
+  margin-top: 5% !important;
   border-top: 1px solid #ccc;
 }
 .sub-title p {

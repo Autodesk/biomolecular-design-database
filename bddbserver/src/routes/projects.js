@@ -218,7 +218,7 @@ router.get('/project/', (req, res) => {
 		});
 });
 
-router.delete('/', (req, res) => {
+router.delete('/project/', (req, res) => {
 	var _projectId = req.query.project_id;
 	const authorizationHeader = req.headers['authorization'];
 	let token;

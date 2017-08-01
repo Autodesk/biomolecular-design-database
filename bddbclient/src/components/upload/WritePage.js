@@ -56,6 +56,7 @@ class WritePage extends React.Component{
 		newFilesArray.push(<NewFileBlock key={this.state.currId} newFileDeleteClicked={this.newFileDeleteClicked} file={newFileItem}/>);
 		this.setState({ currId: this.state.currId+1 });
 		console.log(newFileItem);
+		console.log(this.state);
 	}
 
 	render(){

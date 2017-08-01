@@ -53,7 +53,8 @@ class Update extends React.Component{
 			projectAbstract: '',
 			headerImageLink: '',
 			changed: false,
-			errors: {}
+			errors: {},
+			updateFiles: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
@@ -62,6 +63,7 @@ class Update extends React.Component{
 		this.deleteFileClicked = this.deleteFileClicked.bind(this);
 		this.getIndex = this.getIndex.bind(this);
 		this.assignValues = this.assignValues.bind(this);
+		this.publishClicked = this.publishClicked.bind(this);
 	}
 
 	componentWillMount(){
@@ -79,6 +81,25 @@ class Update extends React.Component{
 				}
 			);
 		}
+
+	}
+
+	publishClicked(){
+		console.log(this.state);
+		if(this.state.changed){ //if the project details are changed, update in the database
+			this.setState({ errors: {} });
+			this.props.updateProject(this.state).then(
+				(res) => {
+					this.setState({updateFiles: true});
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);
+		}
+		//UPDATE AND SAVE FILE BLOCK CHANGES
+		this.setState({updateFiles: true});
+		setTimeout(() => {
+  			this.context.router.push('/profile');
+		}, 1300)
 	}
 
 	assignValues(e){
@@ -107,7 +128,7 @@ class Update extends React.Component{
 			this.props.getFilesObject(filesQuery).then(
 				(res) => {
 					var response = JSON.parse(res.request.response);
-					this.setState( { files: response.data}, console.log(this.state) ); //change the current state. this will render 
+					this.setState( { files: response.data}); //change the current state. this will render 
 				},
 				(err) => { this.context.router.push('/notfound');}
 			);
@@ -126,8 +147,9 @@ class Update extends React.Component{
 	}
 
 	deleteFileClicked(fileId){
+		console.log('deleting');
 		const index = this.getIndex(fileId);
-		this.setState({ files: update(this.state.files, {$splice: [[index, 1]]}) })
+		if(index >= 0) this.setState({ files: update(this.state.files, {$splice: [[index, 1]]}) });
 	}
 
 	isValid() {
@@ -191,10 +213,10 @@ class Update extends React.Component{
 	render(){
 		return(
 			<div>
-				<WritePageUpdate deleteClicked={this.deleteFileClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
+				<WritePageUpdate deleteClicked={this.deleteFileClicked} publishClicked={this.publishClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
 						publication={this.state.publication} published={this.state.published} changePublished={this.changePublished} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} 
 						contactLinkedin={this.state.contactLinkedin} contactFacebook={this.state.contactFacebook} id={this.state.id}
-						contactEmail={this.state.contactEmail} contactHomepage={this.state.contactHomepage} keywords={this.state.keywords} usageRights={this.state.usageRights}
+						contactEmail={this.state.contactEmail} updateFiles={this.state.updateFiles} contactHomepage={this.state.contactHomepage} keywords={this.state.keywords} usageRights={this.state.usageRights}
 						projectTitle={this.state.projectTitle} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}
 					/>
 			</div>

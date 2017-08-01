@@ -15,7 +15,7 @@ export function getAllDrafts(queryString){
 }
 
 export function deleteProject(queryString) {
-	const apiCall = '/api/projects?'+queryString;
+	const apiCall = '/api/projects/project?'+queryString;
 	return dispatch => {
 		return axios.delete(apiCall);
 	}

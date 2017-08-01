@@ -39,8 +39,8 @@ class ProjectItem extends React.Component {
 	}
 	editClicked(e){
 		e.preventDefault();
-		//this.context.router.push('/update/2');
-		this.setState({ openWrite: true })
+		var linkUrl = '/update/'+this.props.project.id;
+		this.context.router.push(linkUrl);
 	}
 	deleteClicked(){
 		var queryString = "project_id="+this.props.project.id;

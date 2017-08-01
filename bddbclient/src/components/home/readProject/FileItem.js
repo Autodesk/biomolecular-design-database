@@ -25,7 +25,6 @@ class FileItem extends React.Component{
         this.getSignedUrlToDownload = this.getSignedUrlToDownload.bind(this);
     }
     componentWillMount(){
-    	console.log(this.props.file);
     	if(!this.props.file.file_link){ //link is undefined
 	    	this.setState({ downloadable: false, linkPresent: false });
     	}

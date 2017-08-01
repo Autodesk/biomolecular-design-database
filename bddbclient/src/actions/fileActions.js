@@ -15,14 +15,25 @@ export function deleteFile(queryString) {
 	}
 }
 
-export function uploadDocumentToS3({ file, name }) {  
+export function deleteDocument(queryPath){
+  const apiCall = '/api/files/document?'+queryPath;
+  return dispatch => {
+    return axios.delete(apiCall);
+  }
+}
+
+export function uploadDocumentToS3({ file, saveLink}) {  
   let data = new FormData();
-  data.append('file', document);
-  data.append('name', name);
-  console.log("here in actions, forwarding request to server. ");
-  return (dispatch) => {
-    axios.post('api/files/document', data)
-      .then(response => console.log("file successfully uploaded"))
-      .catch(error => console.log('error occured while uploading a file'));
-  };
+  data.append('file', file);
+  data.append('saveLink', saveLink);
+  return dispatch => {
+    return axios.post('/api/files/document', data);
+  }
+}
+
+export function signedUrlForS3Doc( queryString){
+  const apiCall = '/api/files/file/getUrl?'+queryString;
+  return dispatch => {
+    return axios.get(apiCall);
+  }
 }
