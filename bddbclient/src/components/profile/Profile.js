@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../home/Home.css';
 import './profile.css';
-import {getAllPublishedProjects, getAllDrafts, reloadPublished, reloadDrafts} from '../../actions/profileActions';
+import {getAllPublishedProjects, getAllDrafts, reloadPublished, reloadDrafts, uploadProject} from '../../actions/profileActions';
 import Gallery from './ProfileProjectGallery';
 import UploadNew from '../upload/UploadNew';
 
@@ -48,7 +48,22 @@ class Profile extends React.Component{
 	
 	uploadNewClicked(e){
 		e.preventDefault();
-		this.setState({ openWrite: true })
+		var projectData = {
+			user_id: this.props.auth.user.id
+		}
+		this.props.uploadProject(projectData).then(
+			(res) => {
+				var response = JSON.parse(res.request.response);
+				var linkUrl = '/update/'+response.project_id;
+				this.context.router.push(linkUrl);
+			}, (err) => {
+				this.context.router.push('/notfound');
+			}
+		);
+		//MAKE A POST REQUEST 
+		//1. UPLOAD A FRESH PROJECT IN DATABASE GET PROJECT ID IN RETURN
+		//2. SEND PROJECT ID
+
 	}
 	
 	componentWillReceiveProps(nextProps){
@@ -125,7 +140,6 @@ class Profile extends React.Component{
 				{this.state.error ? <h5 className="profile-page-top">OOPs! Something went wrong </h5> : '' }
 				<div className="container-fluid profile-page-top">
 					<button className="button-upload" onClick={this.uploadNewClicked}> Upload New </button>
-					
 				</div>
 				<div className="published">
 					<h4> Published </h4>
@@ -154,7 +168,8 @@ Profile.propTypes = {
 	getAllPublishedProjects: React.PropTypes.func.isRequired,
 	getAllDrafts: React.PropTypes.func.isRequired,
 	reloadPublished: React.PropTypes.func.isRequired,
-	reloadDrafts: React.PropTypes.func.isRequired
+	reloadDrafts: React.PropTypes.func.isRequired,
+	uploadProject: React.PropTypes.func.isRequired
 }
 
 Profile.contextTypes = {
@@ -165,4 +180,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, { getAllPublishedProjects, reloadPublished, reloadDrafts, getAllDrafts })(Profile);
+export default connect(mapStateToProps, { getAllPublishedProjects, reloadPublished, reloadDrafts, uploadProject, getAllDrafts })(Profile);

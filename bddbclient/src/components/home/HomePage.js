@@ -13,7 +13,7 @@ class HomePage extends React.Component {
 		this.state = {
 			sortBy: 'NEWEST  ', //newest/mostViewed/QualityOfDocumentation (default: newest)
 			sortByOptions: ['newest', 'most_viewed', 'most_likes', 'quality_of_documentation'],
-			sortByLabels: ['NEWEST  ', 'MOST VIEWED ', 'MOST APPRECIATIONS ', 'QUALITY OF DOCUMENTATION '],
+			sortByLabels: ['NEWEST', 'MOST VIEWED', 'MOST APPRECIATIONS', 'QUALITY OF DOCUMENTATION'],
 			filters: [],		  //array of filters selected by the user
 			projects: [], //projects to display 
 			getFrom: 0,
@@ -64,7 +64,7 @@ class HomePage extends React.Component {
 		});
 	}
 
-	loadProjects(e){
+	loadProjects(e){ 
 		var queryString = 'sortby='+this.state.sortBy;//+'&filter=Drug&filter=rna';
 		queryString += '&search='+this.props.searchValue;
 		var filterLen = this.state.filters.length;
@@ -75,6 +75,7 @@ class HomePage extends React.Component {
 			(res) => {
 				var response = JSON.parse(res.request.response);
 				var newProjectArr = response.data;
+				console.log(newProjectArr);
 				this.setState( { projects: newProjectArr, getFrom: 0, getTo: 9 } );  
 			}, (err) => { 
 					this.context.router.push('/notfound')

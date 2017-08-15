@@ -227,6 +227,14 @@ li {list-style-type: none;}
   -o-transition: all 0.5s ease; /* Opera */
   transition: all 0.5s ease;
 }
+.file-image iframe{
+  position: relative;
+  width: 85%;
+  margin-right: 5%;
+  height: 42vh;
+  border-style: none;
+
+}
 .single-file p{
   font-family: ArtifaktElement;
 }
@@ -601,4 +609,67 @@ textarea:focus{
     100% {
         opacity: 0;
     }
+}
+/*FLASH Style */
+.flash-alert-danger{
+  background-color: #ff3366;
+  width: 44%;
+  color: white;
+  border-radius: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: ArtifaktElement;
+  margin-left: 28%;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.24);
+  -webkit-animation: fadeInOut 6s;
+  animation: fadeInOut 6s;
+  font-size: 12px;
+} 
+
+.flash-alert-success{
+  top: 0 !important;
+  margin-top: 0 !important;
+  background-color: #5981ff;
+  width: 44%;
+  color: white;
+  border-radius: 0px;
+  font-size: 12px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: ArtifaktElement;
+  margin-left: 28%;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.24);
+  -webkit-animation: fadeInOut 6s;
+  animation: fadeInOut 6s;
+} 
+
+.close-x{
+  color: white;
+  border-style: none;
+  background-color: transparent;
+  height: 30px !important;
+  width: 25px !important;
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+  top: 0 !important;
+  float: right;
+  left: 0;
+  right: 0;
+  margin-bottom: 10px;
+}
+
+.ltr-x{
+  font-size: 20px !important;
+}
+/*  FLASH MESSAGE */
+.flash {
+  z-index: 1999;
+  position: relative;
+
+}
+.alert {
+  z-index: 2000;
+}
+.flash button{
+
 }

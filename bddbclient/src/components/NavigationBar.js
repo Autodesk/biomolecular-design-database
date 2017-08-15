@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
 import UploadNew from './upload/UploadNew';
 import search from '../../public/Assets/icons/search.svg';
+import { uploadProject } from '../actions/profileActions';
 
 class NavigationBar extends React.Component{
 	constructor(props){
@@ -21,7 +22,18 @@ class NavigationBar extends React.Component{
 	}
 	uploadNewClicked(e){
 		e.preventDefault();
-		this.setState({ openWrite: true })
+		var projectData = {
+			user_id: this.props.auth.user.id
+		}
+		this.props.uploadProject(projectData).then(
+			(res) => {
+				var response = JSON.parse(res.request.response);
+				var linkUrl = '/update/'+response.project_id;
+				this.context.router.push(linkUrl);
+			}, (err) => {
+				this.context.router.push('/notfound');
+			}
+		);
 	}
 	toggleLogout(){
 		if(this.state.showLogout){
@@ -102,7 +114,12 @@ NavigationBar.propTypes = {
 	searchValUpdate: React.PropTypes.func.isRequired,
 	searchSubmit: React.PropTypes.func.isRequired,
 	auth: React.PropTypes.object.isRequired,
+	uploadProject: React.PropTypes.func.isRequired,
 	logout: React.PropTypes.func.isRequired
+}
+
+NavigationBar.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 //specify map state to prop function
@@ -113,4 +130,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps, { logout })(NavigationBar); //connect to the redux store to check idAuthenticated
+export default connect(mapStateToProps, { logout, uploadProject })(NavigationBar); //connect to the redux store to check idAuthenticated

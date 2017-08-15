@@ -164,3 +164,54 @@
     font-size: 12px;
     margin: 10px 2px;
 }
+
+/*PROMPT STYLE*/
+.prompt-style{
+  background-color: white;
+}
+.delete-prompt{
+  font-style: ArtifaktElement;
+  opacity: 0.4;
+  width: 100%;
+  text-align: right;
+  float: right;
+  top: 0;
+  margin-right: 3%;
+  margin-top: 2%;
+  margin-bottom: 15%;
+}
+.delete-prompt:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+.prompt-message{
+  width: 100%;
+}
+.prompt-btns{
+  margin-top: 15%;
+}
+.left-prompt-btn{
+  width: 30%;
+  font-style: ArtifaktElement;
+  margin-right: 30%;
+  margin-bottom: 3%;
+  border-radius: 100px;
+  background-color: #e8e8e8;
+  text-align: center;
+}
+.right-prompt-btn{
+  width: 30%;
+  margin-bottom: 3%;
+  font-style: ArtifaktElement;
+  border-radius: 100px;
+  background-color: #2acc84;
+  color: white;
+
+}
+.right-prompt-btn:hover{
+  color: #ffffff;
+}
+.draft-display{
+  width: 100%;
+  float: left;
+}

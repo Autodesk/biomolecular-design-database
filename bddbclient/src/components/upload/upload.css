@@ -120,13 +120,11 @@
   margin-right: 10%;
 }
 .project-abstract-input textarea::-webkit-input-placeholder{
-  opacity: 0.3;
+  opacity: 0.4;
   font-family: ArtifaktElement;
-  font-size: 14px;
-  font-weight: 100;
-  font-style: italic;
+  font-size: 12px;
   text-align: left;
-  color: #212a43;
+  color: #2c3247;
 }
 .hr-display{
   margin-top: 10px;
@@ -427,10 +425,10 @@ input:checked + .slider:before {
   margin-top: 12%;
 }
 .title-write{
-  margin-top: 6% !important;
+  margin-top: 2% !important;
 }
 .abstract-write{
-  margin-bottom: 9%;
+  margin-bottom: 5%;
 }
 textarea {
   resize: none;
@@ -486,7 +484,7 @@ textarea {
   text-align: center;
   margin-top: 3px;
 }
-.content-style-text h5{
+.content-style-text button{
   font-family: ArtifaktElement;
   font-size: 12px;
   text-align: left;
@@ -550,19 +548,34 @@ button[disabled]:hover {
   font-family: ArtifaktElement;
   width: 100%;
   margin-bottom: 2%;
-    font-family: ArtifaktElement;
+  font-family: ArtifaktElement;
   font-size: 16px;
   font-weight: bold;
   text-align: left;
   color: #2c3247;
 }
 .file-abstract-write-new textarea{
-     background-color: #ffffff;
+  background-color: #ffffff;
   box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.15);
   border: solid 1px rgba(0, 0, 0, 0.3);
   font-size: 12px;
   font-family: ArtifaktElement;
   width: 100%;
+  margin-top: 10px;
+}
+.youtube-link-style input{
+   background-color: #ffffff;
+  box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  font-family: ArtifaktElement;
+  width: 100%;
+  margin-bottom: 2%;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+  color: #2c3247;
+  opacity: 0.6;
 }
 .options-file-block{
   font-family: ArtifaktElement;
@@ -632,6 +645,8 @@ button[disabled]:hover {
     position: relative;
     border-style: none;
     background-color: #ffffff;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
 }
 
 .file-input-wrapper > input[type="file"]:hover{
@@ -653,4 +668,99 @@ button[disabled]:hover {
 .file-input-wrapper:hover > .btn-file-input {
     background-color: #aaa;
 }
-
+textarea::-webkit-input-placeholder {
+  opacity: 0.4;
+  font-family: ArtifaktElement ;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+    font-style: italic;
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  opacity: 0.4;
+    font-style: italic;
+  font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    opacity: 0.4;
+      font-style: italic;
+  font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    opacity: 0.4;
+      font-style: italic;
+  font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    opacity: 0.4;
+  font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    opacity: 0.4;
+  font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+}
+.cover-img-upload{
+    font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #212a43;
+  float: left;
+  width: 100%;
+  margin-bottom: 0px;
+  padding: 0px !important;
+}
+.cover-file-upload{
+   width: 130px;
+   height: 36px;
+   margin-right: 150px;
+}
+.upload-input-wrapper{
+    height: 18px;
+    width: 120px;
+    overflow: hidden;
+    position: relative;
+    border-style: none;
+    background-color: #ffffff;
+    margin-top: 5px;
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+}
+.upload-input-wrapper > input[type="file"]:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+.upload-input-wrapper > input[type="file"] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+}
+.has-error input{
+  border-color: red !important;
+}
+.has-error textarea{
+  border-color: red !important;
+}
+.required-text{
+   font-family: ArtifaktElement;
+  font-size: 12px;
+  text-align: left;
+  color: #2c3247;
+  margin-top: 90px;
+}

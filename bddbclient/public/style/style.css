@@ -28,7 +28,7 @@ body {
 	min-height: 100%;
 	color: black;
 	font-family: ArtifaktElement;
-	padding: 70px;
+
 
 }
 input:focus{
@@ -154,8 +154,4 @@ hr {
 }
 
 
-/*  FLASH MESSAGE */
-.flash {
-	margin-top: 3%;
 
-}

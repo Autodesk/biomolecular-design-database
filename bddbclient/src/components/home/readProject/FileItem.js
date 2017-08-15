@@ -4,6 +4,7 @@ import './modal.css';
 import htmlToText from 'html-to-text';
 import path from 'path';
 import Lightbox from 'react-image-lightbox';
+//import validator from 'youtube-validator';
 
 const customStyles = {
 	    overlay : {
@@ -20,11 +21,24 @@ class FileItem extends React.Component{
             isOpen: false,
             photoIndex: 0,
             downloadable: true,
-            lightboxDisplay: ''
+            lightboxDisplay: '',
+            videoLink : '',
+            youtubeId: '',
+            validYoutubeLink: false
         };
         this.getSignedUrlToDownload = this.getSignedUrlToDownload.bind(this);
     }
     componentWillMount(){
+      if(this.props.file.video){
+          var url = this.props.file.videoLink;
+          console.log(url);
+          if(url.indexOf("www.youtube.com") > -1){
+              var ind = url.indexOf('watch?v=');
+              var id = url.slice(ind+8, url.length);
+              console.log(id);
+              this.setState({ validYoutubeLink: true, youtubeId: id });
+          }
+      }
     	if(!this.props.file.file_link){ //link is undefined
 	    	this.setState({ downloadable: false, linkPresent: false });
     	}
@@ -62,6 +76,22 @@ class FileItem extends React.Component{
    	 	}
    	 }
 
+   	componentWillReceiveProps(nextProps){
+   	 	console.log(nextProps);
+   	 	var _videoLink = '';
+   	 	if(nextProps.file.video){
+   	 		var url = nextProps.file.videoLink;
+   	 		console.log(url);
+   	 		if(url.indexOf("www.youtube.com") > -1){
+     	 			var ind = url.indexOf('watch?v=');
+     	 			var id = url.slice(ind+8, url.length);
+     	 			console.log(id);
+     	 			this.setState({ validYoutubeLink: true, youtubeId: id });
+   	 		}
+   	 		
+   	 	}
+   	 }
+
    	 getSignedUrlToDownload(e){
    	 	e.preventDefault();
    	 	const fileIdQuery = 'fileId='+this.props.file.id;
@@ -88,11 +118,15 @@ class FileItem extends React.Component{
 		return false;
 	}
 
-	toDisplayName(name){
-		if(name === 'null'){
+	toDisplayName(){
+		var baseName = path.basename(this.props.file.file_name, path.extname(this.props.file.file_name));
+		if(baseName === 'null'){
 			return <p></p>;
 		}
-		return <span className="plain-background"><h5>{name}</h5></span>;
+		else{
+			var extName = path.extname(this.props.file.file_name);
+			return <span className="plain-background"><h5>{baseName} <br/>({extName} file) </h5></span>;
+		}
 	}
 
 
@@ -106,9 +140,8 @@ class FileItem extends React.Component{
 		const text = htmlToText.fromString(details);
 		const type = this.props.file.type;
 		const imgBool = this.imgOrNot(type);
-		const fileName = path.basename(this.props.file.file_name, path.extname(this.props.file.file_name));
-		const nonImg = this.toDisplayName(fileName);
-		
+		const nonImg = this.toDisplayName();
+		const youtubeUrl = 'https://www.youtube.com/embed/'+this.state.youtubeId;
 
 		return(
 			<div className="single-file container-fluid" >
@@ -116,6 +149,7 @@ class FileItem extends React.Component{
 				<h5 className="file-item-title">{this.props.file.title}</h5>
 				<div className="col-sm-12 file-image" >
 					{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
+					{this.state.validYoutubeLink ?  <iframe src={youtubeUrl} className="youtube-video-style"></iframe> : ''}
 				</div>
 				<div className="file-details">
 					<p > {text} </p>

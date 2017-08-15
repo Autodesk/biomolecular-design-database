@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addFlashMessage } from '../actions/flashMessages';
 
-
 export default function(ComposedComponent){
 	class Authenticate extends React.Component {
 
@@ -16,6 +15,9 @@ export default function(ComposedComponent){
 			}
 		}
 
+		componentWillreceiveProps(nextProps){
+			console.log(nextProps);
+		}
 		componentWillUpdate(nextProps){
 			if(!nextProps.isAuthenticated) {
 				this.context.router.push('/');
@@ -45,5 +47,7 @@ export default function(ComposedComponent){
 	}
 	return connect(mapStateToProps, { addFlashMessage })(Authenticate);
 }
+
+
 
 //Authenticate class component wraps up the Passed Component 

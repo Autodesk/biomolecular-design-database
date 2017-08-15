@@ -38,6 +38,7 @@ class ReadProject extends React.Component {
 	}	
 
 	componentWillMount() {
+		console.log(this.props);
 		const _isAuthenticated = this.props.auth.isAuthenticated;
 		var _userId = 0;
 		var _appreciateButtonEnabled = false;
@@ -56,32 +57,45 @@ class ReadProject extends React.Component {
 			_userId = this.props.auth.user.id; 
 			var queryString = 'userId='+_userId;//+'&filter=Drug&filter=rna';
 			queryString += '&projectId='+this.props.project.id ;
-
-			this.props.checkAppreciations(queryString).then(
-			(res) => {
-				//responds with null if the user has not appreciated the project or some object otherwise
-				var response = JSON.parse(res.request.response);
-				if(response.data !== null){ //user has already appreciated this project
-					this.setState({
-						userLoggedIn: _isAuthenticated,
-						userId: _userId,
-						appreciateButtonEnabled: false, 
-						likes: this.props.project.likes
-					});
-				}
-				else{
-					this.setState( {
-						userLoggedIn: _isAuthenticated,
-						userId: _userId,
-						appreciateButtonEnabled: true,
-						likes: this.props.project.likes
-					});
-				}
-			},
-			(err) => { this.context.router.push('/notfound'); }
-			);
+			if(this.props.onProfilePage){
+				this.setState({
+					userLoggedIn: _isAuthenticated,
+					userId: _userId,
+					appreciateButtonEnabled: false, 
+					likes: this.props.project.likes
+				});
+			}
+			else{
+				this.props.checkAppreciations(queryString).then(
+				(res) => {
+					//responds with null if the user has not appreciated the project or some object otherwise
+					var response = JSON.parse(res.request.response);
+					if(response.data !== null){ //user has already appreciated this project
+						this.setState({
+							userLoggedIn: _isAuthenticated,
+							userId: _userId,
+							appreciateButtonEnabled: false, 
+							likes: this.props.project.likes
+						});
+					}
+					else{
+						this.setState( {
+							userLoggedIn: _isAuthenticated,
+							userId: _userId,
+							appreciateButtonEnabled: true,
+							likes: this.props.project.likes
+						});
+					}
+				},
+				(err) => { this.context.router.push('/notfound'); }
+				);
+			}
 		}
 		else{
+			if(this.props.onProfilePage===true){
+				console.log('on profile page');
+				_appreciateButtonEnabled = false;
+			}
 			this.setState( {
 				userLoggedIn: _isAuthenticated,
 				userId: _userId,
@@ -89,6 +103,7 @@ class ReadProject extends React.Component {
 				likes: this.props.project.likes
 			});
 		}
+	
 		setInterval(() => {
 			console.log('updated');
 			this.props.getFilesObject(filesQuery).then(
@@ -102,6 +117,13 @@ class ReadProject extends React.Component {
 		}, 2400000); //2400 secs update the content, links will be re-generated
 	}
 
+	componentWillReceiveProps(nextProps){
+		console.log('in props');
+		if(nextProps.onProfilePage){
+			console.log('on profile page');
+			this.setState({ appreciateButtonEnabled: false});
+		}
+	}
 	changeShowCopied(){
 		this.setState({ showCopied :  false});
 	}
@@ -323,10 +345,11 @@ ReadProject.proptypes = {
 	deactivateModal: React.PropTypes.func.isRequired,
 	userAppreciated: React.PropTypes.func.isRequired,
 	checkAppreciations: React.PropTypes.func.isRequired,
-	increaseAp: React.PropTypes.func.isRequired,
+	increaseAp: React.PropTypes.func,
 	getSignedUrl: React.PropTypes.func.isRequired,
 	getFilesObject: React.PropTypes.func.isRequired,
-	getComments: React.PropTypes.func.isRequired
+	getComments: React.PropTypes.func.isRequired,
+	onProfilePage: React.PropTypes.bool
 }
 ReadProject.contextTypes = {
 	router: React.PropTypes.object.isRequired

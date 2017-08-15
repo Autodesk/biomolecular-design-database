@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { updateFileItem } from '../../../actions/detailsAction';
 import { uploadDocumentToS3, signedUrlForS3Doc, deleteDocument, deleteFile } from '../../../actions/fileActions';
 import mime from 'mime-types';
+import uuidv1 from 'uuid/v1';
+import path from 'path';
 
 const customStyles = {
 	overlay : {
@@ -24,6 +26,7 @@ class NewFileBlock extends React.Component{
             details: '',
             file_link: null,
             file_path_s3: null,
+            file_name: '',
             tags: '',
             changed: false,
             project_id: 0,
@@ -31,7 +34,9 @@ class NewFileBlock extends React.Component{
             imgBool: false,
             newFileBlock: false,
             showTitle: false,
-            showCaption: false
+            showCaption: false,
+            videoLink: '',
+            video: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.doneClicked = this.doneClicked.bind(this);
@@ -43,7 +48,6 @@ class NewFileBlock extends React.Component{
 	}
 
 	componentWillReceiveProps(nextProps){
-		console.log(nextProps);
 		if(nextProps.updateFiles){
 			this.saveUpdateFile();
 		}
@@ -70,19 +74,14 @@ class NewFileBlock extends React.Component{
 	deleteClicked(){
 		//delete the image from AWS s3
 		//backend request
-		console.log(this.state);
 		if(this.state.file_path_s3){
-			console.log('deleting');
-			console.log(this.state.file_path_s3);
 			var queryPath = 'pathOnS3='+this.state.file_path_s3;
 			this.props.deleteDocument(queryPath).then(
 				(res) => {
-					this.setState({ error: false});
-					//var response = JSON.parse(res.request.response);
+					var response = JSON.parse(res.request.response);
+					console.log(response);
 				}, 
 				(err) => { 
-					console.log('error');
-					this.setState({error: true});
 					this.context.router.push('/notfound');
 				}
 			);
@@ -109,7 +108,7 @@ class NewFileBlock extends React.Component{
 			//THERE IS A FILE TO UPLOAD ON S3
 			var _imgBool = false;
 			var file = this.props.file.file;
-			var _saveLink = 'allFiles/'+this.props.file.user_id+'/'+this.props.file.project_id+'/'+Date.now()+'-'+this.props.file.file.name;
+			var _saveLink = 'allFiles/'+this.props.file.user_id+'/'+this.props.file.project_id+'/'+uuidv1()+'/'+this.props.file.file.name;
 			this.props.uploadDocumentToS3({file, saveLink: _saveLink}).then(
 					(res) => { 
 						var response = JSON.parse(res.request.response);
@@ -117,10 +116,9 @@ class NewFileBlock extends React.Component{
 						this.props.signedUrlForS3Doc(queryString).then(
 							(res) => {
 								var response = JSON.parse(res.request.response);
-								this.setState({ file_link: response.signedUrl, file_path_s3: _saveLink});
+								this.setState({ file_link: response.signedUrl, file_name: response.file_name, file_path_s3: _saveLink});
 							}, 
 							(err) => { 
-								console.log('error');
 								this.setState({error: true});
 								this.context.router.push('/notfound');
 							}
@@ -133,7 +131,6 @@ class NewFileBlock extends React.Component{
 			};
 			this.setState({imgBool: _imgBool});
 		}
-
 		if(this.props.file.file_link && this.props.file.file_name){
 			var _img_bool = false;
 			if(mime.lookup(this.props.file.file_name).indexOf('image') > -1){
@@ -142,6 +139,7 @@ class NewFileBlock extends React.Component{
 			//console.log(this.props.file.file_link);
 			this.setState ({
 				imgBool: _img_bool,
+				file_name: this.props.file.file_name,
 				file_link: this.props.file.file_link,
 				lightboxDisplay:	<Lightbox
 						reactModalStyle={customStyles}
@@ -149,6 +147,9 @@ class NewFileBlock extends React.Component{
                         onCloseRequest={() => this.setState({ isOpen: false })}
                     /> 
 	    	});
+		}
+		if(this.props.file.video){
+			this.setState({ video: true, videoLink: this.props.file.videoLink});
 		}
 		if(!this.props.isNewFile){
 			this.setState({ id: this.props.file.id });
@@ -183,7 +184,6 @@ class NewFileBlock extends React.Component{
 			//FILE ALREADY EXISTS ON DB, UPDATE IT
 			this.props.updateFileItem(this.state).then(
 				(res) => {
-					console.log(this.state);
 					this.setState({ changed: false });
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -216,14 +216,24 @@ class NewFileBlock extends React.Component{
 		else{
 			this.setState({ [e.target.name]: e.target.value });
 		}
-		console.log(this.state);
 	}
 
-	toDisplayName(name){
-		if(name === 'null'){
+	toDisplayName(){
+		if(this.state.file_name === ''){
 			return <p></p>;
 		}
-		return <span className="plain-background"><h5>{name}</h5></span>;
+		else{
+			var nameFile = this.state.file_name;
+			var baseName = path.basename(nameFile, path.extname(nameFile));
+			/* if(nameFile.length > 37){
+				baseName = path.basename(nameFile, path.extname(nameFile)).slice(38, nameFile.length);
+			}
+			else{
+				baseName = path.basename(nameFile, path.extname(nameFile));
+			}*/
+			var extName = path.extname(this.state.file_name);
+			return <span className="plain-background"><h5>{baseName}<br/> ({extName} file)</h5></span>;
+		}
 	}
 
 	render(){
@@ -234,7 +244,7 @@ class NewFileBlock extends React.Component{
 		//const fileName = path.basename(this.props.file.file_name);
 		//const nonImg = this.toDisplayName(fileName);
 
-		const nonImg = this.toDisplayName('upload');
+		const nonImg = this.toDisplayName();
 	
 		return(
 			<div className="new-file-block-style">
@@ -243,7 +253,9 @@ class NewFileBlock extends React.Component{
 					
 					<div className="col-sm-12 file-image file-image-display" >
 						{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.state.file_link } alt=""/> : nonImg}
+						{this.props.file.video ? <div className="youtube-link-style"><i><input type='text' placeholder="YOUTUBE LINK" onChange={this.onChange} value={this.state.videoLink} name="videoLink" /></i> </div> : ''}
 					</div>
+					
 					{this.state.showCaption ? 
 						<div className="file-abstract-write-new">
 							<textarea type='text' placeholder="File Details" value={this.state.details} onChange={this.onChange} name="details" rows='3'></textarea>

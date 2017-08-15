@@ -9,6 +9,12 @@ class FlashMessage extends React.Component {
 		this.onClick= this.onClick.bind(this);
 	}
 
+	componentWillMount(){
+		setTimeout(() => {
+			this.props.deleteFlashMessage(this.props.message.id);
+		}, 6000)
+	}
+	
 	onClick(){
 		this.props.deleteFlashMessage(this.props.message.id);
 	}
@@ -17,13 +23,13 @@ class FlashMessage extends React.Component {
 		const { type, text } = this.props.message;
 		return (
 			<div className="flash">
-			<div className={classnames('alert',  {
-				'alert-success': type === 'success',
-				'alert-danger': type === 'error'
-			})}>
-			<button onClick={this.onClick} className="close"><span>&times;</span></button>
-			{text}
-			</div>
+				<div className={classnames('alert',  {
+					' flash-alert-success': type === 'success',
+					' flash-alert-danger': type === 'error'
+				})}>
+				<button onClick={this.onClick} className="close-x"><span className="ltr-x">&times;</span></button>
+				{text}
+				</div>
 			</div>
 		);
 	}

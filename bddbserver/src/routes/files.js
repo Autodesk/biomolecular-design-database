@@ -89,7 +89,9 @@ router.put('/file/', (req, res) => {
 				Files.where({id: req.body.id, user_id: decode.id})
 				.save({ title: req.body.title,
 					description: req.body.details,
-					tags: req.body.tags
+					tags: req.body.tags,
+					video: req.body.video, //BOOL
+					videoLink: req.body.videoLink
 				 }, {patch: true})
 				.then(resData=> {
 					res.status(200).json({error: false});
@@ -108,27 +110,45 @@ router.get('/file/getUrl/', (req, res) => {
 	console.log(req.query);
 	var keyName = req.query.saveLink;
 	var params = {Bucket: bucketName, Key: keyName, Expires: 9400}
+
 	s3.getSignedUrl('getObject', params, (err, url) => {
-		console.log(url);
-		res.status(200).json({error: false, signedUrl: url });
+		res.status(200).json({error: false, signedUrl: url, file_name: keyName});
 	});
 });
 
 router.post('/document/', upload.single('file'), (req, res) => {
-	console.log(req.file);
-	console.log(req.body.saveLink);
-	var _url = '';
-	var params = {
-		Bucket: bucketName,
-      	Key: req.body.saveLink, 
-      	Body: req.file.buffer
+	const authorizationHeader = req.headers['authorization'];
+	let token;
+
+	if(authorizationHeader) {
+		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
+													//split and take the index 1 to access token
 	}
-	s3.putObject(params, (err, data) => {
-		if(data) {
-			res.send({error: false, saveLink: params.Key});
-		}
-		else{ res.send({error: true}); }
-	});
+
+	if(token){
+		jwt.verify(token, config.jwtSecret, (err, decode) => {
+			if(err) {
+				res.status(401).json({ error: 'Failed to authenticate'})
+			} else {
+				var _url = '';
+				var params = {
+					Bucket: bucketName,
+			      	Key: req.body.saveLink, 
+			      	Body: req.file.buffer
+				}
+				s3.putObject(params, (err, data) => {
+					if(data) {
+						res.send({error: false, saveLink: params.Key});
+					}
+					else{ res.send({error: true}); }
+				});
+			}
+		});
+	} 
+
+	else{
+		res.status(403).json({	error: 'No token provided' 	});
+	}
 });
 
 router.get('/file/', (req, res) => {
@@ -136,7 +156,6 @@ router.get('/file/', (req, res) => {
 	Files.forge().where({id: fileId, deleted: false}).fetch()
 	.then(resData=> {
 		const signedUrl = getSignedUrlForSingleFile(resData.toJSON());
-		console.log(signedUrl);
 		res.send({error: false, url: signedUrl })
 	});
 });
@@ -156,7 +175,6 @@ router.post('/file/', (req, res) =>{
 			if(err) {
 				res.status(401).json({ error: 'Failed to authenticate'})
 			} else {
-				console.log(decode);
 				Files.forge({
 					user_id: decode.id,
 					project_id: req.body.project_id,
@@ -164,7 +182,9 @@ router.post('/file/', (req, res) =>{
 					tags: req.body.tags,
 					file_link: req.body.file_path_s3,
 					description: req.body.details,
-					deleted: false
+					deleted: false,
+					video: req.body.video,
+					videoLink: req.body.videoLink
 				}, { hasTimestamps: true }).save()
 				.then(resData=> {
 					res.status(200).json({error: false});
