@@ -30,12 +30,12 @@ class App extends React.Component {
 
 		return (
 			<div>
-					<FlashMessagesList />
-			<div className="container fill"> 
-				<NavigationBar searchValue={this.state.searchValue} searchSubmit={this.searchSubmit} searchValUpdate={this.searchValUpdate} />
-				{childrenWithProps}
-				<Footer />
-			</div>
+				<FlashMessagesList />
+				<div className="container fill"> 
+					<NavigationBar searchValue={this.state.searchValue} searchSubmit={this.searchSubmit} searchValUpdate={this.searchValUpdate} />
+					{childrenWithProps}
+					<Footer />
+				</div>
 			</div>
 		);
 	}

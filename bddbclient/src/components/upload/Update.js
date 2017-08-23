@@ -140,7 +140,7 @@ class Update extends React.Component{
 	publishClicked(){
 		if(this.state.published){
 			if(this.isValid()){
-				this.setState({ data:{projectPublished: true, btnClicked: 'published'}, errors: {}, updateFiles: true, published: true }, this.updateProject);
+				this.setState({ errors: {}, updateFiles: true, published: true }, this.updateProject);
 				setTimeout(() => {
 					this.props.addFlashMessage({
 						type: 'success',
@@ -163,7 +163,7 @@ class Update extends React.Component{
 					//DRAFT PROJECT, PUBLISHED cLicked, 
 					//ASSOCIATED PROJECT EXISTS
 
-					this.setState({data:{projectPublished: false, btnClicked: 'published'}, errors: {}, associatedProject: null, published: true }, this.updateProject);
+					this.setState({ errors: {}, associatedProject: null, published: true }, this.updateProject);
 					//AFTER UPDATING THE PUBLISHED VERSION, GET RID OF THE DRAFT
 					//DELETE PUBLISHED VERSION
 					const deleteProject = this.state.ascProjectId;

@@ -55,7 +55,7 @@ class GalleryItem extends React.Component {
 		    zIndex 			  : 1050
 		  },
 		  content : {
-		     position                  : 'absolute',
+		    position                   : 'absolute',
 		    top                        : '0px',
 		    left                       : '50px',
 		    right                      : '50px',
@@ -107,18 +107,17 @@ class GalleryItem extends React.Component {
 	        <p className="authors-styling">{authors}</p>
 	        <hr/>
 	        <div className="tick-stat row">
-	        <div className="tick">
-		        {ticks[0]}
-		        {ticks[1]}
-		        {ticks[2]}
-		        {ticks[3]}
-		        {ticks[4]}
-	        </div>
-	  
-    	    <div className="stats"> 
-	  	       	<img src={appreciation} className="img-icon-styling" alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
-	           	<img className="views-style img-icon-styling" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
-            </div>
+		        <div className="tick">
+			        {ticks[0]}
+			        {ticks[1]}
+			        {ticks[2]}
+			        {ticks[3]}
+			        {ticks[4]}
+		        </div>
+	    	    <div className="stats"> 
+		  	       	<img src={appreciation} className="img-icon-styling" alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
+		           	<img className="views-style img-icon-styling" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
+	            </div>
             </div>
             {modal}
 	    </div> 
