@@ -41,7 +41,6 @@ export function uploadProject(projectData){
 	}
 }
 
-
 export function updateAssociatedField(data){
 	return dispatch => {
 		return axios.put('/api/projects/project/associatedField', data);

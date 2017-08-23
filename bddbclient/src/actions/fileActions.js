@@ -37,3 +37,9 @@ export function signedUrlForS3Doc( queryString){
     return axios.get(apiCall);
   }
 }
+
+export function copyFiles(projectIds){
+  return dispatch => {
+    return axios.post('/api/files/copyFiles', projectIds); //make a post request to /api/users and pass userData
+  }
+}

@@ -7,6 +7,9 @@ import { uploadDocumentToS3, signedUrlForS3Doc, deleteDocument, deleteFile } fro
 import mime from 'mime-types';
 import uuidv1 from 'uuid/v1';
 import path from 'path';
+//import update from 'react-addons-update';
+import Check from '../../../../public/Assets/icons/Check.svg';
+//import Dropdown, { DropdownTrigger, DropdownContent } from'react-simple-dropdown';
 
 const customStyles = {
 	overlay : {
@@ -33,10 +36,13 @@ class NewFileBlock extends React.Component{
             user_id: 0,
             imgBool: false,
             newFileBlock: false,
-            showTitle: false,
+            showTitle: false,   
             showCaption: false,
             videoLink: '',
-            video: false
+            video: false,
+			keywordsDisplay: false,
+			keywordsArray: [],
+			keywordsObject: {"Design": [], "Experiment": [], "Simulation": []}
 		}
 		this.onChange = this.onChange.bind(this);
 		this.doneClicked = this.doneClicked.bind(this);
@@ -45,11 +51,25 @@ class NewFileBlock extends React.Component{
 		this.saveUpdateFile = this.saveUpdateFile.bind(this);
 		this.toggleTitle = this.toggleTitle.bind(this);
 		this.toggleCaption = this.toggleCaption.bind(this);
+		this.keywordsSelected = this.keywordsSelected.bind(this);
+		this.getIndexDesign = this.getIndexDesign.bind(this);
+		this.getIndexExperiment = this.getIndexExperiment.bind(this);
+		this.getIndexSimulation = this.getIndexSimulation.bind(this);
+		this.updateOnDb = this.updateOnDb.bind(this);
+		this.uploadOnDb = this.uploadOnDb.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps){
-		if(nextProps.updateFiles){
-			this.saveUpdateFile();
+		if(nextProps.btnClicked && nextProps.updateFiles){
+			if(nextProps.uploadAll){
+				console.log('Uploading All Files');
+				console.log(this.props.ascProjectId);
+				this.setState({project_id: this.props.ascProjectId, tags: JSON.stringify(this.state.keywordsObject)}, this.uploadOnDb);
+			}
+			else if(nextProps.updateFiles){
+				console.log('Saving Files');
+				this.saveUpdateFile();
+			}
 		}
 	}
 
@@ -103,9 +123,11 @@ class NewFileBlock extends React.Component{
 	}
 
 	componentWillMount(){
+		//console.log(this.props.file);
 		this.setState({ newFileBlock: this.props.isNewFile, project_id: this.props.file.project_id, userId: this.props.file.user_id });
 		if(this.props.file.file){
 			//THERE IS A FILE TO UPLOAD ON S3
+			console.log('mounting files');
 			var _imgBool = false;
 			var file = this.props.file.file;
 			var _saveLink = 'allFiles/'+this.props.file.user_id+'/'+this.props.file.project_id+'/'+uuidv1()+'/'+this.props.file.file.name;
@@ -154,6 +176,10 @@ class NewFileBlock extends React.Component{
 		if(!this.props.isNewFile){
 			this.setState({ id: this.props.file.id });
 		}
+		if(this.props.file.tags !== ''){
+			var _keywordsObject = JSON.parse(this.props.file.tags);
+			this.setState({keywordsObject:_keywordsObject});
+		}
 		if(this.props.file.title !== ''){
 			this.setState({
 				title: this.props.file.title,
@@ -168,26 +194,36 @@ class NewFileBlock extends React.Component{
 		}
 	}
 	
-	saveUpdateFile(){
-		//SAVE A NEW FILE BLOCK OR UPDATE AN EXISTING one 
-		if(this.props.isNewFile){
-			//NEW FILE, UPLOAD DATA ON DB
-			this.props.uploadFile(this.state).then(
+	uploadOnDb(){
+		console.log(this.state.tags);
+		this.props.uploadFile(this.state).then(
 				(res) => {
 					console.log(this.state);
 					this.setState({ changed: false });
 				},
 				(err) => { this.context.router.push('/notfound'); }
-			);	
-		}
-		else{
-			//FILE ALREADY EXISTS ON DB, UPDATE IT
-			this.props.updateFileItem(this.state).then(
+			);
+	}
+	updateOnDb(){
+		console.log(this.state.tags);
+		this.props.updateFileItem(this.state).then(
 				(res) => {
 					this.setState({ changed: false });
 				},
 				(err) => { this.context.router.push('/notfound');}
 			);	
+	}
+	saveUpdateFile(){
+		//SAVE A NEW FILE BLOCK OR UPDATE AN EXISTING one
+		if(this.props.isNewFile){
+			//NEW FILE, UPLOAD DATA ON DB
+			console.log('this is new file ');
+			this.setState({ tags: JSON.stringify(this.state.keywordsObject)}, this.uploadOnDb);	
+		}
+		else{
+			console.log('else block');
+			//FILE ALREADY EXISTS ON DB, UPDATE IT
+			this.setState({ tags: JSON.stringify(this.state.keywordsObject)}, this.updateOnDb);
 		}
 	}
 
@@ -235,11 +271,165 @@ class NewFileBlock extends React.Component{
 			return <span className="plain-background"><h5>{baseName}<br/> ({extName} file)</h5></span>;
 		}
 	}
+	getIndexDesign(name){
+		var len=this.state.keywordsObject.Design.length;
+		var index = -1;
+		for(var i = 0; i < len; i++){
+			if(this.state.keywordsObject.Design[i] === name){
+				index=i;
+			}
+		}
+		return index;
+	}
+	getIndexExperiment(name){
+		var len=this.state.keywordsObject.Experiment.length;
+		var index = -1;
+		for(var i = 0; i < len; i++){
+			if(this.state.keywordsObject.Experiment[i] === name){
+				index=i;
+			}
+		}
+		return index;
+	}
+	getIndexSimulation(name){
+		var len=this.state.keywordsObject.Simulation.length;
+		var index = -1;
+		for(var i = 0; i < len; i++){
+			if(this.state.keywordsObject.Simulation[i] === name){
+				index=i;
+			}
+		}
+		console.log("simnulation" + index);
+		return index;
+	}
+
+
+
+	keywordsSelected(e){
+		e.preventDefault();
+		console.log(e.target.name);
+		const keywordName = e.target.name;
+		var _index = -1;
+		if(keywordName.indexOf("Design") > -1){
+			console.log('here');
+			var keywordD = keywordName.slice(8, keywordName.length);
+			const index = this.getIndexDesign(keywordD);
+			_index = index;
+			if(index >= 0) {
+				console.log(index);
+				var arrayD = this.state.keywordsObject.Design;
+				arrayD.splice(index, 1);
+				console.log(arrayD);
+				var _keywordsObjectD = this.state.keywordsObject;
+				_keywordsObjectD.Design = arrayD;
+				this.setState({ keywordsObject: _keywordsObjectD});
+				return;
+			}
+		}
+		if(keywordName.indexOf("Experiment") -1){
+			var keywordE = keywordName.slice(12, keywordName.length);
+			const index = this.getIndexExperiment(keywordE);
+			_index = index;
+			if(index >= 0) {
+				var arrayE = this.state.keywordsObject.Experiment;
+				arrayE.splice(index, 1);
+				var _keywordsObjectE = this.state.keywordsObject;
+				_keywordsObjectE.Experiment = arrayE;
+				this.setState({ keywordsObject: _keywordsObjectE});
+				return;
+			}
+		}
+		if(keywordName.indexOf("Simulation") > -1){
+			console.log("entered simulation");
+			var keywordS = keywordName.slice(12, keywordName.length);
+			const index = this.getIndexSimulation(keywordS);
+			_index = index;
+			console.log("found.  "+ index);
+			if(index >= 0) {
+				var arrayS = this.state.keywordsObject.Simulation;
+				arrayS.splice(index, 1);
+				var _keywordsObjectS = this.state.keywordsObject;
+				_keywordsObjectS.Simulation = arrayS;
+				this.setState({ keywordsObject: _keywordsObjectS});
+				return;
+			}
+		}
+		
+		if(_index === -1){
+			//Add to the Keywords Object
+			// keywordsObject = { "Design": [],
+			//					  "Experiment": [],
+			//					  "Simulation": [] }
+			console.log(this.state.keywordsObject);
+			var _keywordsObject = this.state.keywordsObject;
+			if(keywordName.indexOf("Design") > -1){ 
+				var keywordD1 = keywordName.slice(8, keywordName.length);
+				_keywordsObject.Design.push(keywordD1);
+			}
+			else if(keywordName.indexOf("Experiment") > -1){ 
+				var keywordE1 = keywordName.slice(12, keywordName.length);
+				_keywordsObject.Experiment.push(keywordE1);
+			}
+			else if(keywordName.indexOf("Simulation") > -1){ 
+				var keywordS1 = keywordName.slice(12, keywordName.length);
+				_keywordsObject.Simulation.push(keywordS1);
+			}
+			console.log(_keywordsObject);
+			//console.log(this.state.keywordsArray.toString());
+			//var _newKeywordsArray = this.state.keywordsArray;
+			//_newKeywordsArray.push(keywordName);
+			this.setState({ keywordsObject: _keywordsObject});
+			return;
+		}
+	}
 
 	render(){
+
 		const {
             isOpen, lightboxDisplay, imgBool
         } = this.state;
+        const displayDesignKeywords = this.state.keywordsObject.Design ? this.state.keywordsObject.Design.toString() : '';
+        const displayExperimentKeywords = this.state.keywordsObject.Experiment ? this.state.keywordsObject.Experiment.toString() : '';
+        const displaySimulationKeywords = this.state.keywordsObject.Simulation ? this.state.keywordsObject.Simulation.toString() : '';
+        const keywordsBlock = (
+        	<div className="keywords-box">
+			  	<div>
+			    	<div className="left-keywords">
+			    		<div className="left-left">
+			    			<h5>DESIGN</h5>
+			    			<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Introduction") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''} <button name="Design: Introduction" onClick={this.keywordsSelected}>Introduction</button></div>
+			   	 			<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Description") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Description" onClick={this.keywordsSelected}>Description</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Protocol") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Protocol" onClick={this.keywordsSelected}>Protocol</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Design File") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Design File" onClick={this.keywordsSelected}>Design File</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Supporting Information") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Supporting Information" onClick={this.keywordsSelected}>Supporting Information</button></div>
+				    		<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Strand Information") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Strand Information" onClick={this.keywordsSelected}>Strand Information</button></div>
+				    		<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Materials") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Materials" onClick={this.keywordsSelected}>Materials</button></div>
+				    		<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Software") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Software" onClick={this.keywordsSelected}>Software</button></div>
+				    		<div className="keyword-row">{this.state.keywordsObject.Design.indexOf("Other") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Design: Other" onClick={this.keywordsSelected}>Other</button></div>
+				    	</div>
+			    		<div className="middle-keywords">
+			    			<h5>Experiment</h5>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("Gel") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: Gel" onClick={this.keywordsSelected}>Gel</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("AFM") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: AFM" onClick={this.keywordsSelected}>AFM</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("TEM") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: TEM" onClick={this.keywordsSelected}>TEM</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("Cryo-EM") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: Cryo-EM" onClick={this.keywordsSelected}>Cryo-EM</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("Spectrofluorimeter") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: Spectrofluorimeter" onClick={this.keywordsSelected}>Spectrofluorimeter</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("Data") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: Data" onClick={this.keywordsSelected}>Data</button></div>
+			    			<div className="keyword-row">{this.state.keywordsObject.Experiment.indexOf("Other") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Experiment: Other" onClick={this.keywordsSelected}>Other</button></div>
+			    		</div>
+			    	</div>
+			    	<div className="right-keywords">
+			    		<h5>Simulation</h5>
+			    		<div className="keyword-row">{this.state.keywordsObject.Simulation.indexOf("CanDo") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Simulation: CanDo" onClick={this.keywordsSelected}>CanDo</button></div>
+			    		<div className="keyword-row">{this.state.keywordsObject.Simulation.indexOf("OxDNA") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Simulation: OxDNA" onClick={this.keywordsSelected}>OxDNA</button></div>
+			    		<div className="keyword-row">{this.state.keywordsObject.Simulation.indexOf("Multistrand") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Simulation: Multistrand" onClick={this.keywordsSelected}>Multistrand</button></div>
+			  	 		<div className="keyword-row">{this.state.keywordsObject.Simulation.indexOf("MD") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Simulation: MD" onClick={this.keywordsSelected}>MD</button></div>
+			  	 		<div className="keyword-row">{this.state.keywordsObject.Simulation.indexOf("QM/MM") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Simulation: QM/MM" onClick={this.keywordsSelected}>QM/MM</button></div>
+			  	 		<div className="keyword-row">{this.state.keywordsObject.Simulation.indexOf("Other") > -1 ? <img className="tick-keywords" src={Check} alt="tick icon"/> : ''}<button name="Simulation: Other" onClick={this.keywordsSelected}>Other</button></div>
+			  	  	</div>
+			   </div>
+			</div>
+		);
 		//const type = this.props.file.type;
 		//const fileName = path.basename(this.props.file.file_name);
 		//const nonImg = this.toDisplayName(fileName);
@@ -262,7 +452,15 @@ class NewFileBlock extends React.Component{
 						</div> : '' 
 					} 
 						<div className="options-file-block"> 
-							<button className="other-file"> keywords </button>
+							<div className="dropdown-div">
+								<button className="other-file keywordsbtn" onClick={() => this.setState({ keywordsDisplay: !this.state.keywordsDisplay })} > 
+									Keywords: 
+										{displayDesignKeywords.length > 0 ? " Design: "+displayDesignKeywords : ''}
+										{displayExperimentKeywords.length > 0 ? " | Experiment: "+displayExperimentKeywords : ''}
+										{displaySimulationKeywords.length > 0 ? " | Simulation: "+displaySimulationKeywords: ''}
+								</button>
+								{this.state.keywordsDisplay ? keywordsBlock : ''}
+							</div>
 							<button className="other-file other-btn-d" onClick={this.deleteClicked}>  |  Delete </button>
 							{this.state.showCaption ? 
 								<button className="other-file other-btn-w" onClick={this.toggleCaption}> |  Remove Caption </button> :
@@ -273,7 +471,7 @@ class NewFileBlock extends React.Component{
 								<button className="other-file other-btn-w" onClick={this.toggleTitle} >Title </button>
 							}
 						</div>
-					
+
 						<hr className="hr-display"/>
 
 					{isOpen ? lightboxDisplay : ''}
@@ -291,8 +489,11 @@ NewFileBlock.propTypes = {
 	isNewFile: React.PropTypes.bool.isRequired,
 	deleteDocument: React.PropTypes.func.isRequired,
 	deleteFile: React.PropTypes.func.isRequired,
-	existingFileDelete: React.PropTypes.func,
-	updateFiles: React.PropTypes.bool.isRequired
+	existingFileDelete: React.PropTypes.func, 
+	updateFiles: React.PropTypes.bool.isRequired,
+	updatePublishedFiles: React.PropTypes.bool.isRequired,
+	ascProjectId: React.PropTypes.string,
+	uploadAll: React.PropTypes.bool.isRequired
 }
 //updateFileItem: React.PropTypes.func,
 //fileChanged: React.PropTypes.func

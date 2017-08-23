@@ -107,7 +107,6 @@ router.put('/file/', (req, res) => {
 });
 
 router.get('/file/getUrl/', (req, res) => {
-	console.log(req.query);
 	var keyName = req.query.saveLink;
 	var params = {Bucket: bucketName, Key: keyName, Expires: 9400}
 
@@ -160,9 +159,69 @@ router.get('/file/', (req, res) => {
 	});
 });
 
+function postFiles(filesArr, userId, toProjectId){
+	console.log(filesArr);
+	console.log('POSTING FILESSSSS >>>>>>>>>>><<<<<<<<<');
+	var len = filesArr.length;
+	for(var i = 0; i < len; i++){
+		Files.forge({
+			user_id: userId,
+			project_id: toProjectId,
+			title: filesArr[i].title,
+			tags: filesArr[i].tags,
+			file_link: filesArr[i].file_link,
+			description: filesArr[i].description,
+			deleted: false,
+			video: filesArr[i].video,
+			videoLink: filesArr[i].videoLink
+		}, { hasTimestamps: true }).save()
+		.then(resData=> {
+			console.log('saved');
+		})
+		.catch(err => { console.log('error');
+		});
+		if(i+1===len) return { success: true }
+	}
+}
+
+router.post('/copyFiles/', (req, res) => {
+	const fromProjectId = req.body.fromProjectId;
+	var toProjectId = req.body.toProjectId;
+	const authorizationHeader = req.headers['authorization'];
+	let token;
+
+	if(authorizationHeader) {
+		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
+													//split and take the index 1 to access token
+	}
+
+	if(token){
+		jwt.verify(token, config.jwtSecret, (err, decode) => {
+			if(err) {
+				res.status(401).json({ error: 'Failed to authenticate'})
+			} else {
+				Files.forge().where({project_id: req.body.fromProjectId, deleted: false}).orderBy('id', 'ASC').fetchAll()
+					.then(resData=> {
+						var resData = resData.toJSON();
+
+						res.status(200).json({error: false, data: postFiles(resData, decode.id, toProjectId)});
+					})
+					.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
+				});
+			}
+		});
+	} 
+
+	else{
+		res.status(403).json({	error: 'No token provided' 	});
+	}
+});
+
 router.post('/file/', (req, res) =>{
 	console.log(req.body);
+	console.log("POSTING FILESSSS <<<>>>>>>");
 	const authorizationHeader = req.headers['authorization'];
+	const _fileName = req.body.file_path_s3 ? req.body.file_path_s3 : req.body.file_name;
 	let token;
 
 	if(authorizationHeader) {
@@ -180,7 +239,7 @@ router.post('/file/', (req, res) =>{
 					project_id: req.body.project_id,
 					title: req.body.title,
 					tags: req.body.tags,
-					file_link: req.body.file_path_s3,
+					file_link: _fileName,
 					description: req.body.details,
 					deleted: false,
 					video: req.body.video,
@@ -201,8 +260,6 @@ router.post('/file/', (req, res) =>{
 });
 
 router.delete('/document/', (req, res) => {
-	console.log('deleting doc');
-	console.log(req.query);
 	 var params = {
 	  	Bucket: bucketName, 
 	  	Key: req.query.pathOnS3
@@ -215,9 +272,11 @@ router.delete('/document/', (req, res) => {
 
 router.delete('/file/', (req, res) => {
 	var file_id = req.query.file_id;
+	const _projectId = req.query.project_id;
 	const authorizationHeader = req.headers['authorization'];
 	let token;
 	console.log(req.query);
+	console.log("DELETEEE FILESSSSS <<<>>>>");
 	if(authorizationHeader) {
 		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
 													//split and take the index 1 to access token
@@ -225,12 +284,30 @@ router.delete('/file/', (req, res) => {
 
 	if(token){
 		jwt.verify(token, config.jwtSecret, (err, decode) => {
-			if(err) {
-				res.status(401).json({ error: 'Failed to authenticate'})
-			} else {
-				console.log(decode);
-				Files.where({id: file_id}).where({user_id: decode.id}).save({ deleted: true }, {patch: true}); //update the project appreciations in database
-				res.json({success: true});
+			
+			if(_projectId){
+				//Delete all files object with projectId=Project_id
+				console.log('deleting all files from project: '+_projectId);
+				Files.where({user_id: decode.id, project_id: _projectId, deleted: false}).fetchAll()
+				.then(resData=> {
+						var resData = resData.toJSON();
+						console.log(resData);
+						var len = resData.length;
+						for(var i=0; i < len; i++){
+							Files.where({id: resData[i].id, user_id: decode.id}).save({ deleted: true }, {patch: true});
+						}
+						res.status(200).json({error: false});
+					})
+					.catch(err => {res.status(500).json({error: true, data: {message: err.message}})}) //update the project appreciations in database
+				}
+			else{
+				if(err) {
+					res.status(401).json({ error: 'Failed to authenticate'})
+				} else {
+					console.log(decode);
+					Files.where({id: file_id}).where({user_id: decode.id}).save({ deleted: true }, {patch: true}); //update the project appreciations in database
+					res.json({success: true});
+				}
 			}
 		});
 	} 

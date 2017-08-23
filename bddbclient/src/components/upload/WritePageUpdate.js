@@ -11,6 +11,8 @@ import { uploadDocumentToS3, signedUrlForS3Doc } from '../../actions/fileActions
 import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 import classnames from 'classnames';
+import { deleteFile } from '../../actions/fileActions';
+
 
 class WritePageUpdate extends React.Component{
 	constructor(props){
@@ -24,8 +26,13 @@ class WritePageUpdate extends React.Component{
 			currId: 0,
 			userId: 0,
 			headerImageLink: '',
+			heroImageLink: '',
 			filesAdded: false,
-			headerImageLinkOnS3: ''
+			headerImageLinkOnS3: '',
+			uploadAll: false,
+			updatePublishedFiles: false,
+			updateFiles: false,
+			btnClicked: false
 		}
 		this.addFileClicked = this.addFileClicked.bind(this);
 		this.newFileDeleteClicked = this.newFileDeleteClicked.bind(this);
@@ -34,21 +41,17 @@ class WritePageUpdate extends React.Component{
 		this.printState = this.printState.bind(this);
 		this.backToProfile = this.backToProfile.bind(this);
 		this.handleCoverFileUpload = this.handleCoverFileUpload.bind(this);
+		this.handleHeroFileUpload = this.handleHeroFileUpload.bind(this);
 		this.videosClicked = this.videosClicked.bind(this);
+		this.previewClicked = this.previewClicked.bind(this);
 	}
 
 	componentWillMount(){
-		this.setState({checked: this.props.published, headerImageLink: this.props.headerImageLink, userId: this.props.auth.user.id});
+		this.setState({checked: this.props.published, headerImageLink: this.props.headerImageLink, heroImageLink: this.props.heroImageLink, userId: this.props.auth.user.id});
 	}
 
-	componentWillReceiveProps(nextProps){
-		if(nextProps.files.length >= 0){
-			const arrLen = nextProps.files.length;
-			this.setState({ currId: this.state.currId+arrLen});
-		}
-		if(nextProps.headerImageLink){
-			this.setState({ headerImageLink: nextProps.headerImageLink});
-		}
+	previewClicked(){
+		console.log('preview generating');
 	}
 
 	backToProfile(){
@@ -58,7 +61,31 @@ class WritePageUpdate extends React.Component{
 	printState(){
 		console.log(this.state);
 	}
-
+	handleHeroFileUpload(e){
+		e.preventDefault();
+		var file = e.target.files[0];
+		var _saveLink = 'allFiles/'+this.props.auth.user.id+'/'+this.props.id+'/'+uuidv1()+'/'+file.name;
+		this.props.uploadDocumentToS3({file, saveLink: _saveLink}).then(
+			(res) => { 
+				var response = JSON.parse(res.request.response);
+				var queryString = 'saveLink='+response.saveLink;
+				//CHANGE THE HEADERIMAGELINK IN THE DATABASE
+				//CALL THIS.PROPS.CHANGEHEADERLINK FUNCTION
+				this.props.changeHeroLink(_saveLink);
+				this.props.signedUrlForS3Doc(queryString).then(
+					(res) => {
+						var response = JSON.parse(res.request.response);
+						this.setState({ heroImageLink: response.signedUrl });
+					}, 
+					(err) => { 
+						this.setState({error: true});
+						this.context.router.push('/notfound');
+					}
+				);
+			},
+			(err) => { console.log('error'); }
+		);
+	}
 	handleCoverFileUpload(e){
 		e.preventDefault();
 		var file = e.target.files[0];
@@ -171,15 +198,74 @@ class WritePageUpdate extends React.Component{
 		console.log(index);
 		if(index >= 0) this.setState({ newFilesObjects: update(this.state.newFilesObjects, {$splice: [[index, 1]]}) })
 	}
+	
+	/*getProjectId(){
+		if(!updatePublishedFiles && updateFiles){
+			//update associated Draft files 
+			//Save As Draft was Clicked while editing a Published project 
+			//1. Delete all draft File Blocks 
+			//2. To Old Existing File Blocks = make an upload Request to them as well with projectId=ascProjectId
+			//3. pass projectId=ascProjectId to New File Blocks
+			var query = "project_id="+this.props.ascProjectId;
+			this.props.deleteFile(query).then(
+				(res) => {
+					console.log('done');
+					this.setState({uploadAll: true});
+				},
+				(err) => { this.context.router.push('/notfound');}
+			);	
+		}
+		else{
+			return this.props.id; //return id of this project
+		}
+	}*/
+
+	componentWillReceiveProps(nextProps){
+		//console.log(nextProps);
+		if(nextProps.btnClicked){
+			if(!nextProps.updatePublishedFiles && nextProps.updateFiles ){
+				console.log('updating/uploading file');
+				//PUBLISHED PROJECT file sblocks edited and saving as a draft
+				console.log("ASSOCIATED PROJECT ID: "+ this.props.ascProjectId);
+				if(this.props.ascProjectId){
+					var query = "project_id="+this.props.ascProjectId;
+					this.props.deleteFile(query).then(
+						(res) => {
+							console.log('done deleting');
+							this.setState({uploadAll: true, btnClicked: true, updateFiles: true, updatePublishedFiles: false});
+						},
+						(err) => { this.context.router.push('/notfound');}
+					);	
+				}
+			}
+			else{
+				console.log('ELSE CONDITIONNNN');
+				this.setState({btnClicked: true, updateFiles: nextProps.updateFiles, updatePublishedFiles: nextProps.updatePublishedFiles});
+			}
+		}
+		if(nextProps.files.length >= 0){
+			const arrLen = nextProps.files.length;
+			this.setState({ currId: this.state.currId+arrLen});
+		}
+		if(nextProps.headerImageLink){
+			this.setState({ headerImageLink: nextProps.headerImageLink});
+		}
+		if(nextProps.heroImage){
+			this.setState({ heroImageLink: nextProps.heroImage});
+		}
+	}
 
 	render(){
 		var headerLink = this.state.headerImageLink;
+		var heroLink = this.state.heroImageLink;
+		var _uploadAll = this.state.uploadAll;
 		const oldFilesDisplay = this.props.files.map((fileItem) => {
-			return <NewFileBlock key={fileItem.id}  isNewFile={false} updateFiles={this.props.updateFiles} existingFileDelete={this.props.deleteClicked} newFileDeleteClicked={this.newFileDeleteClicked} file={fileItem}/>;
+			return <NewFileBlock key={fileItem.id}  isNewFile={false} btnClicked={this.state.btnClicked} uploadAll={this.state.uploadAll} updateFiles={this.state.updateFiles} file={fileItem}
+								ascProjectId={this.props.ascProjectId} updatePublishedFiles={this.state.updatePublishedFiles} existingFileDelete={this.props.deleteClicked} newFileDeleteClicked={this.newFileDeleteClicked} />;
 		});
 		const newFilesDisplay = this.state.newFilesObjects.map((fileItem) => {
-			console.log(fileItem.id);
-			return <NewFileBlock key={fileItem.id}  isNewFile={true} updateFiles={this.props.updateFiles} existingFileDelete={this.props.deleteClicked} newFileDeleteClicked={this.newFileDeleteClicked} file={fileItem}/>;
+			return <NewFileBlock key={fileItem.id}  uploadAll={this.state.uploadAll} btnClicked={this.state.btnClicked} isNewFile={true} updateFiles={this.state.updateFiles} file={fileItem}
+								ascProjectId={this.props.ascProjectId} updatePublishedFiles={this.state.updatePublishedFiles} existingFileDelete={this.props.deleteClicked} newFileDeleteClicked={this.newFileDeleteClicked} />;
 		});
 		//const headerImg = ( 
 		//	<div className="hero-image">
@@ -195,7 +281,7 @@ class WritePageUpdate extends React.Component{
 				</div>
 				<div className="row row-right-btn">
 					<button className="write-page-btn-publish write-page-btn button" onClick={this.props.publishClicked}> Publish </button>
-					<button className="write-page-btn-save write-page-btn button"> Preview </button>
+					<button className="write-page-btn-save write-page-btn button onClick={this.previewClicked}"> Preview </button>
 					<button className="write-page-btn-draft write-page-btn  button" onClick={this.props.saveDraftClicked}> Save as Draft </button>
 				</div>
 			</div>	
@@ -291,6 +377,21 @@ class WritePageUpdate extends React.Component{
 								<p>Looks best at 200 x 200px jpgs.</p>
 							</div>
 						</div>
+						<div className="sub-part pull-left">
+							<div className="sub-title h-img">
+								<h5> HERO IMAGE </h5>
+								<hr/>
+								<img className="img-responsive project-image" src={heroLink} alt=""/>
+								<hr className="sub-title-hr"/>
+							</div>
+							<div className="content-style-text">
+								<button className="upload-input-wrapper ">
+								  	<label className="cover-img-upload label">Upload Hero Image</label>
+								  	<input onChange={this.handleHeroFileUpload} type="file" accept="image/*" className="cover-file-upload" name="file"/>
+								</button>
+								<p>Looks best at 1000 x 600px jpgs.</p>
+							</div>
+						</div>
 					</div>
 				<div id="content-write-page">
 					<div className="content-style pull-left">
@@ -326,6 +427,7 @@ WritePageUpdate.propTypes={
 	publishClicked: React.PropTypes.func.isRequired,
 	saveDraftClicked: React.PropTypes.func.isRequired,
 	updateFiles: React.PropTypes.bool.isRequired,
+	updatePublishedFiles: React.PropTypes.bool.isRequired,
 	files: React.PropTypes.array,
 	heroImage: React.PropTypes.string,
 	authors: React.PropTypes.string,
@@ -345,11 +447,15 @@ WritePageUpdate.propTypes={
 	errors: React.PropTypes.object,
 	published: React.PropTypes.bool,
 	id: React.PropTypes.number,
+	ascProjectId: React.PropTypes.string,
 	changePublished: React.PropTypes.func,
 	deleteClicked: React.PropTypes.func,
 	uploadDocumentToS3: React.PropTypes.func.isRequired,
 	signedUrlForS3Doc: React.PropTypes.func.isRequired,
-	changeHeaderLink: React.PropTypes.func.isRequired
+	changeHeaderLink: React.PropTypes.func.isRequired,
+	changeHeroLink: React.PropTypes.func.isRequired,
+	btnClicked: React.PropTypes.bool,
+	deleteFile: React.PropTypes.func.isRequired
 }
 
 WritePageUpdate.contextTypes = {
@@ -360,4 +466,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, {uploadDocumentToS3, signedUrlForS3Doc})(WritePageUpdate);
+export default connect(mapStateToProps, {uploadDocumentToS3, deleteFile, signedUrlForS3Doc})(WritePageUpdate);

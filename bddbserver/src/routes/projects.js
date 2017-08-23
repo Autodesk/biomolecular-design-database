@@ -6,6 +6,7 @@ import commaSplit from 'comma-split';
 import Comments from '../models/comments';
 import config from '../config';
 import jwt from 'jsonwebtoken';
+import count from 'word-count';
 
 var s3 = new AWS.S3();
 let router = express.Router();
@@ -130,7 +131,6 @@ router.get('/', (req, res) => { //get all projects
 	const sortby = req.query.sortby;   
 	const from = req.query.from;
 	var to = req.query.to;
-	console.log(sortby);
 	if(sortby === 'MOST VIEWED'){
 		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
@@ -173,8 +173,6 @@ router.get('/', (req, res) => { //get all projects
 router.put('/project/associatedField/', (req, res) => {
 	const authorizationHeader = req.headers['authorization'];
 	let token;
-	console.log('UPDATEEEE');
-	console.log(req.body);
 	if(authorizationHeader) {
 		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
 													//split and take the index 1 to access token
@@ -217,11 +215,18 @@ router.put('/project/associatedField/', (req, res) => {
 	}
 });
 
+function qualityOfDoc(projectData){
+	console.log(projectData.projectAbstract);
+}
+
 router.put('/project/', (req, res) => {
 	const authorizationHeader = req.headers['authorization'];
 	let token;
-	console.log('here');
-	console.log(req.body);
+	var _associatedProject = req.body.associatedProject ? req.body.associatedProject : null;
+
+	//QUALITY OF DOCUMENTATION ALGORITHM
+	qualityOfDoc(req.body);
+
 	if(authorizationHeader) {
 		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
 													//split and take the index 1 to access token
@@ -239,6 +244,7 @@ router.put('/project/', (req, res) => {
 					keywords: JSON.stringify(req.body.keywords.split(',')),
 					version: req.body.version,
 					header_image_link: req.body.headerImageLinkOnS3,
+					hero_image: req.body.heroImageLinkOnS3,
 					publication: req.body.publication,
 					user_rights: req.body.usageRights,
 					contact_email: req.body.contactEmail,
@@ -246,7 +252,8 @@ router.put('/project/', (req, res) => {
 					contact_facebook: req.body.contactFacebook,
 					contact_homepage: req.body.contactHomepage,
 					project_abstract: req.body.projectAbstract,
-					published: req.body.published
+					published: req.body.published,
+					associated_project: _associatedProject
 				 }, {patch: true})
 				.then(resData=> {
 						res.status(200).json({error: false});
@@ -266,7 +273,6 @@ router.get('/project/', (req, res) => {
 	Projects.where({deleted: 'false'}).where({id: req.query.projectId}).fetch()
 		.then(resData=> {
 			var resProject =  resData.toJSON();
-			console.log(resProject);
 			res.status(200).json({error: false, data: singleSignedUrl(resProject)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
@@ -300,9 +306,8 @@ router.delete('/project/', (req, res) => {
 });
 
 router.post('/project/', (req, res) => {
-	console.log("POST PROJECT");
+	console.log('POSTINGGG>>>>>');
 	console.log(req.body);
-	
 	const authorizationHeader = req.headers['authorization'];
 	let token;
 

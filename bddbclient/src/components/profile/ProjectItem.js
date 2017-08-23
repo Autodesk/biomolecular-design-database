@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 //import views from '../../../public/Assets/icons/views.svg';
 import ratingOff from '../../../public/Assets/icons/ratingOff.svg';
 import ratingOn from '../../../public/Assets/icons/ratingOn.svg';
-import deleteIcon from '../../../public/Assets/icons/delete.svg';
-import edit from '../../../public/Assets/icons/edit.svg';
 import noImg from '../../../public/Assets/no-img.jpg';
 import Modal from 'react-modal';
 import ReadProject from '../home/readProject/ReadProject';
@@ -26,6 +24,7 @@ class ProjectItem extends React.Component {
 		this.state = {
 			associatedProjectObj: {},
 			modalActive: false,
+			ascProjectModalActive: false,
 			promptModalActive: false,
 			deleteAlert: false,
 			showCopied: false,
@@ -41,6 +40,8 @@ class ProjectItem extends React.Component {
 		this.onClick = this.onClick.bind(this);
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
+		this.activateAscModal = this.activateAscModal.bind(this);
+		this.deactivateAscModal = this.deactivateAscModal.bind(this);
 		this.activatePromptModal = this.activatePromptModal.bind(this);
 		this.deactivatePromptModal = this.deactivatePromptModal.bind(this);
 		this.activateDeleteAlert = this.activateDeleteAlert.bind(this);
@@ -74,7 +75,6 @@ class ProjectItem extends React.Component {
 
 	componentWillMount(){
 		if(this.props.project && this.props.project.associated_project && this.props.project.published==='true'){
-			console.log(this.props.project);
 			this.setState({ associatedDraftExists: true }, this.getAssociatedDraft(this.props.project.associated_project));
 		}
 		else if(this.props.project && this.props.project.associated_project && this.props.project.published==='false'){
@@ -83,9 +83,9 @@ class ProjectItem extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		console.log(nextProps.project);
+		//console.log(nextProps.project);
 		if(nextProps.project && nextProps.project.associated_project && nextProps.project.published==='true'){
-			console.log(nextProps.project);
+			//console.log(nextProps.project);
 			this.setState({ associatedDraftExists: true }, this.getAssociatedDraft(nextProps.project.associated_project));
 		}
 		else if(nextProps.project && nextProps.project.associated_project && nextProps.project.published==='false'){
@@ -112,8 +112,7 @@ class ProjectItem extends React.Component {
 	
 	overwriteAsscPublished(){
 
-		var queryString = "project_id="+this.props.project.id;
-		
+		var queryString = "project_id="+this.props.project.id;	
 		var data = {
 			id: this.state.associatedProjectObj.id,
 			associatedProject: null,
@@ -186,7 +185,7 @@ class ProjectItem extends React.Component {
 
 	revertToDraftClickedPrompt(){
 		if(this.state.associatedDraftExists){
-			var _message = "Overwrite existing Draft: "+this.state.associatedProjectObj.name+'?';
+			var _message = "A draft for this project already exists ("+this.state.associatedProjectObj.name+'). Overwrite?';
 			this.setState({promptModalDiv: <PromptModal deactivateModal={this.deactivatePromptModal} message={_message} leftBtn="Cancel" rightBtn="Overwrite" left={this.deactivatePromptModal} right={this.revertToDraftClicked}/> }, this.activatePromptModal);
 	
 		}
@@ -266,6 +265,14 @@ class ProjectItem extends React.Component {
 
 	deactivateModal(){
 		this.setState({modalActive: false });
+	};
+
+	activateAscModal(){
+		this.setState({ ascProjectModalActive: true });
+	};
+
+	deactivateAscModal(){
+		this.setState({ascProjectModalActive: false });
 	};
 
 	activatePromptModal(){
@@ -362,6 +369,14 @@ class ProjectItem extends React.Component {
 				contentLabel="Modal Open">
 					<ReadProject project={this.props.project} onProfilePage={this.state.onProfilePage} deactivateModal={this.deactivateModal} />
 				</Modal>
+		const ascModal = <Modal
+				isOpen={this.state.ascProjectModalActive}
+				onAfterOpen={this.activateAscModal}
+				onRequestClose={this.deactivateAscModal}
+				style={customStyles}
+				contentLabel="Modal Open">
+					<ReadProject project={this.state.associatedProjectObj} onProfilePage={this.state.onProfilePage} deactivateModal={this.deactivateAscModal} />
+				</Modal>
 		const promptModal = <Modal
 				isOpen={this.state.promptModalActive}
 				onAfterOpen={this.activatePromptModal}
@@ -370,13 +385,7 @@ class ProjectItem extends React.Component {
 				contentLabel="Modal Open">
 					{this.state.promptModalDiv}
 				</Modal>
-		const deleteMessage = (
-			<div className="delete-alert"> 
-				<p> Delete? You can't undo this action </p>
-				<button className="button-delete" onClick={this.deleteClicked} > Yes, delete project </button>
-				<p className="delete-alert-cancel" onClick={this.closeDeleteAlert}> Cancel </p>
-			</div>
-		);
+		
 		const associatedDraftExists = this.state.associatedDraftExists;
 		const qod = this.props.project.quality_of_documentation;
 		//var counter = 0;
@@ -399,9 +408,6 @@ class ProjectItem extends React.Component {
 		<div>
 		{this.state.toDisplay ? 
 		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout project-item-layout">
-			<div className="delete-project"> < img src={deleteIcon} onClick={this.activateDeleteAlert} alt="delete icon"/></div>
-			{this.state.deleteAlert ? deleteMessage : '' }
-			<div className="edit-icon" onClick={this.editClicked}> < img src={edit} alt="edit icon"/></div>
 	      	<img className="img-responsive project-image profile-project-image" onClick={this.activateModal} src={this.props.project.header_image_link ? this.props.project.header_image_link : noImg } alt=""/>
 	        <h4 className="project-item-title project-item-title-profile" onClick={this.activateModal}>{this.props.project.name}</h4>
 	    	{this.props.project.published === 'true' ? <p className="published-project">Published</p> : <p className="draft-project">Draft</p>}
@@ -418,7 +424,7 @@ class ProjectItem extends React.Component {
 	    	{associatedDraftExists ? 
 	    		<div className="draft-display">
 	    			<hr/>
-	    			<h4 className="project-item-title project-item-title-profile" onClick={this.activateModal}>{this.state.associatedProjectObj.name}</h4>
+	    			<h4 className="project-item-title project-item-title-profile" onClick={this.activateAscModal}>{this.state.associatedProjectObj.name}</h4>
 	    			<p className="draft-project">Draft</p>
 	    			<div className="project-edit-options">
 			    		<button className="button edit-btn-profile" onClick={this.associatedEditClicked} > Edit</button>
@@ -430,6 +436,7 @@ class ProjectItem extends React.Component {
 	    		</div> : '' }
 	    	{modal}
 	    	{promptModal}
+	    	{ascModal}
 	    	{this.state.openWrite ? <UploadNew closeWrite={this.closeWrite} newProject={false} closeBool={true} project={this.props.project} /> : ''}
 	    </div> : '' }
 	    

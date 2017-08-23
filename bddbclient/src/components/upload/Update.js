@@ -8,7 +8,8 @@ import update from 'react-addons-update';
 import { getSingleProject } from '../../actions/homePageActions';
 import WritePageUpdate from './WritePageUpdate';
 import { addFlashMessage } from '../../actions/flashMessages';
-import {uploadProject, updateAssociatedField} from '../../actions/profileActions';
+import {uploadProject, updateAssociatedField, deleteProject} from '../../actions/profileActions';
+import {copyFiles} from '../../actions/fileActions';
 
 function validateInput(data) {
 	console.log(data);
@@ -64,8 +65,12 @@ class Update extends React.Component{
 			heroImageLinkOnS3: '',
 			changed: false,
 			errors: {},
+			ascProjectId: '',
 			updateFiles: false,
-			associatedProject: ''
+			associatedProject: '',
+			updatePublishedFiles: true,
+			onClickData: {},
+			btnClicked: false
 		}
 		this.onChange = this.onChange.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
@@ -76,6 +81,7 @@ class Update extends React.Component{
 		this.assignValues = this.assignValues.bind(this);
 		this.publishClicked = this.publishClicked.bind(this);
 		this.changeHeaderLink = this.changeHeaderLink.bind(this);
+		this.changeHeroLink = this.changeHeroLink.bind(this);
 		this.saveDraftClicked = this.saveDraftClicked.bind(this);
 		this.isValid = this.isValid.bind(this);
 		this.updateProject = this.updateProject.bind(this);
@@ -87,15 +93,20 @@ class Update extends React.Component{
 		this.setState({headerImageLinkOnS3: headerLinkS3, changed: true});
 	}
 
+	changeHeroLink(headerLinkS3){
+		console.log(headerLinkS3);
+		this.setState({heroImageLinkOnS3: headerLinkS3, changed: true});
+	}
+
 	componentWillMount(){
 		var _projectId = null;
 		if(this.props.params.projectId){
+			console.log(this.props.params.projectId);
 			_projectId = this.props.params.projectId 
 			var queryString = 'projectId='+this.props.params.projectId;
 			this.props.getSingleProject(queryString).then(
 				(res) => {
 					var response = JSON.parse(res.request.response);
-					console.log(response);
 					var projectOwnerId = response.data.user_id;
 					var userId = this.props.auth.user.id;
 					if(projectOwnerId === userId){
@@ -120,16 +131,16 @@ class Update extends React.Component{
 		console.log(this.state);
 		this.props.updateProject(this.state).then(
 			(res) => {
-				this.setState({updateFiles: true});
+				this.setState({updateFiles: true, btnClicked: true});
 			},
 			(err) => { this.context.router.push('/notfound');}
-		);
+		)
 	}
 
 	publishClicked(){
 		if(this.state.published){
 			if(this.isValid()){
-				this.setState({ errors: {}, updateFiles: true, published: true }, this.updateProject);
+				this.setState({ data:{projectPublished: true, btnClicked: 'published'}, errors: {}, updateFiles: true, published: true }, this.updateProject);
 				setTimeout(() => {
 					this.props.addFlashMessage({
 						type: 'success',
@@ -141,12 +152,32 @@ class Update extends React.Component{
 		}
 		else{
 			if(this.state.associatedProject){
-				//NOT PUBLISHED, DRAFT
+				//NOT A PUBLISHED, DRAFT
 				//1. IF ASSOCIATED PUBLISHED PROJECT EXISTS, PROMPT to overwrite
 				//2. ON OVERWRITE, 
+
 				//this.setState({ published: true, associatedProject: this.state.id }, this.createNewAssociatedProject);
 				if(this.isValid()){
-					this.setState({ errors: {}, id: this.state.associatedProject, published: true }, this.updateProject);
+					console.log('here');
+					console.log(this.state);
+					//DRAFT PROJECT, PUBLISHED cLicked, 
+					//ASSOCIATED PROJECT EXISTS
+
+					this.setState({data:{projectPublished: false, btnClicked: 'published'}, errors: {}, associatedProject: null, published: true }, this.updateProject);
+					//AFTER UPDATING THE PUBLISHED VERSION, GET RID OF THE DRAFT
+					//DELETE PUBLISHED VERSION
+					const deleteProject = this.state.ascProjectId;
+					var queryString = "project_id="+deleteProject;
+					console.log(deleteProject);
+					this.props.deleteProject(queryString).then(
+						(res) => {
+							var response = JSON.parse(res.request.response);
+							console.log(response);
+						}, (err) => { 
+								this.setState({error: true});
+						}
+					)
+
 					setTimeout(() => {
 						this.props.addFlashMessage({
 							type: 'success',
@@ -157,7 +188,21 @@ class Update extends React.Component{
 				}
 			}
 			else{
-				this.setState({ published: true, associatedProject: this.state.id }, this.createNewAssociatedProject);
+				//A DRAFT, PUBLISH CLICKED, SIMPLY PUBLISH THE DRAFT
+				if(this.isValid()){
+					//DRAFT PROJECT, PUBLISHED cLicked, 
+					//ASSOCIATED PROJECT EXISTS
+				
+					this.setState({errors: {}, published: true, associatedProject: null }, this.updateProject);
+			
+					setTimeout(() => {
+						this.props.addFlashMessage({
+							type: 'success',
+							text: this.state.projectTitle+': successfully saved & published.'
+						});
+			  			this.context.router.push('/profile');
+					}, 1100)
+				}
 			}
 		}
 	}
@@ -187,6 +232,24 @@ class Update extends React.Component{
 						this.context.router.push('/notfound');
 					}
 				)
+				//UPDATE FILES
+				this.setState({id: response.project_id, ascProjectId: response.project_id, updatePublishedFiles:false, published: false }, this.updateProject);
+				
+				//COPY ALL FILES OBJECT ON THE DATABSE WITH PROJECT OWNER (associated project id)
+				/*var dataObj = {
+					fromProjectId: this.state.id,
+					toProjectId: response.project_id
+				}
+				this.props.copyFiles(dataObj).then(
+					(res) => {
+						var response = JSON.parse(res.request.response);
+						console.log(response);
+					},
+					(err) => {
+						console.log(err);
+					}
+
+				)*/
 				//var linkUrl = '/update/'+response.project_id;
 				//this.context.router.push(linkUrl);
 			}, (err) => {
@@ -197,13 +260,13 @@ class Update extends React.Component{
 
 	saveDraftClicked(){
 		if(this.state.published){ //project is published and there does not exist a draft
-																   //if Draft Exists, associatedProject's value must be its id
+								  //if Draft Exists, associatedProject's value must be its id
 			//CREATE a New DRAFT
 			console.log('A PUBLISHED PROJECT');
 
 			if(this.state.associatedProject){
 				console.log('DRAFT EXISTS, overwrite Draft');
-				this.setState({ id: this.state.associatedProject, published: false }, this.updateProject);
+				this.setState({id: this.state.ascProjectId, associatedProject: this.state.id, updatePublishedFiles:false, published: false }, this.updateProject);
 				setTimeout(() => {
 					this.props.addFlashMessage({
 						type: 'success',
@@ -247,23 +310,22 @@ class Update extends React.Component{
 	}
 
 	checkForNull(){
-			if(this.state.project.contact_email === null){
-				this.setState({ contactEmail: '' });
-			}
-			if(this.state.project.user_rights === null){
-				this.setState({ usageRights : '' })
-			}
-			if(this.state.project.project_abstract === null){
-				this.setState({ projectAbstract : '' })
-			}
-			if(this.state.project.name === null){
-				this.setState({ projectTitle : '' })
-			}
+		if(this.state.project.contact_email === null){
+			this.setState({ contactEmail: '' });
+		}
+		if(this.state.project.user_rights === null){
+			this.setState({ usageRights : '' })
+		}
+		if(this.state.project.project_abstract === null){
+			this.setState({ projectAbstract : '' })
+		}
+		if(this.state.project.name === null){
+			this.setState({ projectTitle : '' })
+		}
 	}
 	
 	assignValues(e){
 		if(this.state.projectAssigned){
-			console.log(this.state.project);
 			var filesQuery = 'projectId='+this.state.project.id;
 			var _published;
 			if(this.state.project.published === 'true') _published = true;
@@ -284,6 +346,7 @@ class Update extends React.Component{
 				projectTitle: this.state.project.name,
 				projectAbstract: this.state.project.project_abstract,
 				headerImageLink: this.state.project.header_image_link,
+				ascProjectId: this.state.project.associated_project,
 				heroImageLink: this.state.project.hero_image,
 				headerImageLinkOnS3: this.state.project.headerImageLinkOnS3,
 				heroImageLinkOnS3: this.state.project.heroImageLinkOnS3,
@@ -389,11 +452,11 @@ class Update extends React.Component{
 	render(){
 		return(
 			<div>
-				<WritePageUpdate deleteClicked={this.deleteFileClicked} publishClicked={this.publishClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
+				<WritePageUpdate deleteClicked={this.deleteFileClicked} ascProjectId={this.state.ascProjectId} publishClicked={this.publishClicked} errors={this.state.errors} onChange={this.onChange} files={this.state.files} authors={this.state.authors} version={this.state.version} 
 						publication={this.state.publication} published={this.state.published} changePublished={this.changePublished} fileChanged={this.fileChanged} heroImage={this.state.heroImageLink} 
-						contactLinkedin={this.state.contactLinkedin} headerImageLinkOnS3={this.state.headerImageLinkOnS3} changeHeaderLink={this.changeHeaderLink} contactFacebook={this.state.contactFacebook} id={this.state.id}
-						contactEmail={this.state.contactEmail} updateFiles={this.state.updateFiles} contactHomepage={this.state.contactHomepage} keywords={this.state.keywords} usageRights={this.state.usageRights}
-						projectTitle={this.state.projectTitle} saveDraftClicked={this.saveDraftClicked} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}
+						contactLinkedin={this.state.contactLinkedin} headerImageLinkOnS3={this.state.headerImageLinkOnS3} changeHeroLink={this.changeHeroLink} changeHeaderLink={this.changeHeaderLink} contactFacebook={this.state.contactFacebook} id={this.state.id}
+						contactEmail={this.state.contactEmail} updatePublishedFiles={this.state.updatePublishedFiles} updateFiles={this.state.updateFiles} contactHomepage={this.state.contactHomepage} keywords={this.state.keywords} usageRights={this.state.usageRights}
+						projectTitle={this.state.projectTitle} btnClicked={this.state.btnClicked} saveDraftClicked={this.saveDraftClicked} projectAbstract={this.state.projectAbstract} headerImageLink={this.state.headerImageLink}
 					/>
 			</div>
 		);
@@ -409,7 +472,9 @@ Update.propTypes = {
 	newProject: React.PropTypes.bool,
 	addFlashMessage: React.PropTypes.func.isRequired,
 	uploadProject: React.PropTypes.func.isRequired,
-	updateAssociatedField: React.PropTypes.func.isRequired
+	updateAssociatedField: React.PropTypes.func.isRequired,
+	copyFiles: React.PropTypes.func.isRequired,
+	deleteProject: React.PropTypes.func.isRequired
 }
 
 Update.contextTypes = {
@@ -420,4 +485,4 @@ function mapStateToProps(state){
 	return { auth: state.auth };
 }
 
-export default connect(mapStateToProps, {getFilesObject, getSingleProject, updateAssociatedField, addFlashMessage, updateProject, uploadProject})(Update);
+export default connect(mapStateToProps, {getFilesObject, getSingleProject,deleteProject,  updateAssociatedField, addFlashMessage, copyFiles, updateProject, uploadProject})(Update);
