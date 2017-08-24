@@ -1,18 +1,18 @@
-  myapp:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      PORT: "8000"
-      PGHOST: db
-    links:
-      - db
+myapp:
+  build: .
+  ports:
+    - "8000:8000"
+  environment:
+    PORT: "8000"
+    PGHOST: db
+  links:
+    - db
 
+db:
+  build: ./postgres/
+  ports:
+    - "5432:5432"
+  environment:
+    POSTGRES_PASSWORD: GCTORSTORAGEMASTER
+    POSTGRES_USER: postgres
 
-  db:
-    build: ./postgres/
-    environment:
-      POSTGRES_PASSWORD: GCTORSTORAGEMASTER
-      POSTGRES_USER: postgres 
-    ports: 
-      - "8432:8000"
