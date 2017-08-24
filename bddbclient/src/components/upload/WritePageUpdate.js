@@ -38,12 +38,12 @@ class WritePageUpdate extends React.Component{
 		this.newFileDeleteClicked = this.newFileDeleteClicked.bind(this);
 		this.getIndex = this.getIndex.bind(this);
 		this.handleFileUploads = this.handleFileUploads.bind(this);
-		this.printState = this.printState.bind(this);
 		this.backToProfile = this.backToProfile.bind(this);
 		this.handleCoverFileUpload = this.handleCoverFileUpload.bind(this);
 		this.handleHeroFileUpload = this.handleHeroFileUpload.bind(this);
 		this.videosClicked = this.videosClicked.bind(this);
 		this.previewClicked = this.previewClicked.bind(this);
+		this.textClicked = this.textClicked.bind(this);
 	}
 
 	componentWillMount(){
@@ -51,16 +51,13 @@ class WritePageUpdate extends React.Component{
 	}
 
 	previewClicked(){
-		console.log('preview generating');
+		//console.log('preview generating');
 	}
 
 	backToProfile(){
 		this.context.router.push('/profile');
 	}
 
-	printState(){
-		console.log(this.state);
-	}
 	handleHeroFileUpload(e){
 		e.preventDefault();
 		var file = e.target.files[0];
@@ -83,7 +80,8 @@ class WritePageUpdate extends React.Component{
 					}
 				);
 			},
-			(err) => { console.log('error'); }
+			(err) => { //console.log('error'); 
+		}
 		);
 	}
 	handleCoverFileUpload(e){
@@ -108,7 +106,8 @@ class WritePageUpdate extends React.Component{
 					}
 				);
 			},
-			(err) => { console.log('error'); }
+			(err) => { console.log('error'); 
+		}
 		);
 	}
 
@@ -142,8 +141,26 @@ class WritePageUpdate extends React.Component{
 		//this.props.uploadDocumentToS3({ file, name: 'testing_picture' })
 	}
 	
+	textClicked(){
+		var _newFilesObjects = this.state.newFilesObjects.map((fileItem) =>{
+			return fileItem;
+		});
+		var newFileItem = {
+			id: this.state.currId,
+			project_id: this.props.id,
+			user_id: this.state.userId,
+			title: '',
+			tags: '',
+			file: null,
+			file_link: null,
+			description: '',
+			links_array: [],
+			newFilesBlock: true,
+		}
+		_newFilesObjects.push(newFileItem);
+		this.setState({newFilesObjects: _newFilesObjects, currId: this.state.currId+1});
+	}
 	videosClicked(){
-		console.log('videosClicked');
 		var _newFilesObjects = this.state.newFilesObjects.map((fileItem) =>{
 			return fileItem;
 		});
@@ -193,9 +210,7 @@ class WritePageUpdate extends React.Component{
 	}
 
 	newFileDeleteClicked(fileId){
-		console.log(fileId);
 		const index = this.getIndex(fileId);
-		console.log(index);
 		if(index >= 0) this.setState({ newFilesObjects: update(this.state.newFilesObjects, {$splice: [[index, 1]]}) })
 	}
 	
@@ -209,7 +224,6 @@ class WritePageUpdate extends React.Component{
 			var query = "project_id="+this.props.ascProjectId;
 			this.props.deleteFile(query).then(
 				(res) => {
-					console.log('done');
 					this.setState({uploadAll: true});
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -221,17 +235,13 @@ class WritePageUpdate extends React.Component{
 	}*/
 
 	componentWillReceiveProps(nextProps){
-		//console.log(nextProps);
 		if(nextProps.btnClicked){
 			if(!nextProps.updatePublishedFiles && nextProps.updateFiles ){
-				console.log('updating/uploading file');
 				//PUBLISHED PROJECT file sblocks edited and saving as a draft
-				console.log("ASSOCIATED PROJECT ID: "+ this.props.ascProjectId);
 				if(this.props.ascProjectId){
 					var query = "project_id="+this.props.ascProjectId;
 					this.props.deleteFile(query).then(
 						(res) => {
-							console.log('done deleting');
 							this.setState({uploadAll: true, btnClicked: true, updateFiles: true, updatePublishedFiles: false});
 						},
 						(err) => { this.context.router.push('/notfound');}
@@ -239,7 +249,6 @@ class WritePageUpdate extends React.Component{
 				}
 			}
 			else{
-				console.log('ELSE CONDITIONNNN');
 				this.setState({btnClicked: true, updateFiles: nextProps.updateFiles, updatePublishedFiles: nextProps.updatePublishedFiles});
 			}
 		}
@@ -281,7 +290,6 @@ class WritePageUpdate extends React.Component{
 				</div>
 				<div className="row row-right-btn">
 					<button className="write-page-btn-publish write-page-btn button" onClick={this.props.publishClicked}> Publish </button>
-					<button className="write-page-btn-save write-page-btn button onClick={this.previewClicked}"> Preview </button>
 					<button className="write-page-btn-draft write-page-btn  button" onClick={this.props.saveDraftClicked}> Save as Draft </button>
 				</div>
 			</div>	
@@ -404,7 +412,7 @@ class WritePageUpdate extends React.Component{
 						<p>Add content to project </p>
 					</div>
 					<div className="content-btns">
-						<button className="write-page-content-btn content-btns-style button"> Text </button>
+						<button className="write-page-content-btn content-btns-style button" onClick={this.textClicked}> Text </button>
 						<button className="file-input-wrapper ">
 						  	<label className="write-page-content-btn content-btns-style label"> Image</label>
 						  	<input onChange={this.handleFileUploads} type="file" accept="image/*" className="input-file-upload" name="file" multiple />
@@ -467,3 +475,5 @@ function mapStateToProps(state){
 }
 
 export default connect(mapStateToProps, {uploadDocumentToS3, deleteFile, signedUrlForS3Doc})(WritePageUpdate);
+//<button className="write-page-btn-save write-page-btn button onClick={this.previewClicked}"> Preview </button>
+					

@@ -7,7 +7,6 @@ class EntriesGallery extends React.Component{
 
 	render() {
 		const fileDisplay = this.props.files.map((file) => {
-			console.log(file);
 			return <FileItem key={file.id} file={file} getSignedUrl={this.props.getSignedUrl} />
 		});
 		return(

@@ -122,11 +122,10 @@ class UpoloadNew extends React.Component{
 
 	fileChanged(e){
 		this.setState({ changed: true });
-		console.log('file changed');
 	}
 
 	changePublished(_published){
-			this.setState({ published: !this.state.published, changed: true }, console.log(this.state.published));
+			this.setState({ published: !this.state.published, changed: true });
 		
 	}
 
@@ -163,7 +162,6 @@ class UpoloadNew extends React.Component{
 			else{
 				//data changed, Create a new project and save in the Database
 				if(this.isValid()){
-					console.log('upload to do');
 					if(this.props.closeBool) {
 						this.props.closeWrite();
 					}

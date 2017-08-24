@@ -47,6 +47,12 @@ export function updateProject(data){
 	}
 }
 
+export function incViews(data){
+	return dispatch => {
+		return axios.put('/api/projects/project/incviews', data);
+	}
+}
+
 export function updateFileItem(data){
 	return dispatch => {
 		return axios.put('/api/files/file', data);

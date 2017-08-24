@@ -15,7 +15,6 @@ class App extends React.Component {
 
 	searchSubmit(e){
 		e.preventDefault();
-		console.log(this.state.searchValue);
 	}
 
 	searchValUpdate(e) {

@@ -27,24 +27,17 @@ function getSignedUrl(files){
 		s3.getSignedUrl('getObject', params, (err, url) => {
 			file.file_link = url;
 		});
-//		console.log("getting signed url");
-//		var params3 = {Bucket: bucketName, Key: 'allFiles/2/test1.png', Expires: 2400}
-//		s3.getSignedUrl('getObject', params3, (err, url) => {
-//			console.log(url);
-//		});
-		//get signed url for links_array
+
 		if(file.links_array){
 			var newLinksArray = file.links_array.map((link) => {
 			
 				var params1 = {Bucket: bucketName, Key: link, Expires: 2400}
 				s3.getSignedUrl('getObject', params1, (err, url) => {
-					console.log(url);
 					signedLinksArray.push(url);
 					return url;
 				});
 			});
 		}
-		console.log(signedLinksArray);
 		file.links_array = signedLinksArray;
 		file.type = type;
 		return file;
@@ -160,8 +153,6 @@ router.get('/file/', (req, res) => {
 });
 
 function postFiles(filesArr, userId, toProjectId){
-	console.log(filesArr);
-	console.log('POSTING FILESSSSS >>>>>>>>>>><<<<<<<<<');
 	var len = filesArr.length;
 	for(var i = 0; i < len; i++){
 		Files.forge({
@@ -175,11 +166,7 @@ function postFiles(filesArr, userId, toProjectId){
 			video: filesArr[i].video,
 			videoLink: filesArr[i].videoLink
 		}, { hasTimestamps: true }).save()
-		.then(resData=> {
-			console.log('saved');
-		})
-		.catch(err => { console.log('error');
-		});
+
 		if(i+1===len) return { success: true }
 	}
 }
@@ -218,8 +205,6 @@ router.post('/copyFiles/', (req, res) => {
 });
 
 router.post('/file/', (req, res) =>{
-	console.log(req.body);
-	console.log("POSTING FILESSSS <<<>>>>>>");
 	const authorizationHeader = req.headers['authorization'];
 	const _fileName = req.body.file_path_s3 ? req.body.file_path_s3 : req.body.file_name;
 	let token;
@@ -275,8 +260,6 @@ router.delete('/file/', (req, res) => {
 	const _projectId = req.query.project_id;
 	const authorizationHeader = req.headers['authorization'];
 	let token;
-	console.log(req.query);
-	console.log("DELETEEE FILESSSSS <<<>>>>");
 	if(authorizationHeader) {
 		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
 													//split and take the index 1 to access token
@@ -287,11 +270,9 @@ router.delete('/file/', (req, res) => {
 			
 			if(_projectId){
 				//Delete all files object with projectId=Project_id
-				console.log('deleting all files from project: '+_projectId);
 				Files.where({user_id: decode.id, project_id: _projectId, deleted: false}).fetchAll()
 				.then(resData=> {
 						var resData = resData.toJSON();
-						console.log(resData);
 						var len = resData.length;
 						for(var i=0; i < len; i++){
 							Files.where({id: resData[i].id, user_id: decode.id}).save({ deleted: true }, {patch: true});
@@ -304,7 +285,6 @@ router.delete('/file/', (req, res) => {
 				if(err) {
 					res.status(401).json({ error: 'Failed to authenticate'})
 				} else {
-					console.log(decode);
 					Files.where({id: file_id}).where({user_id: decode.id}).save({ deleted: true }, {patch: true}); //update the project appreciations in database
 					res.json({success: true});
 				}

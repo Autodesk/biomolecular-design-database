@@ -34,12 +34,9 @@ AWS.config.update(
     subregion: 'us-west-2',
   }
 );
-
 const upload = multer({
 	storage: multer.memoryStorage()
 });
-
-
 router.post('/', upload.single('theseNamesMustMatch'), (req, res) => {
   // req.file is the 'theseNamesMustMatch' file
   s3.putObject({

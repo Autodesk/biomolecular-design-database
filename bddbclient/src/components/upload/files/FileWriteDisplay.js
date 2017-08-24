@@ -48,11 +48,9 @@ class FileWriteDisplay extends React.Component{
 
 	deleteClicked(e){
 		e.preventDefault();
-		console.log('delete clicked');
 		var query = "file_id="+this.props.file.id;
 		this.props.deleteFile(query).then(
 			(res) => {
-				console.log(this.state);
 				this.props.deleteClicked(this.props.file.id);
 			},
 			(err) => { this.context.router.push('/notfound');}
@@ -64,7 +62,6 @@ class FileWriteDisplay extends React.Component{
 		if(this.state.changed){
 			this.props.updateFileItem(this.state).then(
 				(res) => {
-					console.log(this.state);
 					this.setState({ changed: false });
 				},
 				(err) => { this.context.router.push('/notfound');}

@@ -3,10 +3,6 @@ import './modal.css';
 
 class CommentItem extends React.Component{
 
-	componentWillMount(){
-		console.log(this.props.comment);
-	}
-
 	render() {
 		return (
 			<div className="single-comment">

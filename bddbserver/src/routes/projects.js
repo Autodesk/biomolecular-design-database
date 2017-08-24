@@ -1,5 +1,6 @@
 import express from 'express';
 import Projects from '../models/projects';
+import Files from '../models/files';
 import file from '../models/files';
 import AWS from 'aws-sdk';
 import commaSplit from 'comma-split';
@@ -215,17 +216,104 @@ router.put('/project/associatedField/', (req, res) => {
 	}
 });
 
+//QUALITY OF DOCUMENTATION ALGORITHM 
+
+//IMAGE FILES AND PROJECT ABSTRACT
+function star1(projectData, callback){
+	var heroImage = projectData.heroImageLinkOnS3;
+	var coverImage = projectData.headerImageLinkOnS3;
+	var abstract = projectData.projectAbstract;
+	var abstractWordCount = count(projectData.projectAbstract);
+	if(heroImage && heroImage != '' && coverImage && coverImage != '' && abstractWordCount > 50){
+		callback(projectData, 1, star345);
+	}
+	else{
+		callback(projectData, 0, star345);
+	}
+}
+
+//METADATA
+function star2(projectData, stars, callback){
+	var title = projectData.projectTitle;
+	var authors = JSON.stringify(projectData.authors.split(','));
+	var contactInfo = projectData.contactEmail;
+	var usageRights = projectData.usageRights;
+	if(title && title != '' && authors && authors != '' && contactInfo && contactInfo != '' && usageRights && usageRights != ''){
+		callback(projectData, stars+1, setQOD);
+	}
+	else{
+		callback(projectData, stars, setQOD);
+	}
+}
+
+function setQOD(stars, projectId){
+	Projects.where({id: projectId}).where({deleted: false})
+		.save({
+			quality_of_documentation: stars
+		 }, {patch: true})
+}
+//DESIGN FILES
+function star345(projectData, stars, callback){
+	//Check if there exists a file entry with keyword Design: Design file
+	//and a file/text entry  with keyword Design: Strand Information
+	var designExists = false;
+	var strandInfoExists = false;
+	var designBlocksCount = 0;
+	var introductionBlockExists = false;
+	var descriptionBlockExists = false;
+	var experimentBlockExists = false;
+	Files.where({project_id: projectData.id, deleted: false}).fetchAll()
+		.then(_resData => {
+			var resData = _resData.toJSON();
+			var data = resData.map((file) => {
+				var tagsKeywords = JSON.parse(file.tags);
+
+				if(tagsKeywords.Design){
+					if(tagsKeywords.Design.indexOf("Design File") > -1){
+						designExists = true;
+					}
+					if(tagsKeywords.Design.indexOf("Strand Information") > -1){
+						strandInfoExists = true;
+					}
+					if(tagsKeywords.Design.length > 0){
+						designBlocksCount++;
+					}
+					if(!introductionBlockExists && tagsKeywords.Design.indexOf("Introduction") > -1){
+						introductionBlockExists = true;
+					}
+					if(!descriptionBlockExists && tagsKeywords.Design.indexOf("Description") > -1){
+						descriptionBlockExists = true;
+					}
+				}
+				if(!experimentBlockExists && tagsKeywords.Experiment && tagsKeywords.Experiment.length > 0){
+					experimentBlockExists = true;
+				}
+				return file;
+			});
+			if(data){
+				if(designExists && strandInfoExists){
+					stars+=1;
+				}
+				if(designBlocksCount >= 4 && descriptionBlockExists && introductionBlockExists){
+					stars+=1;
+				}
+				if(experimentBlockExists){
+					stars+=1;
+				}
+				setQOD(stars, projectData.id);
+			}
+		});	
+}
+
+
 function qualityOfDoc(projectData){
-	console.log(projectData.projectAbstract);
+	star1(projectData, star2); //pass in a callback function
 }
 
 router.put('/project/', (req, res) => {
 	const authorizationHeader = req.headers['authorization'];
 	let token;
 	var _associatedProject = req.body.associatedProject ? req.body.associatedProject : null;
-
-	//QUALITY OF DOCUMENTATION ALGORITHM
-	qualityOfDoc(req.body);
 
 	if(authorizationHeader) {
 		token = authorizationHeader.split(' ')[1]; //authorization header: 'Bearer <token>' 
@@ -237,6 +325,10 @@ router.put('/project/', (req, res) => {
 			if(err) {
 				res.status(401).json({ error: 'Failed to authenticate'})
 			} else {
+				//RUN QUALITY OF DOCUMENTATION ALGORITHM
+				setTimeout(() => {
+					qualityOfDoc(req.body);
+				}, 1000);
 				Projects.where({id: req.body.id}).where({deleted: false}).where({user_id: decode.id})
 				.save({ 
 					name: req.body.projectTitle,
@@ -267,6 +359,27 @@ router.put('/project/', (req, res) => {
 	else{
 		res.status(403).json({	error: 'No token provided' 	});
 	}
+});
+
+function viewInc(_views, _id){
+	if(_views >= 0){
+		var incBy1 = _views+1;
+		Projects.where({id: _id}).save({ views: incBy1 }, {patch: true}); //update the project appreciations in database
+	}
+}
+
+router.put('/project/incViews/', (req, res) => {
+
+	Projects.where({id: req.body.id, deleted: 'false', published: 'true'}).fetch()
+		.then(resData => {
+			var resProject = resData.toJSON();
+			viewInc(resProject.views, resProject.id);
+			res.status(200).json({error: false});
+		})
+		.catch(err => {res.status(500).json({error: true})
+		});
+
+	//Projects.where({id: _projectId}).save({ deleted: 'true' }, {patch: true}); //update the project appreciations in database	
 });
 
 router.get('/project/', (req, res) => {
@@ -306,8 +419,6 @@ router.delete('/project/', (req, res) => {
 });
 
 router.post('/project/', (req, res) => {
-	console.log('POSTINGGG>>>>>');
-	console.log(req.body);
 	const authorizationHeader = req.headers['authorization'];
 	let token;
 
@@ -364,7 +475,6 @@ router.post('/project/', (req, res) => {
 					deleted: false
 				}, { hasTimestamps: true }).save() //save returns 'promise' so we can use then/catch
 				.then(project =>  {
-					console.log('returning');
 					res.status(200).json({ success: true, project_id: project.toJSON().id });
 				})
 				.catch(err => {
@@ -379,29 +489,11 @@ router.post('/project/', (req, res) => {
 	}
 })
 
-/*
-router.post('/', (req, res) =>{
-	const user_id = req.body.userId;
-	const project_id = req.body.projectId;
-	var _projectAppreciations = req.body.projectAppreciations + 1;
-	Projects.where({id: project_id}).save({ likes: _projectAppreciations }, {patch: true}); //update the project appreciations in database
-
-	Appreciations.forge({ 
-		user_id,
-		project_id
-	}, { hasTimestamps: true }).save()
-	.then(appreciation => {
-		res.status(200).json({error: false, success: true})
-	})
-	.catch(err => console.log(err));
-});
-*/
 router.get('/comments/', (req, res) => {
 	var _projectId = req.query.projectId;
 	Comments.query({
 		where: { project_id: _projectId }
 	}).fetchAll().then(comments => {
-		console.log(comments.toJSON());
 		var commentsArr = comments.toJSON();
 		res.json({ commentsArr });
 	});

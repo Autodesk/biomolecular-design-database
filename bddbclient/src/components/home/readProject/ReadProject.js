@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { userAppreciated, getComments, saveComment, checkAppreciations, getFilesObject, getSignedUrl } from '../../../actions/detailsAction';
+import { userAppreciated, getComments, saveComment, incViews, checkAppreciations, getFilesObject, getSignedUrl } from '../../../actions/detailsAction';
 import './modal.css';
 import '../Home.css';
 import EntriesGallery from './EntriesGallery';
@@ -15,6 +15,8 @@ import web from '../../../../public/Assets/icons/web.svg';
 import help from '../../../../public/Assets/icons/help.svg';
 import ratingOff from '../../../../public/Assets/icons/ratingOff.svg';
 import ratingOn from '../../../../public/Assets/icons/ratingOn.svg';
+import DetailModal from './DetailModal';
+import Modal from 'react-modal';
 
 class ReadProject extends React.Component {
 	constructor(props){
@@ -28,29 +30,46 @@ class ReadProject extends React.Component {
 			comments: [],
 			commentInput: '',
 			postEnable: false,
-			showCopied: false
+			showCopied: false,
+			userRightModalActive: false,
+			qodModalActive: false,
+			displayUserRights: false
 		}
 		this.toggleCopied = this.toggleCopied.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.appreciationClick = this.appreciationClick.bind(this);
 		this.postComment = this.postComment.bind(this);
 		this.changeShowCopied = this.changeShowCopied.bind(this);
+		this.userRightModalActivate = this.userRightModalActivate.bind(this);
+		this.userRightModalDeactivate = this.userRightModalDeactivate.bind(this);
+		this.qodModalActivate = this.qodModalActivate.bind(this);
+		this.qodModalDeactivate = this.qodModalDeactivate.bind(this);
+		
 	}	
 
 	componentWillMount() {
-		console.log(this.props);
 		const _isAuthenticated = this.props.auth.isAuthenticated;
 		var _userId = 0;
 		var _appreciateButtonEnabled = false;
 		var filesQuery = 'projectId='+this.props.project.id;
-		
+		var idObject = {
+			id: this.props.project.id
+		}
 		this.props.getFilesObject(filesQuery).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
-				console.log(response.data);
 				this.setState( { files: response.data} ); //change the current state. this will render 
 			},
 			(err) => { this.context.router.push('/notfound');}
+		);
+
+		this.props.incViews(idObject).then(
+			(res) => {
+				this.setState({ viewInc: true });
+			},
+			(err) =>{
+				this.setState({ viewInc: false });
+			}
 		);
 
 		if(_isAuthenticated){ 
@@ -93,7 +112,6 @@ class ReadProject extends React.Component {
 		}
 		else{
 			if(this.props.onProfilePage===true){
-				console.log('on profile page');
 				_appreciateButtonEnabled = false;
 			}
 			this.setState( {
@@ -105,11 +123,9 @@ class ReadProject extends React.Component {
 		}
 	
 		setInterval(() => {
-			console.log('updated');
 			this.props.getFilesObject(filesQuery).then(
 				(res) => {
 					var response = JSON.parse(res.request.response);
-					console.log(response);
 					this.setState( { files: response.data} ); //change the current state. this will render 
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -118,19 +134,34 @@ class ReadProject extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		console.log('in props');
 		if(nextProps.onProfilePage){
-			console.log('on profile page');
 			this.setState({ appreciateButtonEnabled: false});
 		}
 	}
+
+	userRightModalActivate(){
+		this.setState({ userRightModalActive: true });
+	};
+
+	userRightModalDeactivate(){
+		this.setState({userRightModalActive: false });
+	};
+
+	qodModalActivate(){
+		this.setState({ qodModalActive: true });
+	};
+
+	qodModalDeactivate(){
+		this.setState({qodModalActive: false });
+	};
+
+
 	changeShowCopied(){
 		this.setState({ showCopied :  false});
 	}
 
 	toggleCopied(){
 		if(!this.state.showCopied){
-			console.log('changed');
 			this.setState({ showCopied: true});
 		}
 		setTimeout(this.changeShowCopied, 6000);
@@ -190,6 +221,85 @@ class ReadProject extends React.Component {
 	}
 
 	render(){
+		const qodMessage = (
+			<div className="qod-block">
+					Quality of Documentation is currently scored based on meeting five different criteria. For each one met, the project gets an additional star.
+					<br/><br/> Criteria 1: Metadata completeness. You must have Title, Authors, Contact Info and Usage Rights filled out, and the Keywords block must have at
+					least one keyword from each of these categories: Institution, Material, Design Type, Scaffold. Examples of these keywords include: "Institution: My University", "Material: RNA","Design Type: DNA Origami", and "Scaffold: Non-scaffolded".
+					<br/><br/>Criteria 2: Must have the files necessary to describe the design. Must have a file entry which has the keyword tag "Design File", and a file or text entry which has the keyword Strand Information.
+					<br/><br/>Criteria 3: Images and Abstract. Has to have a cover image, hero image, and an abstract of at least a few sentences in length.
+					<br/><br/>Criteria 4: Design Information. Has at least 4 blocks that have keywords in the Design category, including at least an Introduction and Description block.
+					<br/><br/>Criteria 5: Experimental Information. Has at least one block with the Experimental keyword.
+					Quality of Documentation is scored based on an internal algorithm. We may change this implementation at any time to better reflect the desired metric, and will update
+				    this text as that happens. Please notify us of any abuses of the metric, and your feedback on how we can improve!
+			</div>
+		);
+		
+		const userRightMessage = (
+			<div className="usage-right-box">
+			  		Please indicate how others can use the presented work, including design files and images. 
+			  		This should be either a reference to a specific license (e.g. "CC BY-SA 3.0"), or an indicator 
+			  		that you reserve all rights. For more information on licenses, see https://creativecommons.org/licenses/ or other resources.
+			</div>
+		);
+		
+		const usageRightBlock = (
+        	<DetailModal deactivateModal={this.userRightModalDeactivate} message={userRightMessage}/>
+		);
+
+		const qodBlock = (
+			<DetailModal deactivateModal={this.qodModalDeactivate} message={qodMessage} />
+		);
+
+
+
+		//PROMPT DETAILS MODAL
+		const customStyles = {
+		  overlay : {
+		    position          : 'fixed',
+		    top               : 0,
+		    left              : 0,
+		    right             : 0,
+		    bottom            : 0,
+		    backgroundColor   : 'rgba(0, 0, 0, 0.60)',
+		    padding			  : '0px',
+		    zIndex 			  : 1099,
+		    paddingBottom 	  : '40%'
+		  },
+		  content : {
+		    position                   : 'absolute',
+		    top                        : '0px',
+		    left                       : '30%',
+		    right                      : '30%',
+		    paddingTop 				   : '5%',
+		    paddingLeft				   : '0px',
+		    paddingRight 			   : '0px',
+		    minHeight 				   : '100%',
+		    margin 					   : 'auto',
+		    border                     : 'none',
+		    background                 : 'transparent',
+		    outline                    : 'none',
+		    overflow                   : 'auto'
+		  }
+		};
+
+		const usageRightModal = <Modal
+				isOpen={this.state.userRightModalActive}
+				onAfterOpen={this.userRightModalActivate}
+				onRequestClose={this.userRightModalDeactivate}
+				style={customStyles}
+				contentLabel="Modal Open">
+					{usageRightBlock}	
+				</Modal>
+		const qodModal = <Modal
+				isOpen={this.state.qodModalActive}
+				onAfterOpen={this.qodModalActivate}
+				onRequestClose={this.qodModalDeactivate}
+				style={customStyles}
+				contentLabel="Modal Open">
+					{qodBlock}	
+				</Modal> 
+
 		var counter = 0;
 		var count = 0;
 		var ticks = [];
@@ -215,6 +325,7 @@ class ReadProject extends React.Component {
 		//	);
 		//const disableComment = ( <button type="button" disabled={true} className="btn btn-success post-btn" onClick={this.postComment}>Post</button>
 		//	);
+
 		const allowAppreciation = (
 			<button className="btn btn-success appreciate-btn" onClick={this.appreciationClick}> Appreciate Project </button>
 		);
@@ -259,7 +370,8 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
-							<h5 className="usage-rights"> USAGE RIGHTS <img className="question" src={help} alt="help icon"/> </h5>
+							<h5 className="usage-rights"> USAGE RIGHTS <img className="question" onClick={this.userRightModalActivate} src={help} alt="help icon"/> </h5>
+					
 						<p className="authors-styling"> {this.props.project.user_rights} </p>
 						</div>
 					</div>
@@ -281,7 +393,7 @@ class ReadProject extends React.Component {
 					</div>
 					<div className="sub-part pull-left">
 						<div className="sub-title">
-							<h5> QUALITY OF DOCUMENTATION <img className="question" src={help} alt="help icon"/>  </h5>
+							<h5> QUALITY OF DOCUMENTATION <img className="question" onClick={this.qodModalActivate}  src={help} alt="help icon"/>  </h5>
 							<div className="ticks-details"> 
 								<div className="tick">
 							        {ticks[0]}
@@ -334,6 +446,8 @@ class ReadProject extends React.Component {
     			</div>
     			<hr/>
     			</div>
+    			{usageRightModal}
+    			{qodModal}
 			</div>
 		);
 	}
@@ -349,7 +463,8 @@ ReadProject.proptypes = {
 	getSignedUrl: React.PropTypes.func.isRequired,
 	getFilesObject: React.PropTypes.func.isRequired,
 	getComments: React.PropTypes.func.isRequired,
-	onProfilePage: React.PropTypes.bool
+	onProfilePage: React.PropTypes.bool,
+	incViews: React.PropTypes.func.isRequired
 }
 ReadProject.contextTypes = {
 	router: React.PropTypes.object.isRequired
@@ -393,4 +508,4 @@ function mapStateToProps(state){
 
 	  */
 
-export default connect(mapStateToProps, {checkAppreciations, getComments, saveComment, userAppreciated, getFilesObject, getSignedUrl})(ReadProject);
+export default connect(mapStateToProps, {checkAppreciations, incViews, getComments, saveComment, userAppreciated, getFilesObject, getSignedUrl})(ReadProject);

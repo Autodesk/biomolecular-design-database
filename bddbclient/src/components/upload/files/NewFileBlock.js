@@ -7,9 +7,7 @@ import { uploadDocumentToS3, signedUrlForS3Doc, deleteDocument, deleteFile } fro
 import mime from 'mime-types';
 import uuidv1 from 'uuid/v1';
 import path from 'path';
-//import update from 'react-addons-update';
 import Check from '../../../../public/Assets/icons/Check.svg';
-//import Dropdown, { DropdownTrigger, DropdownContent } from'react-simple-dropdown';
 
 const customStyles = {
 	overlay : {
@@ -62,12 +60,9 @@ class NewFileBlock extends React.Component{
 	componentWillReceiveProps(nextProps){
 		if(nextProps.btnClicked && nextProps.updateFiles){
 			if(nextProps.uploadAll){
-				console.log('Uploading All Files');
-				console.log(this.props.ascProjectId);
 				this.setState({project_id: this.props.ascProjectId, tags: JSON.stringify(this.state.keywordsObject)}, this.uploadOnDb);
 			}
 			else if(nextProps.updateFiles){
-				console.log('Saving Files');
 				this.saveUpdateFile();
 			}
 		}
@@ -99,7 +94,7 @@ class NewFileBlock extends React.Component{
 			this.props.deleteDocument(queryPath).then(
 				(res) => {
 					var response = JSON.parse(res.request.response);
-					console.log(response);
+					this.setState({deleteDocResponse: response});
 				}, 
 				(err) => { 
 					this.context.router.push('/notfound');
@@ -123,11 +118,9 @@ class NewFileBlock extends React.Component{
 	}
 
 	componentWillMount(){
-		//console.log(this.props.file);
 		this.setState({ newFileBlock: this.props.isNewFile, project_id: this.props.file.project_id, userId: this.props.file.user_id });
 		if(this.props.file.file){
 			//THERE IS A FILE TO UPLOAD ON S3
-			console.log('mounting files');
 			var _imgBool = false;
 			var file = this.props.file.file;
 			var _saveLink = 'allFiles/'+this.props.file.user_id+'/'+this.props.file.project_id+'/'+uuidv1()+'/'+this.props.file.file.name;
@@ -153,12 +146,11 @@ class NewFileBlock extends React.Component{
 			};
 			this.setState({imgBool: _imgBool});
 		}
-		if(this.props.file.file_link && this.props.file.file_name){
+		if(this.props.file.file_link && this.props.file.file_name && this.props.file.file_link !== "" && this.props.file.file_name !== ""){
 			var _img_bool = false;
 			if(mime.lookup(this.props.file.file_name).indexOf('image') > -1){
 				_img_bool = true;
 			};
-			//console.log(this.props.file.file_link);
 			this.setState ({
 				imgBool: _img_bool,
 				file_name: this.props.file.file_name,
@@ -195,17 +187,14 @@ class NewFileBlock extends React.Component{
 	}
 	
 	uploadOnDb(){
-		console.log(this.state.tags);
 		this.props.uploadFile(this.state).then(
 				(res) => {
-					console.log(this.state);
 					this.setState({ changed: false });
 				},
 				(err) => { this.context.router.push('/notfound'); }
 			);
 	}
 	updateOnDb(){
-		console.log(this.state.tags);
 		this.props.updateFileItem(this.state).then(
 				(res) => {
 					this.setState({ changed: false });
@@ -217,11 +206,9 @@ class NewFileBlock extends React.Component{
 		//SAVE A NEW FILE BLOCK OR UPDATE AN EXISTING one
 		if(this.props.isNewFile){
 			//NEW FILE, UPLOAD DATA ON DB
-			console.log('this is new file ');
 			this.setState({ tags: JSON.stringify(this.state.keywordsObject)}, this.uploadOnDb);	
 		}
 		else{
-			console.log('else block');
 			//FILE ALREADY EXISTS ON DB, UPDATE IT
 			this.setState({ tags: JSON.stringify(this.state.keywordsObject)}, this.updateOnDb);
 		}
@@ -232,7 +219,6 @@ class NewFileBlock extends React.Component{
 		if(this.state.changed){
 			this.props.uploadFile(this.state).then(
 				(res) => {
-					console.log(this.state);
 					this.setState({ changed: false });
 				},
 				(err) => { this.context.router.push('/notfound');}
@@ -255,18 +241,12 @@ class NewFileBlock extends React.Component{
 	}
 
 	toDisplayName(){
-		if(this.state.file_name === ''){
+		if(this.state.file_name === ""){
 			return <p></p>;
 		}
 		else{
 			var nameFile = this.state.file_name;
 			var baseName = path.basename(nameFile, path.extname(nameFile));
-			/* if(nameFile.length > 37){
-				baseName = path.basename(nameFile, path.extname(nameFile)).slice(38, nameFile.length);
-			}
-			else{
-				baseName = path.basename(nameFile, path.extname(nameFile));
-			}*/
 			var extName = path.extname(this.state.file_name);
 			return <span className="plain-background"><h5>{baseName}<br/> ({extName} file)</h5></span>;
 		}
@@ -299,7 +279,6 @@ class NewFileBlock extends React.Component{
 				index=i;
 			}
 		}
-		console.log("simnulation" + index);
 		return index;
 	}
 
@@ -307,19 +286,15 @@ class NewFileBlock extends React.Component{
 
 	keywordsSelected(e){
 		e.preventDefault();
-		console.log(e.target.name);
 		const keywordName = e.target.name;
 		var _index = -1;
 		if(keywordName.indexOf("Design") > -1){
-			console.log('here');
 			var keywordD = keywordName.slice(8, keywordName.length);
 			const index = this.getIndexDesign(keywordD);
 			_index = index;
 			if(index >= 0) {
-				console.log(index);
 				var arrayD = this.state.keywordsObject.Design;
 				arrayD.splice(index, 1);
-				console.log(arrayD);
 				var _keywordsObjectD = this.state.keywordsObject;
 				_keywordsObjectD.Design = arrayD;
 				this.setState({ keywordsObject: _keywordsObjectD});
@@ -340,11 +315,9 @@ class NewFileBlock extends React.Component{
 			}
 		}
 		if(keywordName.indexOf("Simulation") > -1){
-			console.log("entered simulation");
 			var keywordS = keywordName.slice(12, keywordName.length);
 			const index = this.getIndexSimulation(keywordS);
 			_index = index;
-			console.log("found.  "+ index);
 			if(index >= 0) {
 				var arrayS = this.state.keywordsObject.Simulation;
 				arrayS.splice(index, 1);
@@ -360,7 +333,6 @@ class NewFileBlock extends React.Component{
 			// keywordsObject = { "Design": [],
 			//					  "Experiment": [],
 			//					  "Simulation": [] }
-			console.log(this.state.keywordsObject);
 			var _keywordsObject = this.state.keywordsObject;
 			if(keywordName.indexOf("Design") > -1){ 
 				var keywordD1 = keywordName.slice(8, keywordName.length);
@@ -374,8 +346,6 @@ class NewFileBlock extends React.Component{
 				var keywordS1 = keywordName.slice(12, keywordName.length);
 				_keywordsObject.Simulation.push(keywordS1);
 			}
-			console.log(_keywordsObject);
-			//console.log(this.state.keywordsArray.toString());
 			//var _newKeywordsArray = this.state.keywordsArray;
 			//_newKeywordsArray.push(keywordName);
 			this.setState({ keywordsObject: _keywordsObject});

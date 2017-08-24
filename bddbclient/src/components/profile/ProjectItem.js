@@ -37,7 +37,6 @@ class ProjectItem extends React.Component {
 		this.deleteClicked = this.deleteClicked.bind(this);
 		this.toggleCopied = this.toggleCopied.bind(this);
 		this.changeShowCopied = this.changeShowCopied.bind(this);
-		this.onClick = this.onClick.bind(this);
 		this.activateModal = this.activateModal.bind(this);
 		this.deactivateModal = this.deactivateModal.bind(this);
 		this.activateAscModal = this.activateAscModal.bind(this);
@@ -83,9 +82,7 @@ class ProjectItem extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps){
-		//console.log(nextProps.project);
 		if(nextProps.project && nextProps.project.associated_project && nextProps.project.published==='true'){
-			//console.log(nextProps.project);
 			this.setState({ associatedDraftExists: true }, this.getAssociatedDraft(nextProps.project.associated_project));
 		}
 		else if(nextProps.project && nextProps.project.associated_project && nextProps.project.published==='false'){
@@ -155,7 +152,6 @@ class ProjectItem extends React.Component {
 
 	associatedPublishClicked(e){
 		e.preventDefault();
-		console.log('publish');
 		var _message = "Overwrite existing project: "+this.props.project.name+'?';
 		this.setState({promptModalDiv: <PromptModal deactivateModal={this.deactivatePromptModal} message={_message} leftBtn="Cancel" rightBtn="Overwrite" left={this.deactivatePromptModal} right={this.overwriteAsscPublished}/> }, this.activatePromptModal);
 	}
@@ -217,7 +213,6 @@ class ProjectItem extends React.Component {
 
 	associatedDeleteClicked(e){
 		e.preventDefault();
-		console.log('assc delete clicked');
 		var queryString = "project_id="+this.state.associatedProjectObj.id;
 		this.props.onDeleteClick(queryString);
 		var data = {
@@ -243,7 +238,6 @@ class ProjectItem extends React.Component {
 	}
 
 	deleteClicked(){
-		console.log('deleteing');
 		var queryString = "project_id="+this.props.project.id;
 		this.props.onDeleteClick(queryString);
 	}
@@ -290,11 +284,6 @@ class ProjectItem extends React.Component {
 	closeDeleteAlert(){
 		this.setState({ deleteAlert: false });
 	}
-
-	onClick(e){
-		e.preventDefault();
-		console.log(e.target);
-	};
 
 	render(){
 		//MODAL

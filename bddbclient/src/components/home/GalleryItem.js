@@ -38,7 +38,6 @@ class GalleryItem extends React.Component {
 
 	onClick(e){
 		e.preventDefault();
-		console.log(e.target);
 	};
 
 	render(){

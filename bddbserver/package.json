@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "sleep 10; babel-node src/index.js",
+    "server": "sleep 10; nodemon --watch src --exec babel-node -- src/index.js",
     "start": "sleep 10; nodemon --watch src --exec babel-node -- src/index.js",
 
     "test": "echo \"Error: no test specified\" && exit 1",

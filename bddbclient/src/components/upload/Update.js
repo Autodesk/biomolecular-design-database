@@ -12,7 +12,6 @@ import {uploadProject, updateAssociatedField, deleteProject} from '../../actions
 import {copyFiles} from '../../actions/fileActions';
 
 function validateInput(data) {
-	console.log(data);
 	let errors= {};
 	if(Validator.isNull(data.authors)){
 		errors.authors = 'Author name is required';
@@ -89,19 +88,16 @@ class Update extends React.Component{
 	}
 
 	changeHeaderLink(headerLinkS3){
-		console.log(headerLinkS3);
 		this.setState({headerImageLinkOnS3: headerLinkS3, changed: true});
 	}
 
 	changeHeroLink(headerLinkS3){
-		console.log(headerLinkS3);
 		this.setState({heroImageLinkOnS3: headerLinkS3, changed: true});
 	}
 
 	componentWillMount(){
 		var _projectId = null;
 		if(this.props.params.projectId){
-			console.log(this.props.params.projectId);
 			_projectId = this.props.params.projectId 
 			var queryString = 'projectId='+this.props.params.projectId;
 			this.props.getSingleProject(queryString).then(
@@ -128,7 +124,6 @@ class Update extends React.Component{
 	}
 
 	updateProject(){
-		console.log(this.state);
 		this.props.updateProject(this.state).then(
 			(res) => {
 				this.setState({updateFiles: true, btnClicked: true});
@@ -158,8 +153,6 @@ class Update extends React.Component{
 
 				//this.setState({ published: true, associatedProject: this.state.id }, this.createNewAssociatedProject);
 				if(this.isValid()){
-					console.log('here');
-					console.log(this.state);
 					//DRAFT PROJECT, PUBLISHED cLicked, 
 					//ASSOCIATED PROJECT EXISTS
 
@@ -168,11 +161,10 @@ class Update extends React.Component{
 					//DELETE PUBLISHED VERSION
 					const deleteProject = this.state.ascProjectId;
 					var queryString = "project_id="+deleteProject;
-					console.log(deleteProject);
 					this.props.deleteProject(queryString).then(
 						(res) => {
 							var response = JSON.parse(res.request.response);
-							console.log(response);
+							this.setState({ deleteResponse: response});
 						}, (err) => { 
 								this.setState({error: true});
 						}
@@ -208,11 +200,9 @@ class Update extends React.Component{
 	}
 
 	createNewAssociatedProject(){
-		console.log(this.state);
 		this.props.uploadProject(this.state).then(
 			(res) => {
 				var response = JSON.parse(res.request.response);
-				console.log(response);
 				var data = {
 					id: this.state.id,
 					associatedProject: response.project_id
@@ -236,20 +226,6 @@ class Update extends React.Component{
 				this.setState({id: response.project_id, ascProjectId: response.project_id, updatePublishedFiles:false, published: false }, this.updateProject);
 				
 				//COPY ALL FILES OBJECT ON THE DATABSE WITH PROJECT OWNER (associated project id)
-				/*var dataObj = {
-					fromProjectId: this.state.id,
-					toProjectId: response.project_id
-				}
-				this.props.copyFiles(dataObj).then(
-					(res) => {
-						var response = JSON.parse(res.request.response);
-						console.log(response);
-					},
-					(err) => {
-						console.log(err);
-					}
-
-				)*/
 				//var linkUrl = '/update/'+response.project_id;
 				//this.context.router.push(linkUrl);
 			}, (err) => {
@@ -262,10 +238,8 @@ class Update extends React.Component{
 		if(this.state.published){ //project is published and there does not exist a draft
 								  //if Draft Exists, associatedProject's value must be its id
 			//CREATE a New DRAFT
-			console.log('A PUBLISHED PROJECT');
 
 			if(this.state.associatedProject){
-				console.log('DRAFT EXISTS, overwrite Draft');
 				this.setState({id: this.state.ascProjectId, associatedProject: this.state.id, updatePublishedFiles:false, published: false }, this.updateProject);
 				setTimeout(() => {
 					this.props.addFlashMessage({
@@ -277,7 +251,6 @@ class Update extends React.Component{
 			}
 
 			else{
-				console.log('DRAFT DOESNt Exist');
 				// 1. Create a new Draft Project
 				// 2. set its associated project to be this id
 				// 3. Set this.state.associatedProjec = the drafts id
@@ -285,8 +258,6 @@ class Update extends React.Component{
 			}
 		}
 		else if(!this.state.published){
-			console.log('DRAFT PROJECT');
-			console.log('Draft Project and saving as draft/ JUST UPDATE IT');
 			this.setState({ published: false }, this.updateProject);
 			setTimeout(() => {
 				this.props.addFlashMessage({
@@ -401,11 +372,10 @@ class Update extends React.Component{
 
 	fileChanged(e){
 		this.setState({ changed: true });
-		console.log('file changed');
 	}
 
 	changePublished(_published){
-		this.setState({ published: !this.state.published, changed: true }, console.log(this.state.published));
+		this.setState({ published: !this.state.published, changed: true });
 		
 	}
 
@@ -439,7 +409,6 @@ class Update extends React.Component{
 			else{
 				//data changed, Create a new project and save in the Database
 				if(this.isValid()){
-					console.log('upload to do');
 					if(this.props.closeBool) {
 						this.props.closeWrite();
 					}

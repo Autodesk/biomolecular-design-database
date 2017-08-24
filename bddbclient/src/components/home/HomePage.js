@@ -75,7 +75,6 @@ class HomePage extends React.Component {
 			(res) => {
 				var response = JSON.parse(res.request.response);
 				var newProjectArr = response.data;
-				console.log(newProjectArr);
 				this.setState( { projects: newProjectArr, getFrom: 0, getTo: 9 } );  
 			}, (err) => { 
 					this.context.router.push('/notfound')

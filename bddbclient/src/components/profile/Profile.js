@@ -18,7 +18,6 @@ class Profile extends React.Component{
 		this.deleteClicked = this.deleteClicked.bind(this);
 		this.closeWrite = this.closeWrite.bind(this);
 		this.uploadNewClicked = this.uploadNewClicked.bind(this);
-		this.btnClicked = this.btnClicked.bind(this);
 		this.loadProjects = this.loadProjects.bind(this);
 	}
 
@@ -122,10 +121,6 @@ class Profile extends React.Component{
 		return updatedDrafts;
 	}
 
-	btnClicked(){
-		console.log(this.props.searchValue); //search bar value
-	}
-	
 	deleteClicked(response){
 		if(response.success){
 			var updatedPublishedProjects = this.updatePublished(response);

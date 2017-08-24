@@ -368,9 +368,9 @@ p1{
 }
 .showcase-layout {
   width: 85%;
-    margin-left: 7.5%;
-    margin-top: 10px;
-    margin-right: 7.5%;
+  margin-left: 7.5%;
+  margin-top: 10px;
+  margin-right: 7.5%;
 }
 .showcase-item-layout {
   margin: auto 0% 0% 0%;
@@ -389,9 +389,10 @@ p1{
   cursor: pointer;
   cursor: hand;
 }
+
 .project-image{
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: width !important;
 }
 .stats{
     font-family: ArtifaktElement;
@@ -663,4 +664,13 @@ p1{
   border-top: 0;
   margin-left: -10px;
   margin-top: -10px;
+}
+/*DETAILS BOX PROMPT STYLE */
+.details-box-style{
+  padding-bottom: 10%;
+  text-align: left;
+  margin-top: 0px;
+  background-color: #000000 !important;
+  color: #2fe695;
+  font-family: ArtifaktElement;
 }

@@ -31,17 +31,18 @@ class FileItem extends React.Component{
     componentWillMount(){
       if(this.props.file.video){
           var url = this.props.file.videoLink;
-          console.log(url);
           if(url.indexOf("www.youtube.com") > -1){
               var ind = url.indexOf('watch?v=');
               var id = url.slice(ind+8, url.length);
-              console.log(id);
               this.setState({ validYoutubeLink: true, youtubeId: id });
           }
       }
     	if(!this.props.file.file_link){ //link is undefined
 	    	this.setState({ downloadable: false, linkPresent: false });
     	}
+      if(this.props.file.file_name === ""){
+        this.setState({ downloadable: false, linkPresent: false });
+      }
     	else if(this.props.file.links_array.length <= 0){
     		this.setState ({
 				lightboxDisplay:	<Lightbox
@@ -67,7 +68,6 @@ class FileItem extends React.Component{
                             photoIndex: (this.state.photoIndex + images.length - 1) % images.length,
                         })}
                         onMoveNextRequest={() => {
-                        	console.log(images[this.state.photoIndex]);
                         	this.setState({
                             photoIndex: (this.state.photoIndex + 1) % images.length,
                         })}}
@@ -77,15 +77,12 @@ class FileItem extends React.Component{
    	 }
 
    	componentWillReceiveProps(nextProps){
-   	 	console.log(nextProps);
    	 	var _videoLink = '';
    	 	if(nextProps.file.video){
    	 		var url = nextProps.file.videoLink;
-   	 		console.log(url);
    	 		if(url.indexOf("www.youtube.com") > -1){
      	 			var ind = url.indexOf('watch?v=');
      	 			var id = url.slice(ind+8, url.length);
-     	 			console.log(id);
      	 			this.setState({ validYoutubeLink: true, youtubeId: id });
    	 		}
    	 		
@@ -100,7 +97,7 @@ class FileItem extends React.Component{
 				const link = JSON.parse(res.request.response).url;
 				return link;
 			},
-			(err) => { console.log(err); 
+			(err) => {
 					return null;
 			}
 		);
@@ -119,6 +116,9 @@ class FileItem extends React.Component{
 	}
 
 	toDisplayName(){
+    if(this.props.file.file_name === ""){
+      return <p></p>;
+    }
 		var baseName = path.basename(this.props.file.file_name, path.extname(this.props.file.file_name));
 		if(baseName === 'null'){
 			return <p></p>;
@@ -145,7 +145,7 @@ class FileItem extends React.Component{
 
 		return(
 			<div className="single-file container-fluid" >
-				<hr/>
+				{this.state.downloadable ? <hr/> : ''}
 				<h5 className="file-item-title">{this.props.file.title}</h5>
 				<div className="col-sm-12 file-image" >
 					{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
