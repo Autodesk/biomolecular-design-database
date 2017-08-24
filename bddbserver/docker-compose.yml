@@ -15,4 +15,3 @@ db:
   environment:
     POSTGRES_PASSWORD: GCTORSTORAGEMASTER
     POSTGRES_USER: postgres
-
