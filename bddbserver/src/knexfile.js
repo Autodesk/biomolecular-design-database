@@ -1,16 +1,16 @@
 // Update with your config settings.
 
-//const PGHOST = process.env.PGHOST || '127.0.0.1';
+const PGHOST = process.env.PGHOST || '127.0.0.1';
 
 module.exports = {
 
   development: {
     client: 'postgresql',
     connection: {
-      host: '127.0.0.1',
-      database: 'bddbProject',
-      user:     't_pateru',
-      password: ''
+      host: PGHOST,
+      database: 'bdd',
+      user: 'bddapp',
+      password: 'storageBDD'
     },
     pool: {
       min: 2,
@@ -24,9 +24,10 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: PGHOST,
+      database: 'bdd',
+      user: 'bddapp',
+      password: 'storageBDD'
     },
     pool: {
       min: 2,
@@ -40,9 +41,10 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: PGHOST,
+      database: 'bdd',
+      user: 'bddapp',
+      password: 'storageBDD'
     },
     pool: {
       min: 2,
@@ -51,6 +53,6 @@ module.exports = {
     migrations: {
       tableName: 'knex_migrations'
     }
-  }
+  },
 
 };
