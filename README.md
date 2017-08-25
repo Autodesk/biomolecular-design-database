@@ -15,9 +15,9 @@ Scientific Advisor: Ebbe Andersen, [Aarhus University](http://bion.au.dk/)
 <br /> 
 This Web Application is developed with ReactJS frontend, Node.js backend and uses PostgreSQL database.
 
+
 ## Usage
 <br />
-
 ### Quick Start
 
 * STEP 1: Running Server Side <br />
