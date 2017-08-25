@@ -30,6 +30,9 @@
     "shortid": "^2.2.8",
     "validator": "5.4.0"
   },
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
   "devDependencies": {
     "react-scripts": "0.9.5"
   },
