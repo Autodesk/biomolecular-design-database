@@ -135,34 +135,51 @@ router.get('/', (req, res) => { //get all projects
 	if(sortby === 'MOST VIEWED'){
 		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('views', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			var response = resData.toJSON();
+			if(response.length < 9){
+				to = response.length;
+			}
+			var resProjects = applySearch(applyFilters(req.query, response), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}
 	else if( sortby === 'QUALITY OF DOCUMENTATION') {
+		var response = resData.toJSON();
+		if(response.length < 9){
+			to = response.length;
+		}
+
 		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('quality_of_documentation', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			var resProjects = applySearch(applyFilters(req.query, response), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}
 	else if(sortby === 'MOST APPRECIATIONS'){
+		var response = resData.toJSON();
+			if(response.length < 9){
+				to = response.length;
+			}
 		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('likes', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			var resProjects = applySearch(applyFilters(req.query, response), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
 		});
 	}	
 	else{ //return Newest
+		var response = resData.toJSON();
+		if(response.length < 9){
+			to = response.length;
+		}
 		Projects.forge().where({ deleted: 'false'}).where({ published: 'true'}).orderBy('created_at', 'DESC').fetchAll()
 		.then(resData=> {
-			var resProjects = applySearch(applyFilters(req.query, resData.toJSON()), search).slice(from, to);
+			var resProjects = applySearch(applyFilters(req.query, response), search).slice(from, to);
 			res.status(200).json({error: false, data: getSignedUrl(resProjects)});
 		})
 		.catch(err => {res.status(500).json({error: true, data: {message: err.message}})
