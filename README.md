@@ -18,7 +18,7 @@ This Web Application is developed with ReactJS frontend, Node.js backend and use
 ## Usage
 <br />
 
-###Quick Start
+### Quick Start
 
 * STEP 1: Running Server Side <br />
 -> From the console (in the project directory), do `cd ./bddbserver`. The database and Node.js application can be started using `docker-compose` 
