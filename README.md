@@ -3,8 +3,10 @@ The Biomolecular Design Database Project is to create a web application that all
 
 ## Contributors
 <br />
-Maintainer / Primary Contact:  Joseph Schaeffer, [Life Sciences Group, Autodesk Research](https://lifesciences.autodesk.com)  
-Primary Developer: Rut Patel, [a Life Sciences Group, Autodesk Research](https://lifesciences.autodesk.com)  
-Scientific Advisor: Ebbe Andersen, [a Aarhus University](http://bion.au.dk/)  
+Maintainer / Primary Contact:  Joseph Schaeffer, [Life Sciences Group, Autodesk Research](https://lifesciences.autodesk.com)
+
+Primary Developer: Rut Patel, [Life Sciences Group, Autodesk Research](https://lifesciences.autodesk.com)  
+
+Scientific Advisor: Ebbe Andersen, [Aarhus University](http://bion.au.dk/)  
 
 
