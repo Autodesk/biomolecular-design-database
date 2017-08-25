@@ -19,13 +19,13 @@ This Web Application is developed with ReactJS frontend, Node.js backend and use
 <br />
 Quick Start
 
-* STEP 1: Running Server Side 
+* STEP 1: Running Server Side <br />
 -> From the console (in the project directory), do `cd ./bddbserver`. The database and Node.js application can be started using `docker-compose` 
 `docker-compose up`
 
 This will start the Node.js application on port 8000 on the docker machine. 
 
-* STEP 2: Running Client Side
+* STEP 2: Running Client Side <br />
 -> From the console (in the project directory), do `cd ./bddbclient`. The reactJS frontend can be started using `docker-compose` 
 `docker-compose up`
 
