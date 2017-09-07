@@ -13,5 +13,8 @@ db:
   ports:
     - "5432:5432"
   environment:
+    PGDATA: /data/pgdata
     POSTGRES_PASSWORD: GCTORSTORAGEMASTER
     POSTGRES_USER: postgres
+  volumes:
+    - ./postgres/data:/data/pgdata
