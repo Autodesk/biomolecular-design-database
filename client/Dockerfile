@@ -7,7 +7,6 @@ WORKDIR $APP
 ADD ./package.json $APP/package.json
 RUN npm install
 
-
 COPY . $APP/
 
-CMD npm run server
+CMD npm start

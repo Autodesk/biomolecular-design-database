@@ -1,13 +1,15 @@
 {
-  "name": "project",
-  "version": "1.0.0",
+  "name": "bdd",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "sleep 10; nodemon --watch src --exec babel-node -- src/index.js",
+    "server": "sleep 10; npm run db-migrate; nodemon --watch src --exec babel-node -- src/index.js",
     "start": "sleep 10; nodemon --watch src --exec babel-node -- src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db:migrate": "knex migrate:latest --knexfile ./src/knexfile.js"
+    "db": "docker build -t bdd_db ./postgres/; docker run -p 5432:5432 -l \"bdd_db\" --rm -t -i bdd_db",
+    "db-background": "docker build -t bdd_db ./postgres/; docker run -p 5432:5432 -l \"bdd_db\" --rm bdd_db",
+    "db-migrate": "knex migrate:latest --knexfile ./src/knexfile.js"
   },
   "keywords": [],
   "author": "Rut Patel",

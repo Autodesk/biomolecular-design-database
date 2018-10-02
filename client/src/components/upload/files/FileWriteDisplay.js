@@ -4,6 +4,7 @@ import path from 'path';
 import { updateFileItem } from '../../../actions/detailsAction';
 import { deleteFile } from '../../../actions/fileActions';
 import { connect } from 'react-redux';
+import S3Image from '../../S3Image';
 
 const customStyles = {
 	    overlay : {
@@ -111,7 +112,7 @@ class FileWriteDisplay extends React.Component{
 			<div className="single-file container-fluid" >
 				<div className="file-title-write"><input type='text' placeholder="Title*" onChange={this.onChange} value={this.state.title ? this.state.title : ''} name="title" /></div>
 				<div className="col-sm-12 file-image" >
-					{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
+					{imgBool ? <S3Image className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
 				</div>
 				<div className="file-abstract-input">
 					<textarea type='text' placeholder="File Details" value={this.state.details} onChange={this.onChange} name="details" rows='5'></textarea>

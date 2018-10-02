@@ -1,0 +1,13 @@
+.DS_Store
+.git
+.gitignore
+.aws
+.idea
+node_modules/
+postgres/
+client/build
+client/node_modules
+client/.dockerignore
+client/.gitignore
+client/Dockerfile
+client/docker-compose.yml

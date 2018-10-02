@@ -8,6 +8,7 @@ import mime from 'mime-types';
 import uuidv1 from 'uuid/v1';
 import path from 'path';
 import Check from '../../../../public/Assets/icons/Check.svg';
+import S3Image from '../../S3Image';
 
 const customStyles = {
 	overlay : {
@@ -131,7 +132,9 @@ class NewFileBlock extends React.Component{
 						this.props.signedUrlForS3Doc(queryString).then(
 							(res) => {
 								var response = JSON.parse(res.request.response);
-								this.setState({ file_link: response.signedUrl, file_name: response.file_name, file_path_s3: _saveLink});
+                                // JMS 9/18 removed. See TODO in WritePageUpdate
+								//this.setState({ file_link: response.signedUrl, file_name: response.file_name, file_path_s3: _saveLink});
+                                this.setState({ file_link: _saveLink, file_name: response.file_name, file_path_s3: _saveLink});
 							}, 
 							(err) => { 
 								this.setState({error: true});
@@ -412,7 +415,7 @@ class NewFileBlock extends React.Component{
 					{this.state.showTitle ? <div className="file-title-write-new"><input type='text' placeholder="Title" onChange={this.onChange} value={this.state.title ? this.state.title : ''} name="title" /> </div> : ''}
 					
 					<div className="col-sm-12 file-image file-image-display" >
-						{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.state.file_link } alt=""/> : nonImg}
+						{imgBool ? <S3Image className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.state.file_link } alt=""/> : nonImg}
 						{this.props.file.video ? <div className="youtube-link-style"><i><input type='text' placeholder="YOUTUBE LINK" onChange={this.onChange} value={this.state.videoLink} name="videoLink" /></i> </div> : ''}
 					</div>
 					

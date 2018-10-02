@@ -17,6 +17,7 @@ import ratingOff from '../../../../public/Assets/icons/ratingOff.svg';
 import ratingOn from '../../../../public/Assets/icons/ratingOn.svg';
 import DetailModal from './DetailModal';
 import Modal from 'react-modal';
+import S3Image from '../../S3Image';
 
 class ReadProject extends React.Component {
 	constructor(props){
@@ -434,7 +435,7 @@ class ReadProject extends React.Component {
 				<div id="content">
 					<div className="cross-icon-new" onClick={this.props.deactivateModal}><img src={crossIcon} alt="close modal"/></div>
     				<div className="hero-image">
-    					<img className="img-responsive" src={this.props.project.hero_image ? this.props.project.hero_image : this.props.project.header_image_link} alt=""/>
+    					<S3Image className="img-responsive" src={this.props.project.hero_image ? this.props.project.hero_image : this.props.project.header_image_link} alt=""/>
     				</div>
     				<div className="container-fluid content-details">
 	    				<div className="project-title"> <h1> {this.props.project.name}</h1>  </div>

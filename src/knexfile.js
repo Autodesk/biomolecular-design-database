@@ -5,7 +5,7 @@ const PGHOST = process.env.PGHOST || '127.0.0.1';
 module.exports = {
 
   development: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
       host: PGHOST,
       database: 'bdd',
@@ -16,13 +16,10 @@ module.exports = {
       min: 2,
       max: 10
     },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
   },
 
   staging: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
       host: PGHOST,
       database: 'bdd',
@@ -33,13 +30,10 @@ module.exports = {
       min: 2,
       max: 10
     },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
   },
 
   production: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
       host: PGHOST,
       database: 'bdd',
@@ -50,9 +44,5 @@ module.exports = {
       min: 2,
       max: 10
     },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
   },
-
 };

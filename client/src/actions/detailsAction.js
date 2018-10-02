@@ -22,7 +22,7 @@ export function getFilesObject(filesQuery){
 }
 
 export function getSignedUrl(fileId){
-	const getFileUrl = '/api/files/file?'+fileId;
+	const getFileUrl = '/api/files/file?fileId='+fileId;
 	return dispatch => {
 		return axios.get(getFileUrl);
 	}
