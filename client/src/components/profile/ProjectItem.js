@@ -15,6 +15,7 @@ import UploadNew from '../upload/UploadNew';
 import PromptModal from './PromptModal/PromptModal';
 import { getSingleProject } from '../../actions/homePageActions';
 import { updateAssociatedField } from '../../actions/profileActions';
+import S3Image from '../S3Image';
 
 
 class ProjectItem extends React.Component {
@@ -397,7 +398,7 @@ class ProjectItem extends React.Component {
 		<div>
 		{this.state.toDisplay ? 
 		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout project-item-layout">
-	      	<img className="img-responsive project-image profile-project-image" onClick={this.activateModal} src={this.props.project.header_image_link ? this.props.project.header_image_link : noImg } alt=""/>
+	      	<S3Image className="img-responsive project-image profile-project-image" onClick={this.activateModal} src={this.props.project.header_image_link ? this.props.project.header_image_link : noImg } alt=""/>
 	        <h4 className="project-item-title project-item-title-profile" onClick={this.activateModal}>{this.props.project.name}</h4>
 	    	{this.props.project.published === 'true' ? <p className="published-project">Published</p> : <p className="draft-project">Draft</p>}
 	    	<div className="project-edit-options">

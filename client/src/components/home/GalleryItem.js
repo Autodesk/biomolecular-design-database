@@ -9,6 +9,7 @@ import views from '../../../public/Assets/icons/views.svg';
 import ratingOff from '../../../public/Assets/icons/ratingOff.svg';
 import ratingOn from '../../../public/Assets/icons/ratingOn.svg';
 import noImg from '../../../public/Assets/no-img.jpg';
+import S3Image from '../S3Image';
 
 class GalleryItem extends React.Component {
 
@@ -101,7 +102,7 @@ class GalleryItem extends React.Component {
 	return (
 	
 		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout" onClick={this.activateModal}>
-	      	<img className="img-responsive project-image" src={this.props.project.header_image_link ? this.props.project.header_image_link : noImg } alt=""/>
+	      	<S3Image className="img-responsive project-image" src={this.props.project.header_image_link ? this.props.project.header_image_link : noImg } alt=""/>
 	        <h4 className="project-item-title" >{this.props.project.name}</h4>
 	        <p className="authors-styling">{authors}</p>
 	        <hr/>

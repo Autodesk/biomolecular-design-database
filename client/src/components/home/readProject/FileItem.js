@@ -5,6 +5,7 @@ import htmlToText from 'html-to-text';
 import path from 'path';
 import Lightbox from 'react-image-lightbox';
 //import validator from 'youtube-validator';
+import S3Image from '../../S3Image';
 
 const customStyles = {
 	    overlay : {
@@ -148,7 +149,7 @@ class FileItem extends React.Component{
 				{this.state.downloadable ? <hr/> : ''}
 				<h5 className="file-item-title">{this.props.file.title}</h5>
 				<div className="col-sm-12 file-image" >
-					{imgBool ? <img className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
+					{imgBool ? <S3Image className="img-responsive image-file-style" onClick={() => this.setState({ isOpen: true })} src={ this.props.file.file_link } alt=""/> : nonImg}
 					{this.state.validYoutubeLink ?  <iframe src={youtubeUrl} className="youtube-video-style"></iframe> : ''}
 				</div>
 				<div className="file-details">

@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 import classnames from 'classnames';
 import { deleteFile } from '../../actions/fileActions';
+import S3Image from '../S3Image';
 
 
 class WritePageUpdate extends React.Component{
@@ -47,8 +48,12 @@ class WritePageUpdate extends React.Component{
 	}
 
 	componentWillMount(){
-		this.setState({checked: this.props.published, headerImageLink: this.props.headerImageLink, heroImageLink: this.props.heroImageLink, userId: this.props.auth.user.id});
-	}
+		this.setState({checked: this.props.published, userId: this.props.auth.user.id});
+        // fetch('/api/files/file/getUrl?saveUrl=' + this.props.headerImageLink).then( 
+        //     function ( obj ) {
+        //         this.setState({headerImageLink: obj.signedUrl});
+        //     }.bind(this))
+	} 
 
 	previewClicked(){
 		//console.log('preview generating');
@@ -72,7 +77,10 @@ class WritePageUpdate extends React.Component{
 				this.props.signedUrlForS3Doc(queryString).then(
 					(res) => {
 						var response = JSON.parse(res.request.response);
-						this.setState({ heroImageLink: response.signedUrl });
+                        //JMS Removed 9/18
+						// this.setState({ heroImageLink: response.signedUrl });
+                        // TODO: this looks like the right way to handle some other locations, but not this one now that we have the S3Image component. S3Image should maybe use the action version rather than the direct fetch.
+                        this.setState({ heroImageLink: response.file_name});
 					}, 
 					(err) => { 
 						this.setState({error: true});
@@ -98,7 +106,10 @@ class WritePageUpdate extends React.Component{
 				this.props.signedUrlForS3Doc(queryString).then(
 					(res) => {
 						var response = JSON.parse(res.request.response);
-						this.setState({ headerImageLink: response.signedUrl });
+                        // JMS Removed 9/18
+                        // See above TODO
+                        // this.setState({ headerImageLink: response.signedUrl });
+                        this.setState({ headerImageLink: response.file_name });
 					}, 
 					(err) => { 
 						this.setState({error: true});
@@ -256,17 +267,26 @@ class WritePageUpdate extends React.Component{
 			const arrLen = nextProps.files.length;
 			this.setState({ currId: this.state.currId+arrLen});
 		}
-		if(nextProps.headerImageLink){
-			this.setState({ headerImageLink: nextProps.headerImageLink});
-		}
-		if(nextProps.heroImage){
-			this.setState({ heroImageLink: nextProps.heroImage});
-		}
+		// if(nextProps.headerImageLink){
+        //     fetch('/api/files/file/getUrl?saveLink=' + nextProps.headerImageLink).then( response => response.json()).then(
+        //         obj => this.setState({headerImageLink: obj.signedUrl})
+        //         )
+		// }
+		// if(nextProps.heroImage){
+        //     fetch('/api/files/file/getUrl?saveLink=' + nextProps.heroImage).then( response => response.json()).then(
+        //         obj => this.setState({heroImageLink: obj.signedUrl}))
+		// }
 	}
 
 	render(){
-		var headerLink = this.state.headerImageLink;
-		var heroLink = this.state.heroImageLink;
+		var headerLink = this.props.headerImageLink;
+        if  (this.state.headerImageLink) {
+            headerLink = this.state.headerImageLink;
+        }
+		var heroLink = this.props.heroImage;
+        if (this.state.heroImageLink) {
+            heroLink = this.state.heroImageLink;
+        }
 		var _uploadAll = this.state.uploadAll;
 		const oldFilesDisplay = this.props.files.map((fileItem) => {
 			return <NewFileBlock key={fileItem.id}  isNewFile={false} btnClicked={this.state.btnClicked} uploadAll={this.state.uploadAll} updateFiles={this.state.updateFiles} file={fileItem}
@@ -374,7 +394,7 @@ class WritePageUpdate extends React.Component{
 							<div className="sub-title h-img">
 								<h5> COVER IMAGE </h5>
 								<hr/>
-								<img className="img-responsive project-image" src={headerLink} alt=""/>
+								<S3Image className="img-responsive project-image" src={headerLink} alt=""/>
 								<hr className="sub-title-hr"/>
 							</div>
 							<div className="content-style-text">
@@ -389,7 +409,7 @@ class WritePageUpdate extends React.Component{
 							<div className="sub-title h-img">
 								<h5> HERO IMAGE </h5>
 								<hr/>
-								<img className="img-responsive project-image" src={heroLink} alt=""/>
+								<S3Image className="img-responsive project-image" src={heroLink} alt=""/>
 								<hr className="sub-title-hr"/>
 							</div>
 							<div className="content-style-text">

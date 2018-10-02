@@ -1,6 +1,6 @@
 # Biomolecular Design Database
 <br/>
-The Biomolecular Design Database Project is to create a web application that allows users to share, search and use nucleic acid nanotechnology designs. This includes DNA Origami, RNA Origami, DNA Bricks and many other types of systems.
+The Biomolecular Design Database Project is a web application that allows users to share, search and use nucleic acid nanotechnology designs. This includes DNA Origami, RNA Origami, DNA Bricks and many other types of systems.
 
 ## Contributors
 <br />

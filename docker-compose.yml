@@ -5,6 +5,8 @@ myapp:
   environment:
     PORT: "8000"
     PGHOST: db
+    AWS_ACCESS_KEY_ID : "ACCESS KEY HERE"
+    AWS_SECRET_ACCESS_KEY : "SECRET ACCESS KEY HERE"
   links:
     - db
 
@@ -14,7 +16,9 @@ db:
     - "5432:5432"
   environment:
     PGDATA: /data/pgdata
-    POSTGRES_PASSWORD: GCTORSTORAGEMASTER
+    POSTGRES_PASSWORD: PASSWORD_HERE
     POSTGRES_USER: postgres
   volumes:
     - ./postgres/data:/data/pgdata
+
+
