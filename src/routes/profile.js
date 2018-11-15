@@ -6,7 +6,7 @@ import commaSplit from 'comma-split';
 
 var s3 = new AWS.S3();
 let router = express.Router();
-var bucketName = 'biomolecular-design-database-development';
+var bucketName = 'biomolecular-design-database-app';
 
 function getSignedUrl(projects){
 	const signed = projects.map((project) => {

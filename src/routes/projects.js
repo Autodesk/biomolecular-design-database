@@ -10,7 +10,7 @@ import count from 'word-count';
 
 const s3 = new AWS.S3();
 let router = express.Router();
-const bucketName = 'biomolecular-design-database-development';
+const bucketName = 'biomolecular-design-database-app';
 
 function getSignedUrl(projects) {
   return projects.map((project) => {
