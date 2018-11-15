@@ -40,7 +40,7 @@ const upload = multer({
 router.post('/', upload.single('theseNamesMustMatch'), (req, res) => {
   // req.file is the 'theseNamesMustMatch' file
   s3.putObject({
-      Bucket: 'bionano-bdd-app',
+      Bucket: 'biomolecular-design-database-development',
       Key: 'AKIAJ4EW4PSVRLE36F2Q', 
       Body: req.file.buffer,
       ACL: 'public-read', // your permisions  

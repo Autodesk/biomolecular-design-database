@@ -9,7 +9,7 @@ AWS.config.apiVersions = {
 var s3 = new AWS.S3();
 
 var params = {
-  Bucket: 'bionano-bdd-app',
+  Bucket: 'biomolecular-design-database-development',
   Key: 'allFiles/1/SquareNut_Temperatures.png'
 };
 

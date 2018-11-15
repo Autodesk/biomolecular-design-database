@@ -9,7 +9,7 @@ import multer from 'multer';
 let router = express.Router();
 
 var s3 = new AWS.S3();
-var bucketName = 'bionano-bdd-app';
+var bucketName = 'biomolecular-design-database-development';
 const upload = multer({
   storage: multer.memoryStorage(),
   // file size limitation in bytes
