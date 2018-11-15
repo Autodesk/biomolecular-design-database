@@ -440,7 +440,7 @@ class WritePageUpdate extends React.Component{
 						<button className="write-page-content-btn content-btns-style button" onClick={this.videosClicked}> Video </button>
 						<button className="file-input-wrapper ">
 						  	<label className="write-page-content-btn content-btns-style label"> File</label>
-						  	<input onChange={this.handleFileUploads} type="file" accept="application/*, text/*" className="input-file-upload" name="file" multiple />
+						  	<input onChange={this.handleFileUploads} type="file" className="input-file-upload" name="file" multiple />
 						</button>
 					</div>
 				</div>
