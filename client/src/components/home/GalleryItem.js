@@ -83,24 +83,22 @@ class GalleryItem extends React.Component {
 					<ReadProject project={this.props.project} increaseAp={this.props.increaseAp} deactivateModal={this.deactivateModal} />
 				</Modal>
 		const qod = this.props.project.quality_of_documentation;
-		var counter = 0;
-		const authors = this.props.project.authors.map((author) => {
-			counter++;
-			if(counter === 1){ return author; }
-			return ', '+author;
-		})
+		var authors = null,
+				counter = null;
+		if (Array.isArray(this.props.project.authors)) {
+			authors = this.props.project.authors.join(', ');
+			counter = this.props.project.authors.length;
+		}
 		var ticks = [];
-		for(var i = 0; i < 5; i++){
-			if( i < qod){
+		for (var i = 0; i < 5; i++) {
+			if (i < qod)
 				ticks.push(<img className="ticks-style" src={ratingOn} alt="green tick"/>);
-			}
-			else{
+			else
 				ticks.push(<img className="ticks-style" src={ratingOff} alt="grey tick"/>);
-			}
 		}
 
 	return (
-	
+
 		<div className="col-lg-3 col-md-4 col-xs-6 showcase-item-layout" onClick={this.activateModal}>
 	      	<S3Image className="img-responsive project-image" src={this.props.project.header_image_link ? this.props.project.header_image_link : noImg } alt=""/>
 	        <h4 className="project-item-title" >{this.props.project.name}</h4>
@@ -114,13 +112,13 @@ class GalleryItem extends React.Component {
 			        {ticks[3]}
 			        {ticks[4]}
 		        </div>
-	    	    <div className="stats"> 
+	    	    <div className="stats">
 		  	       	<img src={appreciation} className="img-icon-styling" alt="appreciations"/><strong className="likes-style"> {this.props.project.likes} </strong>
 		           	<img className="views-style img-icon-styling" src={views} alt="views"/><strong className="likes-style"> {this.props.project.views}</strong>
 	            </div>
             </div>
             {modal}
-	    </div> 
+	    </div>
 	);
 }
 }
